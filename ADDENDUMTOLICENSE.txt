@@ -1,0 +1,9 @@
+ADDENDUM TO LICENSE
+
+The license given in this repository covers all files not included in the code VH-1.
+
+VH-1 does not have an explicit license. I have contacted the authors about this and have not (yet) received a response. However, the site hosting the code contains the sentences:
+"VH-1 is freely available to the computational community. You are welcome to download the code and do with it what you wish."
+(https://web.archive.org/web/20170625051654/wonka.physics.ncsu.edu/pub/VH-1/, the latest snapshot at the time of writing)
+
+For the purposes of this code I have lightly modified the original VH-1 files to, for example, store variables in double precision and allow F2PY functionality.

@@ -1,0 +1,26 @@
+TODO file for Spherical Hydro project:
+- Set up basic Python looper - DONE
+- Do existing simple test (visualise with pyglet) - DONE
+- Move first parts of init.f90/zonemod.f90 in VH1 to python
+- --> zonemod is OK - DONE
+- --> move init.f90 stuff
+      --> Check courant code in fortran module - DONE
+      --> Allow other functions to limit dt
+- Look at converting REAL variables to doubles - DONE (slower, though...)
+- Set up a Sedov test - DONE
+- Set up better visualisation in OpenGL (allow showing T in red, rho in blue)
+- Tidy up repo + put on github
+- Add cooling function (merge Patrick's function, calculate P<->T in Python)
+- Set up equilibrium ionisation state variable
+- Add radiation tracing
+          (simple H-only ray-tracing from single central source in 1D)
+	  (REMEMBER GAMMA / MU / ETC !!!)
+- Add non-thermal pressure (e.g. turbulence)
+- Rip Geneva stellar models into python-readable format
+- Set up sources in python
+- Run simple uniform experiments
+- Compare to results from Geen+2015a
+- Add profiles, turbulence
+- Get results
+- Write
+- Publish!

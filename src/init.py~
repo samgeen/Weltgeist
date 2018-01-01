@@ -1,0 +1,44 @@
+
+import vhone
+
+def init():
+    '''
+    ! Set up geometry and boundary conditions of grid
+    !
+    ! Boundary condition flags : nleft, nright
+    !   = 0  :  reflecting boundary condition
+    !   = 1  :  inflow/outflow boundary condition (zero gradients)
+    !   = 2  :  fixed inflow boundary condition (values set by dinflo, pinflo, etc.)
+    !   = 3  :  periodic (nmax+1 = nmin; nmin-1 = nmax)
+    !
+    ! Geometry flag : ngeom                         |  Cartesian:
+    !   = 0  :  planar                              |    gx = 0, gy = 0, gz = 0   (x,y,z)
+    !   = 1  :  cylindrical radial                  |  Cylindrical:
+    !   = 2  :  spherical   radial             3D= {     gx = 1, gy = 3, gz = 0   (s,phi,z)
+    !   = 3  :  cylindrical angle                   |
+    !   = 4  :  spherical polar angle (theta)       |  Spherical:
+    !   = 5  :  spherical azimu angle (phi)         |    gx = 2, gy = 4, gz = 5   (r,theta,phi)
+    '''
+    
+    # Define the computational grid...
+    
+    vhone.data.ngeomx = 0
+    vhone.data.ngeomy = 0
+    vhone.data.ngeomz = 0
+    
+    vhone.data.nleftx = 0
+    vhone.data.nrightx= 0
+    vhone.data.nlefty = 0
+    vhone.data.nrighty= 0
+    vhone.data.nleftz = 0
+    vhone.data.nrightz= 0
+    
+    vhone.data.xmin   = 0.0
+    vhone.data.xmax   = 1.0
+    vhone.data.ymin   = 0.0
+    vhone.data.ymax   = 1.0
+    vhone.data.zmin   = 0.0
+    vhone.data.zmax   = 1.0
+
+if __name__=="__main__":
+    init()
