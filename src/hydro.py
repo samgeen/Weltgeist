@@ -27,6 +27,9 @@ class _Field(object):
         except AttributeError:
             raise AttributeError(
                     "'Array' object has no attribute {}".format(name))
+
+    def __str__(self):
+        return str(self._ArrayFunc())
         
 
 class _Hydro(object):
@@ -103,11 +106,6 @@ class _Hydro(object):
 
 hydro = _Hydro()
 
-
-
 # Test functions
 if __name__=="__main__":
-    hydro.rho[2] = 4.0
-    hydro.rho[3:5] = 16.0
-    print hydro.rho[0:20]
-    print hydro.rho.shape
+    print hydro.mass
