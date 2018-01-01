@@ -7,42 +7,69 @@ import vhone, init
 import numpy as np
 
 class _Field(object):
-    def __init__(self,getter,setter):
+    def __init__(self,getter,setter,ArrayFunc):
         # Set get and set methods
         setattr(self,"_getitem",getter)
         setattr(self,"_setitem",setter)
+        # Function that returns the raw array
+        self._ArrayFunc = ArrayFunc
 
     def __getitem__(self,item):
         return self._getitem(item)
 
     def __setitem__(self,item,val):
         self._setitem(item,val)
+
+    def __getattr__(self, name):
+        # Do other operation
+        try:
+            return getattr(self._ArrayFunc(), name)
+        except AttributeError:
+            raise AttributeError(
+                    "'Array' object has no attribute {}".format(name))
         
 
 class _Hydro(object):
     # init init init init
+    # There is probably a cleaner way to write this but eh
+    # WARNING: This assumes a constant spherical grid
     def __init__(self):
         init.init()
         self.ncells = vhone.data.imax
         # Views to hydro variables in VH-1
+        # POSITION
+        x = vhone.data.zxa
+        self.x = x
+        # Assume that cells are evenly spaced in radius
+        dx = self.x[1]
+        self.dx = dx
+        if self.dx != (self.x[2] - self.x[1]):
+            print "Grid not evenly spaced!"
+            raise ValueError
         # RHO
         def _rhoget(slicer):
             return vhone.data.zro[slicer,0,0]
         def _rhoset(slicer,val):
             vhone.data.zro[slicer,0,0] = val
-        self.rho = _Field(_rhoget,_rhoset)
+        def _rhoarr():
+            return vhone.data.zro[0:self.ncells,0,0]
+        self.rho = _Field(_rhoget,_rhoset,_rhoarr)
         # PRESSURE
         def _Pget(slicer):
             return vhone.data.zpr[slicer,0,0]
         def _Pset(slicer,val):
             vhone.data.zpr[slicer,0,0] = val
-        self.P = _Field(_Pget,_Pset)
-        # VELOCITY (TODO: Check it's actually zuz)
+        def _Parr():
+            return vhone.data.zpr[0:self.ncells,0,0]
+        self.P = _Field(_Pget,_Pset,_Parr)
+        # VELOCITY
         def _velget(slicer):
-            return vhone.data.zuz[slicer,0,0]
+            return vhone.data.zux[slicer,0,0]
         def _velset(slicer,val):
-            vhone.data.zuz[slicer,0,0] = val
-        self.vel = _Field(_velget,_velset)
+            vhone.data.zux[slicer,0,0] = val
+        def _velarr():
+            return vhone.data.zux[0:self.ncells,0,0]
+        self.vel = _Field(_velget,_velset,_velarr)
         # Derived variables
         # TEMPERATURE
         def _Tget(slicer):
@@ -51,14 +78,28 @@ class _Hydro(object):
             # Set the pressure from the ideal gas equation
             newP = val*vhone.data.zro[slicer,0,0]*init.kB
             vhone.data.zpr[slicer,0,0] = newP
-        self.T = _Field(_Tget,_Tset)
+        def _Tarr():
+            return vhone.data.zpr[0:self.ncells,0,0]/ \
+                vhone.data.zro[0:self.ncells,0,0]/init.kB
+        self.T = _Field(_Tget,_Tset,_Tarr)
         # Variables contained only in this module
         # XHII (Hydrogen ionisation fraction)
-        self.xhii = np.zeros(ncells)
+        self.xhii = np.zeros(self.ncells)
         # GRAV (TODO)
-        self.grav = np.zeros(ncells)
+        self.grav = np.zeros(self.ncells)
         # HARD-CODED EXTERNAL PRESSURE FIELD (TODO)
-        self.Pext = np.zeros(ncells)
+        self.Pext = np.zeros(self.ncells)
+        # VOLUME
+        self.vol = dx*(x*(x+dx)+dx*dx/3.0) # from volume.f90
+        # MASS
+        def _Mget(slicer):
+            return self.vol[slicer]*vhone.data.zro[slicer,0,0]
+        def _Mset(slicer,val):
+            vhone.data.zro[slicer,0,0] = val/self.vol[slicer]
+        def _Marr():
+            return self.vol*vhone.data.zro[0:self.ncells,0,0]
+        self.mass = _Field(_Mget,_Mset,_Marr)
+
 
 hydro = _Hydro()
 
@@ -69,3 +110,4 @@ if __name__=="__main__":
     hydro.rho[2] = 4.0
     hydro.rho[3:5] = 16.0
     print hydro.rho[0:20]
+    print hydro.rho.shape
