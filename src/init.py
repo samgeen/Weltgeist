@@ -1,19 +1,6 @@
 
 import vhone
 
-class Fields(object):
-    def __init__(self):
-        pass
-    
-    def Density(self):
-        nx = vhone.data.imax
-        return vhone.data.zro[:,0,0]
-    
-    def Pressure(self):
-        nx = vhone.data.imax
-        return vhone.data.zpr[0:nx,0,0]
-
-hydro = Fields()
 initialised = False
 
 
@@ -91,6 +78,8 @@ def init():
         nx = vhone.data.imax
         vhone.data.zro[0:nx,0,0] = rho0
         vhone.data.zpr[0:nx,0,0] = P0
+
+        initialised = True
 
 if __name__=="__main__":
     init()

@@ -11,7 +11,7 @@ import numpy as np
 import pyglet
 from pyglet.gl import *
 
-from init import hydro
+from hydro import hydro
 
 sn = False
 
@@ -48,9 +48,8 @@ class Integrator(object):
             #pts[:,1] = np.log10(vhone.data.zpr[0:nx,0,0] \
             #                    /vhone.data.zro[0:nx,0,0])
             T = vhone.data.zpr[0:nx,0,0]/vhone.data.zro[0:nx,0,0]/init.kB
-            pts[:,1] = np.log10(vhone.data.zpr[0:nx,0,0])
-            #pts[:,1] = np.log10(T)
-
+            #pts[:,1] = hydro.vel[0:nx]*1e6 #np.log10(vhone.data.zpr[0:nx,0,0])
+            pts[:,1] = np.log10(hydro.T)
 
             glMatrixMode(GL_PROJECTION)
             glLoadIdentity()
@@ -116,7 +115,8 @@ class Integrator(object):
         if self._itick == 0:
             nx = vhone.data.imax
             T = vhone.data.zpr[0:nx,0,0]/vhone.data.zro[0:nx,0,0]/init.kB
-            print "DMAX/MIN:",T.min(),T.max(), vhone.data.time/init.year
+            v = hydro.vel[0:nx]
+            print "VMAX/MIN:",v.min(),v.max(), vhone.data.time/init.year
         if self._step:
             self._itick += 1
             # Try a simple wind test
