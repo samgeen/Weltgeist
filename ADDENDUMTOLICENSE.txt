@@ -1,6 +1,6 @@
 ADDENDUM TO LICENSE
 
-The license given in this repository covers all files not included in the code VH-1.
+The license given in this repository covers all files not included in the code VH-1, and excluding Fortran files related to cooling (which are taken from the RAMSES code and covered by a CeCILL license).
 
 VH-1 does not have an explicit license. I have contacted the authors about this and have not (yet) received a response. However, the site hosting the code contains the sentences:
 "VH-1 is freely available to the computational community. You are welcome to download the code and do with it what you wish."
