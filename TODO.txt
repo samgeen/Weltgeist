@@ -8,16 +8,18 @@ TODO file for Spherical Hydro project:
       --> Allow other functions to limit dt
 - Look at converting REAL variables to doubles - DONE (slower, though...)
 - Set up a Sedov test - DONE
-- Set up better visualisation in OpenGL (allow showing T in red, rho in blue)
-- Tidy up repo + put on github
-- Add cooling function (merge Patrick's function, calculate P<->T in Python)
+- Tidy up repo + put on github - DONE
+- Refactor code into objects
+- Add cooling function (compiled, to add in Python)
 - Set up equilibrium ionisation state variable
 - Add radiation tracing
           (simple H-only ray-tracing from single central source in 1D)
 	  (REMEMBER GAMMA / MU / ETC !!!)
+- Set up better visualisation in OpenGL (allow showing T in red, rho in blue)
+- Add stellar module
 - Add non-thermal pressure (e.g. turbulence)
-- Rip Geneva stellar models into python-readable format
 - Set up sources in python
+- Add astropy units
 - Run simple uniform experiments
 - Compare to results from Geen+2015a
 - Add profiles, turbulence
