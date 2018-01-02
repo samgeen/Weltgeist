@@ -33,11 +33,16 @@ class _Field(object):
         
 
 class _Hydro(object):
-    # init init init init
-    # There is probably a cleaner way to write this but eh
+    '''
+    Stores and manages the hydro variables for use by python
+    Singleton class (since VH1/F2PY is a singleton)
+    '''
+    # TODO: MAKE EVERY FIELD A PYTHON @PROPERTY
     # WARNING: This assumes a constant spherical grid
     def __init__(self):
         init.init()
+        self._time = vhone.data.time
+        self._dt = 0.0
         self.ncells = vhone.data.imax
         # Views to hydro variables in VH-1
         # POSITION
@@ -102,6 +107,20 @@ class _Hydro(object):
         def _Marr():
             return self.vol*vhone.data.zro[0:self.ncells,0,0]
         self.mass = _Field(_Mget,_Mset,_Marr)
+
+    def Step(self):
+        oldtime = self._time
+        vhone.data.step()
+        self._time = vhone.data.time
+        self._dt = self._time - oldtime
+
+    @property
+    def time(self):
+        return self._time
+    
+    @property
+    def dt(self):
+        return self._dt
 
 
 hydro = _Hydro()

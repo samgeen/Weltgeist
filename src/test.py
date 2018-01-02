@@ -4,7 +4,6 @@ Created on 3 Jun 2014
 @author: samgeen
 '''
 
-import vhone
 import init
 import numpy as np
 
@@ -24,6 +23,8 @@ class Integrator(object):
         self._my = 0.5
         self._step = True
         self._itick = 0
+        self._savex = [1e-7,1e-7]
+        self._savey = [1e-7,1e-7]
         
     def Setup(self):
 
@@ -41,22 +42,23 @@ class Integrator(object):
             glLoadIdentity()
             
             glColor4f(1.0,1.0,1.0,0.5)
-            nx = vhone.data.imax
+            #nx = hydro.ncells
+            nx = len(self._savex)
             pts = np.zeros((nx,2),dtype="float64")
-            #import pdb; pdb.set_trace()
-            pts[:,0] = vhone.data.zxa
-            #pts[:,1] = np.log10(vhone.data.zpr[0:nx,0,0] \
-            #                    /vhone.data.zro[0:nx,0,0])
-            T = vhone.data.zpr[0:nx,0,0]/vhone.data.zro[0:nx,0,0]/init.kB
-            #pts[:,1] = hydro.vel[0:nx]*1e6 #np.log10(vhone.data.zpr[0:nx,0,0])
-            pts[:,1] = np.log10(hydro.T)
+            #pts[:,1] = hydro.vel[0:nx]*1e6
+            #pts[:,0] = hydro.x
+            #pts[:,1] = np.log10(hydro.T)
+            #print len(self._savex)
+            pts[:,0] = np.log10(np.array(self._savex))
+            pts[:,1] = np.log10(np.array(self._savey))
+            print pts[:,0].max(), pts[:,1].max()
 
             glMatrixMode(GL_PROJECTION)
             glLoadIdentity()
             #float(vhone.data.xmin),float(vhone.data.xmax
             # No idea what's wrong here if I don't do this... gah
-            xmin = pts[:,0].min()
-            xmax = pts[:,0].max()
+            xmin = pts[:,0].min()-1e-7
+            xmax = pts[:,0].max()+1e-7
             ymin = pts[:,1].min()-0.5
             ymax = pts[:,1].max()+0.5
             glOrtho(xmin, xmax,
@@ -112,23 +114,26 @@ class Integrator(object):
         
     def Step(self, dt):
         global sn
+        nx = hydro.ncells
         if self._itick == 0:
-            nx = vhone.data.imax
-            T = vhone.data.zpr[0:nx,0,0]/vhone.data.zro[0:nx,0,0]/init.kB
-            v = hydro.vel[0:nx]
-            print "VMAX/MIN:",v.min(),v.max(), vhone.data.time/init.year
+            T = hydro.T
+            v = hydro.vel
+            print "VMAX/MIN:",v.min(),v.max(), hydro.time/init.year
         if self._step:
             self._itick += 1
             # Try a simple wind test
             #if not sn:
             #    vhone.data.zux[0,0,0] += 1e6*vhone.data.dt
             #    vhone.data.zro[0,0,0] += 1e2*vhone.data.dt
-            vhone.data.step()
-            if not sn and vhone.data.time > 0.00:
+            hydro.Step()
+            self._savex.append(hydro.time)
+            rho = hydro.rho[0:nx]
+            self._savey.append(hydro.x[np.where(rho == rho.max())][0])
+            if not sn and hydro.time > 0.00:
                 print "BANG"
-                vhone.data.zpr[0,0,0] *= 1e8
+                hydro.P[0] *= 1e8
                 sn = True
-                print vhone.data.time, vhone.data.dt
+                print hydro.time, hydro.dt
         if self._itick > 10:
             self._itick = 0
         
