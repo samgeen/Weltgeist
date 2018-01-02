@@ -111,7 +111,7 @@ class _Hydro(object):
     def Step(self):
         oldtime = self._time
         vhone.data.step()
-        self._time = vhone.data.time
+        self._time = vhone.data.time+0.0
         self._dt = self._time - oldtime
 
     @property
