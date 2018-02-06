@@ -1,0 +1,34 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module singlestar ! in 
+    interface  ! in :singlestar
+        subroutine star_setup(tableloc) ! in :singlestar:../singlestar_f2py.f90
+            use singlestar_module
+            character*200 intent(in) :: tableloc
+        end subroutine star_setup
+        subroutine star_lifetime(mass_ini,lifetime) ! in :singlestar:../singlestar_f2py.f90
+            use singlestar_module
+            real(kind=8) intent(in) :: mass_ini
+            real(kind=8) intent(out) :: lifetime
+        end subroutine star_lifetime
+        subroutine star_winds(mass_ini,t,dt,energy,massloss) ! in :singlestar:../singlestar_f2py.f90
+            use singlestar_module
+            real(kind=8) intent(in) :: mass_ini
+            real(kind=8) intent(in) :: t
+            real(kind=8) intent(in) :: dt
+            real(kind=8) intent(out) :: energy
+            real(kind=8) intent(out) :: massloss
+        end subroutine star_winds
+        subroutine star_radiation(mass_ini,t,dt,nphotons) ! in :singlestar:../singlestar_f2py.f90
+            use singlestar_module
+            real(kind=8) intent(in) :: mass_ini
+            real(kind=8) intent(in) :: t
+            real(kind=8) intent(in) :: dt
+            real(kind=8) dimension(5),intent(out) :: nphotons
+        end subroutine star_radiation
+    end interface 
+end python module singlestar
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

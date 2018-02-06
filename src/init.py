@@ -1,26 +1,14 @@
 
-import vhone
+import vhone, units
 
 initialised = False
 
-
-# Physical quantities (base units in cgs)
-pc = 3.086e+18
-g = 1.66e-24
-year = 3.154e+7
-kB = 1.3806485279e-16 # in cgs
-
-# Units
-ux = pc
-udens = g/ux**3.0
-
 # Physical values to initialise grid to
-X = 0.74
-rmax = 100.0 # pc
-rho0 = 1000.0/X # g cm^-3
+rmax = 100*units.pc # 100 pc
+rho0 = 1000.0*units.g/units.X # g cm^-3
 T0 = 10.0 # K
 # P=rho*kB*T
-P0 = rho0*kB*T0
+P0 = rho0*units.kB*T0
 
 def init():
     global hydro, initialised
@@ -61,7 +49,7 @@ def init():
         vhone.data.nrightz= 0
         
         vhone.data.xmin   = 0.0
-        vhone.data.xmax   = 1.0*rmax
+        vhone.data.xmax   = rmax/units.distance
         vhone.data.ymin   = 0.0
         vhone.data.ymax   = 1.0
         vhone.data.zmin   = 0.0
@@ -76,8 +64,8 @@ def init():
         #vhone.data.zpr[0,0,0] = 1e7 # simple 1D planar Sedov test
 
         nx = vhone.data.imax
-        vhone.data.zro[0:nx,0,0] = rho0
-        vhone.data.zpr[0:nx,0,0] = P0
+        vhone.data.zro[0:nx,0,0] = rho0/units.density
+        vhone.data.zpr[0:nx,0,0] = P0/units.pressure
 
         initialised = True
 
