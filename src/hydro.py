@@ -3,7 +3,7 @@ Hydro solver and grid variables
 Sam Geen, January 2018
 '''
 
-import vhone, init
+import vhone, init, units
 import numpy as np
 
 class _Field(object):
@@ -15,13 +15,16 @@ class _Field(object):
         self._ArrayFunc = ArrayFunc
 
     def __getitem__(self,item):
+        #print "GET"
         return self._getitem(item)
 
     def __setitem__(self,item,val):
+        #print "SET", val
         self._setitem(item,val)
 
     def __getattr__(self, name):
         # Do other operation
+        #print "GETATTR"
         try:
             return getattr(self._ArrayFunc(), name)
         except AttributeError:
@@ -29,6 +32,7 @@ class _Field(object):
                     "'Array' object has no attribute {}".format(name))
 
     def __str__(self):
+        #print "STR", str(self._ArrayFunc())
         return str(self._ArrayFunc())
         
 
@@ -41,13 +45,19 @@ class _Hydro(object):
     # WARNING: This assumes a constant spherical grid
     def __init__(self):
         init.init()
-        self._time = vhone.data.time
-        self._dt = 0.0
         self.ncells = vhone.data.imax
         # Views to hydro variables in VH-1
         # POSITION
-        x = vhone.data.zxa
-        self.x = x
+        def _xget(slicer):
+            return vhone.data.zxa[slicer]*units.distance
+        def _xset(slicer,val):
+            print "Can't set the grid once the simulation has started!"
+            raise ValueError
+            #vhone.data.x[slicer,0,0] = val/units.distance
+        def _xarr():
+            return vhone.data.zxa[0:self.ncells,0,0]*units.density
+        self.x = _Field(_xget,_xset,_xarr)
+        x = self.x[0:self.ncells]
         # Assume that cells are evenly spaced in radius
         dx = self.x[1]
         self.dx = dx
@@ -56,40 +66,54 @@ class _Hydro(object):
             raise ValueError
         # RHO
         def _rhoget(slicer):
-            return vhone.data.zro[slicer,0,0]
+            return vhone.data.zro[slicer,0,0]*units.density
         def _rhoset(slicer,val):
-            vhone.data.zro[slicer,0,0] = val
+            vhone.data.zro[slicer,0,0] = val/units.density
         def _rhoarr():
-            return vhone.data.zro[0:self.ncells,0,0]
+            return vhone.data.zro[0:self.ncells,0,0]*units.density
         self.rho = _Field(_rhoget,_rhoset,_rhoarr)
         # PRESSURE
         def _Pget(slicer):
-            return vhone.data.zpr[slicer,0,0]
+            return vhone.data.zpr[slicer,0,0]*units.pressure
         def _Pset(slicer,val):
-            vhone.data.zpr[slicer,0,0] = val
+            vhone.data.zpr[slicer,0,0] = val/units.pressure
         def _Parr():
-            return vhone.data.zpr[0:self.ncells,0,0]
+            return vhone.data.zpr[0:self.ncells,0,0]*units.pressure
         self.P = _Field(_Pget,_Pset,_Parr)
         # VELOCITY
         def _velget(slicer):
-            return vhone.data.zux[slicer,0,0]
+            return vhone.data.zux[slicer,0,0]*units.velocity
         def _velset(slicer,val):
-            vhone.data.zux[slicer,0,0] = val
+            vhone.data.zux[slicer,0,0] = val/units.velocity
         def _velarr():
-            return vhone.data.zux[0:self.ncells,0,0]
+            return vhone.data.zux[0:self.ncells,0,0]*units.velocity
         self.vel = _Field(_velget,_velset,_velarr)
         # Derived variables
         # TEMPERATURE
         def _Tget(slicer):
-            return vhone.data.zpr[slicer,0,0]/vhone.data.zro[slicer,0,0]/init.kB
+            return self.P[slicer]/self.rho[slicer]/units.kB
         def _Tset(slicer,val):
             # Set the pressure from the ideal gas equation
-            newP = val*vhone.data.zro[slicer,0,0]*init.kB
-            vhone.data.zpr[slicer,0,0] = newP
+            newP = val*self.rho[slicer]*units.kB
+            vhone.data.zpr[slicer,0,0] = newP/units.pressure
         def _Tarr():
-            return vhone.data.zpr[0:self.ncells,0,0]/ \
-                vhone.data.zro[0:self.ncells,0,0]/init.kB
+            return self.P[0:self.ncells]/self.rho[0:self.ncells]/units.kB
         self.T = _Field(_Tget,_Tset,_Tarr)
+        # KINETIC ENERGY
+        # NOTE: In VH1, zpr is SOLELY thermal pressure!!! (unlike RAMSES)
+        def _KEget(slicer):
+            # 0.5 * mass * v^2
+            #print "KEGET"
+            return 0.5*self.mass[slicer]*self.vel[slicer]**2.0
+        def _KEset(slicer,val):
+            # dv = sqrt(2.0 * dKE / mass)
+            #print "KESET"
+            vhone.data.zux[slicer] += np.sqrt(2.0*val/self.mass[slicer])/units.velocity
+        def _KEarr():
+            # 0.5 * mass * v^2
+            #print "KEARR"
+            return 0.5*self.mass[0:self.ncells]*self.vel[0:self.ncells]**2.0
+        self.KE = _Field(_KEget,_KEset,_KEarr)
         # Variables contained only in this module
         # XHII (Hydrogen ionisation fraction)
         self.xhii = np.zeros(self.ncells)
@@ -101,26 +125,12 @@ class _Hydro(object):
         self.vol = dx*(x*(x+dx)+dx*dx/3.0) # from volume.f90
         # MASS
         def _Mget(slicer):
-            return self.vol[slicer]*vhone.data.zro[slicer,0,0]
+            return self.vol[slicer]*self.rho[slicer]
         def _Mset(slicer,val):
-            vhone.data.zro[slicer,0,0] = val/self.vol[slicer]
+            self.rho[slicer] = val/self.vol[slicer]
         def _Marr():
-            return self.vol*vhone.data.zro[0:self.ncells,0,0]
+            return self.vol*self.rho[0:ncells]
         self.mass = _Field(_Mget,_Mset,_Marr)
-
-    def Step(self):
-        oldtime = self._time
-        vhone.data.step()
-        self._time = vhone.data.time+0.0
-        self._dt = self._time - oldtime
-
-    @property
-    def time(self):
-        return self._time
-    
-    @property
-    def dt(self):
-        return self._dt
 
 
 hydro = _Hydro()
