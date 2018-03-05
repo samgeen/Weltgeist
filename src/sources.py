@@ -46,6 +46,13 @@ def MakeSupernova(energy,mass,time=0.0):
     source = SupernovaSource(energy,mass,time)
     AddSource(source)
 
+def MakeWind(lum,massloss,time=0.0):
+    '''
+    Inject a wind source
+    '''
+    source = WindSource(lum,massloss)
+    AddSource(source)
+
 def InjectSources(t,dt):
     for source in _sources:
         source.Inject(t,dt)
@@ -75,14 +82,32 @@ class SupernovaSource(AbstractSource):
             self._exploded = True
             hydro.mass[0] += self._mass
             hydro.KE[0] += self._energy
-            print "KE", hydro.KE[0:10], units.energy
-            print "P", hydro.P[0:10], units.pressure
-            print "T", hydro.T[0:10]
-            print "v", hydro.vel[0:10], units.velocity
-            print "rho", hydro.rho[0:10], units.density
+            #hydro.TE[0] += self._energy
+            #print "KE", hydro.KE[0:10], units.energy
+            #print "P", hydro.P[0:10], units.pressure
+            #print "T", hydro.T[0:10]
+            #print "v", hydro.vel[0:10], units.velocity
+            #print "rho", hydro.rho[0:10], units.density
             # Remove the SN so it doesn't happen again next timestep
             # (Unnecessary since self._exploded is set, but makes things a bit quicker)
             RemoveSource(self)
+
+            
+class WindSource(AbstractSource):
+    def __init__(self,lum,massloss):
+        # Luminosity in ergs/s
+        self._lum = lum
+        # Mass loss in g/s
+        self._massloss = massloss
+        self._vcourant = np.sqrt(2.0*lum/massloss)
+
+    def Inject(self,t,dt):
+        global _sources
+        # Inject constant source of wind mass & energy (as pure KE)
+        # Convert dt to seconds from internal units
+        hydro.mass[0] += self._massloss*dt
+        hydro.KE[0] += self._lum*dt
+        hydro.CourantLimiter(self._vcourant)
 
 
 class TableSource(AbstractSource):

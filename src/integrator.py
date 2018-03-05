@@ -18,7 +18,7 @@ class Integrator(object):
         self._time = vhone.data.time+0.0
         self._dt = self._time - oldtime
         # Inject sources
-        sources.InjectSources(self._time, self._dt)
+        sources.InjectSources(self.time, self.dt)
         vhone.data.step()
 
     @property

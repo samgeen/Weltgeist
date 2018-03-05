@@ -13,7 +13,7 @@ X = 0.74
 
 # Units (only really used internally to make VHone not complain about numerical accuracy)
 distance = pc # in cm
-density = g/1.0**3.0 # = g/cm^3
+density = g # = 1 g/cm^3
 time = 1e6*year
 # Derived units
 velocity = distance / time
