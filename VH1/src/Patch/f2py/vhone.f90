@@ -36,7 +36,7 @@ implicit none
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zfl
  
 !f2py   real(kind=8) :: xmin, xmax, ymin, ymax, zmin, zmax
-!f2py   real(kind=8) :: time, dt, timem, timep, svel 
+!f2py   real(kind=8) :: time, dt, timem, timep, svel, vdtext 
 !f2py   real(kind=8) :: gam
 
 contains
@@ -54,8 +54,10 @@ subroutine step
   
   call dtcon   ! Check constraints on the timestep
 
+
   olddt  = dt
   svel   = 0.
+  vdtext = 0.
 
 ! Alternate sweeps to approximate 2nd order operator splitting
 ! SAM GEEN - intending only to use sweepx but might as well keep this
@@ -68,13 +70,13 @@ subroutine step
   timep = timep + dt
   timem = timem + dt
 
-  if(ndim == 3) call sweepz
-  if(ndim > 1)  call sweepy 
-                call sweepx
+  ! if(ndim == 3) call sweepz
+  ! if(ndim > 1)  call sweepy 
+  !               call sweepx
 
-  time  = time  + dt
-  timep = timep + dt
-  timem = timem + dt
+  ! time  = time  + dt
+  ! timep = timep + dt
+  ! timem = timem + dt
   dt = olddt
 
 end subroutine step

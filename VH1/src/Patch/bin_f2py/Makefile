@@ -21,7 +21,7 @@ LIBS=  -L/usr/local/lib # -lnetcdff
 #
 # List of objects to build multidimensional VH-1 hydro code:
 
-VHMODS = global.o zonemod.o vh1mods.o
+VHMODS = global.o zonemod.o # vh1mods.o
 
 VHOBJS = dtcon.o dump.o init.o prin.o \
          sweepx.o sweepy.o sweepz.o vhone.o images.o  \

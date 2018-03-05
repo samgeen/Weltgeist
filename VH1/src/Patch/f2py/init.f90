@@ -97,6 +97,7 @@ ncycp  = 0
 ncycd  = 0
 ncycm  = 0
 nfile  = 0
+vdtext = 0.
 
 ! Set up grid coordinates
 

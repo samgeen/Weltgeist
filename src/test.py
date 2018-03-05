@@ -11,7 +11,7 @@ from pyglet.gl import *
 
 from hydro import hydro
 from integrator import integrator
-import sources, init, units
+import sources, init, units, windsolutions
 
 sn = False
 
@@ -34,7 +34,7 @@ class Line(object):
             self._y = np.zeros(2*newlen)
             self._pts = np.zeros((2*newlen,2))
         self._x[0:newlen] = x
-        self._x[0:newlen] = y
+        self._y[0:newlen] = y
 
     def Append(self,x,y):
         '''
@@ -119,24 +119,21 @@ class Tester(object):
         
     def Setup(self):
 
-        sources.MakeSupernova(1e51,2e33)
         @self._window.event
         def on_draw():
             glClearColor(1,1,1,1)
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-            
             glDisable(GL_DEPTH_TEST)
             glDisable(GL_TEXTURE_2D)
             glDisable(GL_LIGHTING)
             glViewport(0, 0, self._window.width, self._window.height)
             glMatrixMode(GL_PROJECTION)
             glLoadIdentity()
-            glOrtho(-1e-7, 1.0+1e-7,
-                    -1e-7, 1.0+1e-7,
+            glOrtho(-1e-2, 1.0+1e-2,
+                    -1e-2, 1.0+1e-2,
                     -2, 2)
             glMatrixMode(GL_MODELVIEW)
             glLoadIdentity()
-            
             glEnableClientState(GL_VERTEX_ARRAY)
             self._lines.Draw()
             
@@ -165,6 +162,10 @@ class Tester(object):
             
         # Initialise sim data
         init.init()
+        sources.MakeSupernova(1e51,2e33)
+        self.windlum = 2e38
+        self.windml = 2e22
+        #sources.MakeWind(self.windlum,self.windml)
         # Set up rendering
         s = 0.02
         glEnable(GL_BLEND)
@@ -182,13 +183,33 @@ class Tester(object):
             integrator.Step()
             t = integrator.time
             rho = hydro.rho[0:nx]
-            rs = hydro.x[np.where(rho == rho.max())]
-            rsedov = 1.1*(1e51*t**2/init.rho0)**0.2
-            if (rs[0] > 0):
-                self._rvtline.Append(t,rs[0])
+            vel = hydro.vel[0:nx]
+            T = hydro.T[0:nx]
+            #Tback = T[-1]
+            #print Tback
+            #try:
+            #    rs = hydro.x[np.where(T > 1e5)[0][-1]]
+            #except:
+            #    rs = 0.0
+            #rhoback = rho[-1]
+            #rs = hydro.x[np.where(vel > 1e1)[0][-1]]
+            try:
+                rs = hydro.x[np.where(rho > 1.0001*rho[-1])[0][-1]]
+            except:
+                rs = 1e-7
+            # beta = 0.968 for gamma = 1.4
+            beta = 0.968
+            beta = 1.1
+            # Sedov blast
+            rsedov = beta*(1e51*(t**2.0) / init.rho0)**0.2
+            # Winds
+            #rsedov = windsolutions.AdiabaticWind(self.windlum,init.n0,integrator.time)#,model="Avedisova")
+            if (rs > 0):
+                #self._rvtline.Update(hydro.x[0:nx],hydro.rho[0:nx])
+                self._rvtline.Append(t,rs)
                 self._sedov.Append(t,rsedov)
                 if self._itick == 1:
-                    print "t, Rsim, Rsedov, ratio", t, rs[0], rsedov, rs[0] / rsedov
+                    print "t, Rsim, Rsedov, ratio", t, rs, rsedov, rs / rsedov
         if self._itick > 10:
             #import pdb; pdb.set_trace()
             self._itick = 0

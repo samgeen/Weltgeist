@@ -10,6 +10,7 @@ python module vhone ! in
             use zone
             integer :: nleftz
             real(kind=8) :: zmax
+            real(kind=8) :: vdtext
             real(kind=8), allocatable,dimension(:) :: zya
             real(kind=8) dimension(1048588) :: v
             real(kind=8) :: zmin
