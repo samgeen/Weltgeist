@@ -10,6 +10,7 @@ rho0 = n0*units.g/units.X # g cm^-3
 T0 = 10.0 # K
 # P=rho*kB*T
 P0 = n0*units.kB*T0 
+gamma = 1.66
 
 def init():
     global hydro, initialised
@@ -57,7 +58,7 @@ def init():
         vhone.data.zmax   = 1.0
 
         #vhone.data.gam    = 1.4 # Value from RAMSES
-        vhone.data.gam    = 1.66 # Value for an ideal gas
+        vhone.data.gam    = gamma # Value for an ideal gas
 
         # Initialise the computational grid
         vhone.data.setup()
