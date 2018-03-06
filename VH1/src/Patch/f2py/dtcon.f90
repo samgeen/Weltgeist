@@ -58,11 +58,9 @@ else if(ndim==3) then
   enddo
 endif
 
-write(*,*) "RIDT, VDTEXT", ridt, vdtext
 ridt = max(ridt,vdtext)
 dtx  = courant / ridt     ! global time constraint for given courant parameter
 
-write(*,*) "DTX", dtx
 if (dt .gt. 0d0) then
    dt3  = 1.1d0 * dt        ! limiting constraint on rate of increase of dt
    dt   = min( dt3, dtx ) ! use smallest required timestep

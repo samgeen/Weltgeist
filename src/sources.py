@@ -7,10 +7,15 @@ import abc
 
 import numpy as np
 
-import singlestar, units
+import singlestar, units, radiation
 from hydro import hydro
 
+# This should be a singleton object realloy
+# OH WELL
 _sources = []
+_totalke = 0.0
+_totalmass = 0.0
+_totalphotons = 0.0
 # Temp variables to prevent re-definitions
 ngroups = 5 # Hard-coded for benefit of Fortran module
 _ewind = np.zeros(1,dtype="float64")
@@ -53,9 +58,32 @@ def MakeWind(lum,massloss,time=0.0):
     source = WindSource(lum,massloss)
     AddSource(source)
 
+def MakeRadiation(Sphotons):
+    '''
+    Inject a radiation source
+    '''
+    source = RadiationSource(Sphotons)
+    AddSource(source)
+
 def InjectSources(t,dt):
+    global _totalke
+    global _totalmass
+    global _totalphotons
+    _totalke = 0.0
+    _totalmass = 0.0
+    _totalphotons = 0.0
+    # Add to the input arrays
     for source in _sources:
         source.Inject(t,dt)
+    # Dump input values
+    if _totalmass > 0:
+        hydro.mass[0] += _totalmass
+    if _totalke > 0:
+        hydro.KE[0] += _totalke
+    if _totalphotons > 0:
+        radiation.trace_radiation(_totalphotons)
+
+    
 
 # TODO: ABSTRACT THIS INTO WINDS, SN, RADIATION
 class AbstractSource(object):
@@ -76,12 +104,14 @@ class SupernovaSource(AbstractSource):
 
     def Inject(self,t,dt):
         global _sources
+        global _totalmass
+        global _totalke
         # Should the SN happen?
         # TODO: Shorten dt so that the SN happens exactly on time
         if t >= self._time and not self._exploded:
             self._exploded = True
-            hydro.mass[0] += self._mass
-            hydro.KE[0] += self._energy
+            _totalmass += self._mass
+            _totalke += self._energy
             #hydro.TE[0] += self._energy
             #print "KE", hydro.KE[0:10], units.energy
             #print "P", hydro.P[0:10], units.pressure
@@ -103,11 +133,21 @@ class WindSource(AbstractSource):
 
     def Inject(self,t,dt):
         global _sources
+        global _totalmass
+        global _totalke
         # Inject constant source of wind mass & energy (as pure KE)
         # Convert dt to seconds from internal units
-        hydro.mass[0] += self._massloss*dt
-        hydro.KE[0] += self._lum*dt
+        _totalmass += self._massloss*dt
+        _totalke += self._lum*dt
         hydro.CourantLimiter(self._vcourant)
+
+class RadiationSource(AbstractSource):
+    def __init__(self,Sphotons):
+        self._Sphotons = Sphotons
+
+    def Inject(self,t,dt):
+        global _totalphotons
+        _totalphotons += self._Sphotons
 
 
 class TableSource(AbstractSource):

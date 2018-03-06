@@ -162,10 +162,11 @@ class Tester(object):
             
         # Initialise sim data
         init.init()
-        sources.MakeSupernova(1e51,2e33)
+        #sources.MakeSupernova(1e51,2e33)
         self.windlum = 2e38
         self.windml = 2e22
         #sources.MakeWind(self.windlum,self.windml)
+        sources.MakeRadiation(1e48)
         # Set up rendering
         s = 0.02
         glEnable(GL_BLEND)
@@ -188,7 +189,7 @@ class Tester(object):
             #Tback = T[-1]
             #print Tback
             #try:
-            #    rs = hydro.x[np.where(T > 1e5)[0][-1]]
+            #    rs = hydro.x[np.where(T > 5e3)[0][-1]]
             #except:
             #    rs = 0.0
             #rhoback = rho[-1]
@@ -201,13 +202,13 @@ class Tester(object):
             beta = 0.968
             beta = 1.1
             # Sedov blast
-            rsedov = beta*(1e51*(t**2.0) / init.rho0)**0.2
+            #rsedov = beta*(1e51*(t**2.0) / init.rho0)**0.2
             # Winds
-            #rsedov = windsolutions.AdiabaticWind(self.windlum,init.n0,integrator.time)#,model="Avedisova")
+            rsedov = windsolutions.AdiabaticWind(self.windlum,init.n0,integrator.time)#,model="Avedisova")
             if (rs > 0):
                 #self._rvtline.Update(hydro.x[0:nx],hydro.rho[0:nx])
                 self._rvtline.Append(t,rs)
-                self._sedov.Append(t,rsedov)
+                #self._sedov.Append(t,rsedov)
                 if self._itick == 1:
                     print "t, Rsim, Rsedov, ratio", t, rs, rsedov, rs / rsedov
         if self._itick > 10:
