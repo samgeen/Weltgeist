@@ -27,9 +27,12 @@ def AdiabaticWind(lum,rho,time,model="Castor"):
     rho = rho * mp
     #time = time * Myr
     lum = lum # should be ok
-    wconst = 0.76
+    wconst = 0.88
+    if model == "WeaverIntermediate":
+        wconst = 0.76
     if model == "Avedisova":
         wconst = 1.02
+    #wconst = 0.968
     # Equation 6, Castor et al 1975 (see also Avedisova 1972, Weaver 1977)
     return wconst*(lum * time ** 3 / rho)**0.2
 

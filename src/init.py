@@ -56,7 +56,8 @@ def init():
         vhone.data.zmin   = 0.0
         vhone.data.zmax   = 1.0
 
-        vhone.data.gam    = 1.4 # Value from RAMSES
+        #vhone.data.gam    = 1.4 # Value from RAMSES
+        vhone.data.gam    = 1.66 # Value for an ideal gas
 
         # Initialise the computational grid
         vhone.data.setup()
