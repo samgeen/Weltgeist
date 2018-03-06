@@ -5,15 +5,12 @@ Sam Geen, September 2016
 
 import numpy as np
 
-alpha_B = 2e-13 # idk
+import init, radiation, units
+
 Myr = 3.1557e13 # seconds
 pc = 3.0857e18 # cm
 mH  = 1.66e-24 # g
-mp = mH / 0.76 # g (mH / X)
-
-S0 = 1e48
-S1 = 1e51
-t1 = 1.0
+mp = mH / units.X # g (mH / X)
 
 def AdiabaticWind(lum,rho,time,model="Castor"):
     '''
@@ -35,5 +32,17 @@ def AdiabaticWind(lum,rho,time,model="Castor"):
     #wconst = 0.968
     # Equation 6, Castor et al 1975 (see also Avedisova 1972, Weaver 1977)
     return wconst*(lum * time ** 3 / rho)**0.2
+
+def SpitzerSolution(Sphotons,n0,time):
+    '''
+    Spitzer solution for a photoionisation front
+    '''
+    Tion = 8400.0 # K, value used in Geen+ 2015b
+    ci = np.sqrt(Tion * init.gamma * units.kB / mp)
+    alpha_B = radiation.alpha_B_HII(Tion)
+    rs = (Sphotons / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
+    # Hosokawa & Inutsuka 2004 approx
+    rspitzer = rs  * (1.0 + 7.0/4.0 * np.sqrt(4.0/3.0) * ci / rs * time)**(4.0/7.0)
+    return rspitzer
 
 

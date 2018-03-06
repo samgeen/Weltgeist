@@ -166,7 +166,8 @@ class Tester(object):
         self.windlum = 2e38
         self.windml = 2e22
         #sources.MakeWind(self.windlum,self.windml)
-        sources.MakeRadiation(1e48)
+        self.Sphotons = 1e48
+        sources.MakeRadiation(self.Sphotons)
         # Set up rendering
         s = 0.02
         glEnable(GL_BLEND)
@@ -204,11 +205,12 @@ class Tester(object):
             # Sedov blast
             #rsedov = beta*(1e51*(t**2.0) / init.rho0)**0.2
             # Winds
-            rsedov = windsolutions.AdiabaticWind(self.windlum,init.n0,integrator.time)#,model="Avedisova")
+            #rsedov = windsolutions.AdiabaticWind(self.windlum,init.n0,integrator.time)#,model="Avedisova")
+            rsedov = windsolutions.SpitzerSolution(self.Sphotons,init.n0,integrator.time)
             if (rs > 0):
                 #self._rvtline.Update(hydro.x[0:nx],hydro.rho[0:nx])
                 self._rvtline.Append(t,rs)
-                #self._sedov.Append(t,rsedov)
+                self._sedov.Append(t,rsedov)
                 if self._itick == 1:
                     print "t, Rsim, Rsedov, ratio", t, rs, rsedov, rs / rsedov
         if self._itick > 10:
