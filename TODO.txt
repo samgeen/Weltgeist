@@ -10,15 +10,15 @@ TODO file for Spherical Hydro project:
 - Set up a Sedov test - DONE
 - Tidy up repo + put on github - DONE
 - Refactor code into objects - DONE
-- Set up equilibrium ionisation state variable - DONE, EMPTY
+- Set up equilibrium ionisation state variable - DONE
 - Add radiation tracing
-          (simple H-only ray-tracing from single central source in 1D)
-	  (REMEMBER GAMMA / MU / ETC !!!)
+          (simple H-only ray-tracing from single central source in 1D) - DONE
 - Add cooling function (compiled, to add in Python)
-- Set up better visualisation in OpenGL (allow showing T in red, rho in blue)
+- Set up better visualisation in OpenGL (allow showing T in red, rho in blue) - ON HOLD (no GPU support in WSL)
+- Test Sedov, Weaver, Spitzer - DONE
 - Add stellar module
-- Add non-thermal pressure (e.g. turbulence)
-- Set up sources in python
+- Add gravity / turbulent support of gravitating fluid
+- Set up sources in python - HALF DONE
 - Add astropy units
 - Run simple uniform experiments
 - Compare to results from Geen+2015a

@@ -5,7 +5,7 @@ initialised = False
 
 # Physical values to initialise grid to
 rmax = 10*units.pc # 10 pc
-n0 = 1000.0 # H atoms / cm^-3
+n0 = 100.0 # H atoms / cm^-3
 rho0 = n0*units.g/units.X # g cm^-3
 T0 = 10.0 # K
 # P=rho*kB*T
