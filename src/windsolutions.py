@@ -42,7 +42,8 @@ def SpitzerSolution(Sphotons,n0,time):
     alpha_B = radiation.alpha_B_HII(Tion)
     rs = (Sphotons / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
     # Hosokawa & Inutsuka 2004 approx
-    rspitzer = rs  * (1.0 + 7.0/4.0 * np.sqrt(4.0/3.0) * ci / rs * time)**(4.0/7.0)
+    #rspitzer = rs  * (1.0 + 7.0/4.0 * np.sqrt(4.0/3.0) * ci / rs * time)**(4.0/7.0)
+    rspitzer = rs  * (1.0 + 7.0/4.0 * ci / rs * time)**(4.0/7.0)
     return rspitzer
 
 

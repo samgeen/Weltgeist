@@ -5,7 +5,7 @@ TODO file for Spherical Hydro project:
 - --> zonemod is OK - DONE
 - --> move init.f90 stuff
       --> Check courant code in fortran module - DONE
-      --> Allow other functions to limit dt - IGNORE FOR NOW
+      --> Allow other functions to limit dt - DONE (SEE WIND MODULE)
 - Look at converting REAL variables to doubles - DONE (slower, though...)
 - Set up a Sedov test - DONE
 - Tidy up repo + put on github - DONE
@@ -13,7 +13,7 @@ TODO file for Spherical Hydro project:
 - Set up equilibrium ionisation state variable - DONE
 - Add radiation tracing
           (simple H-only ray-tracing from single central source in 1D) - DONE
-- Add cooling function (compiled, to add in Python)
+- Add cooling function - DONE
 - Set up better visualisation in OpenGL (allow showing T in red, rho in blue) - ON HOLD (no GPU support in WSL)
 - Test Sedov, Weaver, Spitzer - DONE
 - Add stellar module

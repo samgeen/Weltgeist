@@ -27,6 +27,7 @@ def trace_radiation(Sphotons):
         return
     # Find total recombinations from the centre outwards
     Tion = 8400.0 # K, value used in Geen+ 2015b
+    gracefact = 5.0 # Cool everything below 5 Tion to Tion to prevent wiggles
     alpha_B = alpha_B_HII(Tion) 
     nx = hydro.ncells
     recombinations = np.cumsum(4.0*np.pi*(hydro.x[0:nx]+hydro.dx)**2.0 * hydro.nH[0:nx]**2.0 * alpha_B * hydro.dx)
@@ -34,7 +35,7 @@ def trace_radiation(Sphotons):
     # Ionise all fully-ionised cells
     edge = 0
     if len(ionised) > 0:
-        toionise = (recombinations < Sphotons)*(hydro.T[0:nx]<Tion)
+        toionise = (recombinations < Sphotons)*(hydro.T[0:nx]<gracefact*Tion)
         hydro.xhii[ionised] = 1.0
         hydro.T[toionise] = Tion
         edge = ionised[-1]+1

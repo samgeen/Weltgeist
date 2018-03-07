@@ -149,6 +149,8 @@ class _Hydro(object):
         # Variables contained only in this module
         # XHII (Hydrogen ionisation fraction)
         self.xhii = np.zeros(self.ncells)
+        # Metallicity in solar units
+        self.Zsolar = np.zeros(self.ncells)+1.0
         # GRAV (TODO)
         self.grav = np.zeros(self.ncells)
         # HARD-CODED EXTERNAL PRESSURE FIELD (TODO)
