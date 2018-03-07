@@ -13,15 +13,15 @@ from hydro import hydro
 from integrator import integrator
 import sources, init, units, windsolutions
 
-sn = False
-
 class Line(object):
     def __init__(self,colour):
         self._colour = colour
         self._currlen = 0
-        self._x = np.zeros(10000)
-        self._y = np.zeros(10000)
-        self._pts = np.zeros((10000,2))
+        self._x = np.zeros(100)
+        self._y = np.zeros(100)
+        self._pts = np.zeros((100,2))
+        self._ymin = None
+        self._ymax = None
 
     def Update(self,x,y):
         '''
@@ -41,23 +41,39 @@ class Line(object):
         Add a single point
         '''
         if self._currlen >= len(self._x):
-            self._x = np.zeros(self._currlen*2)
-            self._y = np.zeros(self._currlen*2)
-            self._pts = np.zeros(2*self._currlen,2)
+            xnew = np.zeros(self._currlen*2)
+            ynew = np.zeros(self._currlen*2)
+            self._pts = np.zeros((2*self._currlen,2))
+            xnew[0:self._currlen] = self._x
+            ynew[0:self._currlen] = self._y
+            self._x = xnew
+            self._y = ynew
         self._x[self._currlen] = x
         self._y[self._currlen] = y
         self._currlen += 1
 
-    def MinMax(self):
+    def MinMax(self,yminin=None,ymaxin=None):
         '''
         Return min/max in arrays
         '''
+        if yminin is not None:
+            self._ymin = yminin
+        if ymaxin is not None:
+            self._ymax = ymaxin
         x = self._x[0:self._currlen]
         y = self._y[0:self._currlen]
         if len(x) == 0:
             return 0.0,0.0,0.0,0.0
         else:
-            return x.min(), x.max(), y.min(), y.max()
+            if self._ymin is not None:
+                ymin = self._ymin
+            else:
+                ymin = y.min()
+            if self._ymax is not None:
+                ymax = self._ymax
+            else:
+                ymax = y.max()
+            return x.min(), x.max(), ymin, ymax
 
     def Draw(self,xmin,xmax,ymin,ymax):
         '''
@@ -187,18 +203,21 @@ class Tester(object):
             rho = hydro.rho[0:nx]
             vel = hydro.vel[0:nx]
             T = hydro.T[0:nx]
+            Tmax = T.max()
+            Tmin = T.min()
             #Tback = T[-1]
             #print Tback
-            #try:
-            #    rs = hydro.x[np.where(T > 5e3)[0][-1]]
-            #except:
-            #    rs = 0.0
+            try:
+                rT = hydro.x[np.where(T > 1e3)[0][-1]]
+            except:
+                rT = 0.0
             #rhoback = rho[-1]
             #rs = hydro.x[np.where(vel > 1e1)[0][-1]]
             try:
-                rs = hydro.x[np.where(rho > 1.0001*rho[-1])[0][-1]]
+                rrho = hydro.x[np.where(rho > 1.0001*rho[-1])[0][-1]]
             except:
-                rs = 1e-7
+                rrho = 0.0
+            rs = rT
             # beta = 0.968 for gamma = 1.4
             beta = 0.968
             beta = 1.1
@@ -207,13 +226,14 @@ class Tester(object):
             # Winds
             #rsedov = windsolutions.AdiabaticWind(self.windlum,init.n0,integrator.time)#,model="Avedisova")
             # Radiation
-            rsedov = windsolutions.SpitzerSolution(self.Sphotons,init.n0,integrator.time)
+            rsedov = windsolutions.SpitzerSolution(self.Sphotons,init.n0,t)
+            #self._rvtline.MinMax(0.0,max(rsedov,rs))
             if (rs > 0):
-                self._rvtline.Update(hydro.x[0:nx],np.log10(hydro.rho[0:nx]))
-                #self._rvtline.Append(t,rs)
-                #self._sedov.Append(t,rsedov)
+                #self._rvtline.Update(hydro.x[0:nx],np.log10(hydro.rho[0:nx]))
+                self._rvtline.Append(t,rs)
+                self._sedov.Append(t,rsedov)
                 if self._itick == 1:
-                    print "t, Rsim, Rsedov, ratio", t, rs, rsedov, rs / rsedov
+                    print "t, Rsim, Rsedov, ratio, Tmin/max", t/units.time, rs, rsedov, rs / rsedov, Tmin, Tmax
         if self._itick > 10:
             #import pdb; pdb.set_trace()
             self._itick = 0

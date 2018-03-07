@@ -1,1 +1,1 @@
-f2py -c -m cooling cooling_module_frig.f90
+f2py -c -m cooling_module cooling_module_frig.f90

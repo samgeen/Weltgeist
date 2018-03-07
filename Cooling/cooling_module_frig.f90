@@ -2,7 +2,7 @@
 !! to take into account extinction have been moved there
 !! PH 19/01/2017
 !=======================================================================
-subroutine solve_cooling_frig(nH,T2,zsolar,boost,dt,deltaT2,ncell)
+subroutine solve_cooling_frig(nH,T2,zsolar,dt,gamma,ncell,deltaT2)
 !=======================================================================
   implicit none
   ! BRIDGE FUNCTION WITH SAME INTERFACE AS SOLVE_COOLING 
@@ -10,34 +10,27 @@ subroutine solve_cooling_frig(nH,T2,zsolar,boost,dt,deltaT2,ncell)
   ! nH - hydrogen number density in PHYSICAL units
   ! T2 - temperature / mu in PHYSICAL units
   ! zsolar - Metallicity in solar units (Zphys / 0.02)
-  ! boost - raditation boost - exp(-100*nH) if self_shielding=True
   ! dt - cooling timestep in seconds
-  ! deltaT2 - temperature change in K/mu (??)
   ! ncell - number of elements in the vector
-  integer::ncell
-  real(kind=8)::dt
-  real(kind=8),dimension(1:ncell)::nH,T2,deltaT2,zsolar,boost
+  ! deltaT2 - temperature change in K/mu (??)
+  integer,intent(in)::ncell
+  real(kind=8),intent(in)::dt,gamma
+  real(kind=8),dimension(1:ncell),intent(in)::nH,T2,zsolar
+  real(kind=8),dimension(1:ncell),intent(out)::deltaT2
   ! Input/output variables to analytic function calc_temp 
-  real(kind=8)::NN,TT, dt_tot_unicode
+  real(kind=8)::NN,TT, dt_tot
   ! Temporary variables
   integer::i
   real(kind=8)::TT_ini, mu
-  ! Units
-  real(kind=8) :: scale_l,scale_t,scale_d,scale_v,scale_nH,scale_T2
-  !call units(scale_l,scale_t,scale_d,scale_v,scale_nH,scale_T2)
-  ! HACK - REMOVE RAMSES UNITS
-  mu = 1.4
-  scale_T2 = mu
-  scale_t = 1d0
-  scale_T2 = scale_T2 * mu
+  ! Loop over cells
+  dt_tot = dt
   do i=1,ncell
      NN = nH(i) ! NOTE!! THE CODE BELOW ASSUMES scale_nH=1 !!
                 ! SO WE LEAVE THIS AS IT IS TO KEEP UNITS CONSISTENCY
-     TT = T2(i) / scale_T2
+     TT = T2(i)
      TT_ini = TT
-     dt_tot_unicode = dt / scale_t
-     call calc_temp(NN,TT,dt_tot_unicode)
-     deltaT2(i) = (TT - TT_ini) * scale_T2
+     call calc_temp(NN,TT,dt_tot,gamma)
+     deltaT2(i) = (TT - TT_ini)
   end do
 end subroutine solve_cooling_frig
 
@@ -45,7 +38,7 @@ end subroutine solve_cooling_frig
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-subroutine  calc_temp(NN,TT,dt_tot_unicode)
+subroutine  calc_temp(NN,TT,dt_tot,gamma)
     !use amr_parameters
     !use hydro_commons
 
@@ -54,13 +47,12 @@ subroutine  calc_temp(NN,TT,dt_tot_unicode)
     integer :: n,i,j,k,idim, iter, itermax,ii
 
     real(kind=8) :: dt, dt_tot, temps, dt_max, itermoy
-    real(kind=8) :: rho,temp,dt_tot_unicode
+    real(kind=8) :: rho,temp
 
     !alpha replaced by alpha_ct because of conflict with another alpha by PH 19/01/2017
     real(kind=8) :: mm,uma, kb, alpha_ct,mu,kb_mm
     real(kind=8) :: NN,TT, TTold, ref,ref2,dRefdT, eps, vardt,varrel, dTemp,dummy
     real(kind=8) :: rhoutot2,gamma
-    real(kind=8) :: scale_l,scale_t,scale_d,scale_v,scale_nH,scale_T2
     ! HARD-CODED mu TO MAKE TEMPERATURE AGREE WITH HENNEBELLE CODE
     mu = 1.4d0
     !
@@ -74,26 +66,12 @@ subroutine  calc_temp(NN,TT,dt_tot_unicode)
     !  kb_mm = kb / mm
     !  TT = TT  / kb  !/ kb_mm
 
-    ! HACK - remove RAMSES components
-    !call units(scale_l,scale_t,scale_d,scale_v,scale_nH,scale_T2)
-    scale_T2 = mu
-    scale_t = 1d0
-    gamma = 1.4d0
-
     if( TT .le. 0.) then
-        TT = 50. / scale_T2
+        TT = 10.
         return
     endif
 
-    !if( TT*scale_T2 .gt. 50.) then
-    !TT = 50. / scale_T2
-    !return
-    !endif
-
     vardt = 10.**(1./10.); varrel = 0.2
-
-    dt_tot = dt_tot_unicode * scale_t ! * 3.08d18 / sqrt(kb_mm)
-    TT     = TT * scale_T2
 
     !  nn = (rho/(gramme/cm3)) /mm
 
@@ -165,7 +143,7 @@ subroutine  calc_temp(NN,TT,dt_tot_unicode)
             write(*,*) 'Temperature negative !!!'
             write(*,*) 'TTold,TT   = ',TTold,TT
             write(*,*) 'rho   = ',rho
-            TT = 100.  !*kelvin
+            TT = 10.  !*kelvin
         endif
 
 
@@ -181,12 +159,6 @@ subroutine  calc_temp(NN,TT,dt_tot_unicode)
         !987     format(E10.3,2x,E10.3)
         !        read (*,*)
     enddo
-
-
-    !  if (TT .ge. 50.)  TT=50.
-
-    !!now convert temperature in code units
-    TT = TT / scale_T2
 
     return
 end subroutine calc_temp
