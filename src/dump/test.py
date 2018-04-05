@@ -205,43 +205,27 @@ class Tester(object):
                 # Do something here if needed
                 #hydro.T[0:nx] = 2.0/3.0 * units.kB / units.mp * units.G * np.cumsum(hydro.mass[0:nx]) / hydro.x[0:nx]
                 #hydro.T[0] = hydro.T[1]
-                #gravity.centralmass = 2e38
-                #hydro.nH[:512] = 1e-7
+                gravity.centralmass = 2e38
+                hydro.nH[:512] = 1e-7
                 #hydro.nH[513:] = 1e-6
                 #hydro.mass[0] = 2e34
-                cs = 1e5
-                rhoc = 1000.0*units.mp
-                rc = cs / np.sqrt(4.0*np.pi*units.G*rhoc)
-                print rc
-                for i in range(0,100):
-                    r = hydro.x[0:nx]
-                    hydro.cs[0:nx] = cs
-                    hydro.rho[0:nx] = rhoc * (1.0+(r/2.88/rc)**2.0)**(-1.47)
-                self.rhoBE = hydro.rho[0:nx]
-                #self._sedov.Update(hydro.x[0:nx],np.log10(self.rhoisoT))
-                T = hydro.T[0:nx]
-                Tmax = T.max()
-                Tmin = T.min()
-                print Tmax, Tmin
-                #rho = hydro.rho[0:nx]  
-                #self.x0 = 0.0 # hydro.x[np.where(hydro.nH[0:nx] > 1e-2)][0]
+                rho = hydro.rho[0:nx]  
+                self.x0 = 0.0 # hydro.x[np.where(hydro.nH[0:nx] > 1e-2)][0]
+                hydro.T[0:nx] = 10
                 print "NHMAXFIRST", hydro.nH.max()
                 self._first = False
             self._itick += 1
             #hydro.nH[:30] = 1e-6
-            #hydro.CourantLimiter(1e5)
+            hydro.CourantLimiter(1e6)
+            integrator.Step()
+            rs = hydro.nH[0:nx].max()# - init.n0
+            t = integrator.time
             rho = hydro.rho[0:nx]
             nH = hydro.nH[0:nx]
             vel = hydro.vel[0:nx]
             T = hydro.T[0:nx]
             Tmax = T.max()
             Tmin = T.min()
-            #print Tmax, Tmin
-            integrator.Step()
-            #hydro.T[0:nx] = 10.0
-            #hydro.rho[0:5] = self.rhoisoT[0:5]
-            rs = hydro.nH[0:nx].max()# - init.n0
-            t = integrator.time
             #Tback = T[-1]
             #print Tback
             try:
@@ -256,16 +240,10 @@ class Tester(object):
                 rrho = 0.0
             rs = rT
             rs = np.max(hydro.nH[0:nx])# - init.n0
-            GPE = hydro.GPE[0:nx]
-            TE = hydro.TE[0:nx]
-            KE = hydro.KE[0:nx]
-            allenergy = np.sum(GPE+TE+KE)
-            allge = np.sum(GPE)
-            allkte = np.sum(TE+KE)
-            #rpeak = hydro.x[np.where(nH > 100)][0]
-            #tstart = units.time*0.1
-            #if self.x0 == 0.0 or t < tstart:
-            #    self.x0 = rpeak
+            rpeak = hydro.x[np.where(nH > 100)][0]
+            tstart = units.time*0.1
+            if self.x0 == 0.0 or t < tstart:
+                self.x0 = rpeak
             #rs = hydro.TE[10] / hydro.KE[10]
             #hydro.vel[0:nx] -= np.sqrt(2.0*0.9*hydro.TE[0:nx]/hydro.mass[0:nx])
             #hydro.TE[0:nx] *= 0.1
@@ -281,28 +259,23 @@ class Tester(object):
             #rsedov = windsolutions.SpitzerSolution(self.Sphotons,init.n0,t)
             # Gravity
             #tgrav = windsolutions.CollapseSolution(rs*units.mp,init.rho0)
-            #tgrav = windsolutions.CollapseSolutionPosition(rpeak,self.x0+0.0)
+            tgrav = windsolutions.CollapseSolutionPosition(rpeak,self.x0+0.0)
             #self._rvtline.MinMax(0.0,max(rsedov,rs))
-            self._rvtline.Update(hydro.x[0:nx],hydro.rho[0:nx])
-            #self._rvtline.Update(hydro.x[0:nx],np.log10(hydro.rho[0:nx]/self.rhoBE))
-            #self._sedov.Update(hydro.x[0:nx],hydro.x[0:nx]*0.0)
-            rsedov = 1.0
+            self._rvtline.Update(hydro.x[0:nx],np.log10(hydro.rho[0:nx]))
             #self._rvtline.Update(hydro.x[0:nx],hydro.T[0:nx])
             #tff = np.sqrt(3.0*np.pi/(32.0*units.G*init.rho0))
             #rsedov = init.n0/(1.0-t/tff)**1.5# - init.n0
             #print rpeak
-    
-            if (rs > 0.0):
-            #if (t > tstart):
+            if (t > tstart):
                 #testfile = open("testdata.txt","w")
                 #testfile.write(str(t/tff)+" "+str(rs/init.n0)+"\n")
                 #testfile.flush()
-                #self._rvtline.Append(t,rs)
+                #self._rvtline.Append(t,rpeak)
                 #self._sedov.Append(t,rsedov)
-                #self._sedov.Append(tgrav,rs)
+                #self._sedov.Append(tgrav,rpeak)
                 if self._itick == 1:
-                    print "t, Rsim, Rsedov, ratio, Tmin/max, eratio", t/units.time, rs, rsedov, rs / rsedov, allge/allkte
-                    #print "t, tgrav, t/grav, n, n0", t/units.time, tgrav/units.time, t/tgrav, rs, init.n0
+                    #print "t, Rsim, Rsedov, ratio, Tmin/max", t/units.time, rs, rsedov, rs / rsedov, Tmin, Tmax
+                    print "t, tgrav, t/grav, rpeak, r0", t/units.time, tgrav/units.time, t/tgrav, rpeak/units.pc, self.x0 / units.pc
         if self._itick > 10:
             #import pdb; pdb.set_trace()
             self._itick = 0

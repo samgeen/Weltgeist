@@ -22,6 +22,7 @@ python module vhone ! in
             real(kind=8) :: ymax
             real(kind=8) dimension(1048588) :: p
             integer :: ngeomx
+            real(kind=8), allocatable,dimension(:,:,:) :: zgr
             real(kind=8), allocatable,dimension(:,:,:) :: zpr
             integer :: ngeomz
             real(kind=8), allocatable,dimension(:,:,:) :: zro

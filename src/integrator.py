@@ -4,7 +4,10 @@ Sam Geen, February 2018
 '''
 
 from hydro import hydro
-import cooling, init, sources, units, vhone
+import cooling, gravity, init, sources, units, vhone
+
+gravity_on = True
+cooling_on = False
 
 class Integrator(object):
     def __init__(self):
@@ -16,13 +19,18 @@ class Integrator(object):
         # Update time
         self._UpdateTime()
         # Cooling step
-        cooling.solve_cooling(self.dt)
+        if cooling_on:
+            cooling.solve_cooling(self.dt)
         # Inject sources (includes radiation step!)
         sources.InjectSources(self.time, self.dt)
+        # Gravity step
+        if gravity_on:
+            gravity.calculate_gravity()
         # Hydro step
         vhone.data.step()
         # Final sanity check
-        cooling.CheckTemperature()
+        if cooling_on:
+            cooling.CheckTemperature()
 
     def _UpdateTime(self):
         # Get dt from last time

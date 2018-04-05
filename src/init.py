@@ -5,8 +5,8 @@ initialised = False
 
 # Physical values to initialise grid to
 rmax = 10*units.pc # 10 pc
-n0 = 100.0 # H atoms / cm^-3
-rho0 = n0*units.g/units.X # g cm^-3
+n0 = 1000.0 # H atoms / cm^-3
+rho0 = n0*units.mp # g cm^-3
 T0 = 10.0 # K
 # P=rho*kB*T
 P0 = n0*units.kB*T0 
@@ -35,7 +35,7 @@ def init():
     if not initialised:
     
         # Define the computational grid...
-        vhone.data.imax = 2048
+        vhone.data.imax = 1024
         vhone.data.jmax = 1
         vhone.data.kmax = 1
         

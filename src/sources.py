@@ -10,17 +10,23 @@ import numpy as np
 import singlestar, units, radiation
 from hydro import hydro
 
-# This should be a singleton object realloy
+# This should be a singleton object really
 # OH WELL
 _sources = []
 _totalke = 0.0
 _totalmass = 0.0
 _totalphotons = 0.0
+_tablesetup = False
+_tableloc = "/home/samgeen/Programming/Astro/StellarSources/Compressed/singlestar_z0.014"
 # Temp variables to prevent re-definitions
 ngroups = 5 # Hard-coded for benefit of Fortran module
-_ewind = np.zeros(1,dtype="float64")
-_mlwind = np.zeros(1,dtype="float64")
 _uv = np.zeros(ngroups,dtype="float64")
+
+def TableSetup():
+    global _tablesetup
+    if not _tablesetup:
+        singlestar.star_setup(_tableloc)
+        _tablesetup = True
 
 def AddSource(source):
     '''
@@ -82,8 +88,6 @@ def InjectSources(t,dt):
         hydro.KE[0] += _totalke
     if _totalphotons > 0:
         radiation.trace_radiation(_totalphotons)
-
-    
 
 # TODO: ABSTRACT THIS INTO WINDS, SN, RADIATION
 class AbstractSource(object):
@@ -162,16 +166,22 @@ class TableSource(AbstractSource):
         self._wind = wind
 
     def Inject(self,t,dt):
+        global _totalmass
+        global _totalke
+        global _totalphotons
         uv = np.a
         age = t-self._tbirth
         if age > 0.0:
             if self._wind:
                 # Get energy and mass to inject
-                singlestar.star_winds(self._mass,age,dt,_ewind,_mlwind)
+                energy, massloss = singlestar.star_winds(self._mass,age,dt)
                 # Add mass FIRST since KE needs to be added elastically
-                hydro.mass[0] += _mlwind
+                _totalmass += massloss
                 # Add energy to grid as kinetic energy
-                hydro.KE[0] += _ewind
+                _totalke += energy
             if self._rad:
                 #DO RAD
-                raise NotImplementedError
+                nphotons = singlestar.star_radiation(self._mass,age,dt)
+                # NOTE !!! ASSUMES 5 RADIATION BINS!!!
+                nuv = np.sum(nphotons[3:5])
+                _totalphotons += nuv/dt # Solver needs S* (photons / second)
