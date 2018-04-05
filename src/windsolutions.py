@@ -5,7 +5,7 @@ Sam Geen, September 2016
 
 import numpy as np
 
-import init, radiation, units
+import gravity, init, radiation, units
 
 Myr = 3.1557e13 # seconds
 pc = 3.0857e18 # cm
@@ -46,4 +46,26 @@ def SpitzerSolution(Sphotons,n0,time):
     rspitzer = rs  * (1.0 + 7.0/4.0 * ci / rs * time)**(4.0/7.0)
     return rspitzer
 
+def CollapseSolution(rho,rho0):
+    '''
+    Calculate a free-fall collapse solution
+    rho - density to calculate time at
+    rho0 - initial density (used to calculate tff)
+    Sam Geen, March 2018
+    '''
+    tff = np.sqrt(3.0*np.pi / (32.0 * units.G * rho0))
+    X = (rho / rho0)**(-0.5)
+    #print X, tff, rho, rho0
+    t = tff * 2.0 / np.pi * (np.arccos(np.sqrt(X)) + np.sqrt(X * (1.0-X)))
+    return t
 
+def CollapseSolutionPosition(x,x0):
+    '''
+    Calculate a free-fall collapse solution
+    x - position to calculate time at
+    x0 - initial position
+    Sam Geen, March 2018
+    '''
+    X = x/x0
+    t = (np.arccos(np.sqrt(X)) + np.sqrt(X * (1.0-X))) * x0**1.5 / np.sqrt(2.0*units.G*gravity.centralmass)
+    return t

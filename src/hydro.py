@@ -85,7 +85,7 @@ class _Hydro(object):
         # HYDROGEN NUMBER DENSITY
         def _nHget(slicer):
             return self.rho[slicer]/units.g*units.X
-        def _nHset(slicer):
+        def _nHset(slicer,val):
             vhone.data.zro[slicer,0,0] = val*units.g/units.X/units.density
         def _nHarr():
             return self.rho[0:self.ncells]/units.g*units.X
@@ -117,6 +117,16 @@ class _Hydro(object):
         def _Tarr():
             return self.P[0:self.ncells]/self.nH[0:self.ncells]/units.kB
         self.T = _Field(_Tget,_Tset,_Tarr)
+        # SOUND SPEED
+        def _Csget(slicer):
+            return np.sqrt(init.gamma*self.P[slicer]/self.rho[slicer])
+        def _Csset(slicer,val):
+            # Set the pressure from the ideal gas equation
+            newP = val**2.0 * self.rho[slicer] / init.gamma
+            vhone.data.zpr[slicer,0,0] = newP/units.pressure
+        def _Csarr():
+            return np.sqrt(init.gamma*self.P[0:self.ncells]/self.rho[0:self.ncells])
+        self.cs = _Field(_Csget,_Csset,_Csarr)
         # KINETIC ENERGY
         # NOTE: In VH1, zpr is SOLELY thermal pressure!!! (unlike RAMSES)
         def _KEget(slicer):
@@ -126,7 +136,7 @@ class _Hydro(object):
         def _KEset(slicer,val):
             # dv = sqrt(2.0 * dKE / mass)
             #print "KESET"
-            vhone.data.zux[slicer] = np.sqrt(2.0*val/self.mass[slicer])/units.velocity
+            vhone.data.zux[slicer,0,0] = np.sqrt(2.0*val/self.mass[slicer])/units.velocity
         def _KEarr():
             # 0.5 * mass * v^2
             #print "KEARR"
@@ -140,19 +150,40 @@ class _Hydro(object):
         def _TEset(slicer,val):
             # dv = sqrt(2.0 * dKE / mass)
             #print "KESET"
-            vhone.data.zpr[slicer] = val/(1.5*self.vol[slicer]*units.pressure)
+            vhone.data.zpr[slicer,0,0] = val/(1.5*self.vol[slicer]*units.pressure)
         def _TEarr():
             # 0.5 * mass * v^2
             #print "KEARR"
             return 1.5 * self.P[0:self.ncells] * self.vol[0:self.ncells]
         self.TE = _Field(_TEget,_TEset,_TEarr)
+        # GRAVITATIONAL POTENTIAL ENERGY
+        def _GPEget(slicer):
+            # G*M*m/r
+            Minside = np.cumsum(self.mass[0:self.ncells])
+            invx = Minside*0.0
+            invx[1:] = 1.0/self.x[1:]
+            return units.G * self.mass[slicer] * Minside[slicer] * invx[slicer]
+        def _GPEset(slicer,val):
+            # Not implemented yet!
+            print "GPE setting not implemented! (What would you set, though?)"
+            raise NotImplementedError
+        def _GPEarr():
+            # G*M*m/r
+            return _GPEget(slice(0,self.ncells))
+        self.GPE = _Field(_GPEget,_GPEset,_GPEarr)
         # Variables contained only in this module
         # XHII (Hydrogen ionisation fraction)
         self.xhii = np.zeros(self.ncells)
         # Metallicity in solar units
         self.Zsolar = np.zeros(self.ncells)+1.0
-        # GRAV (TODO)
-        self.grav = np.zeros(self.ncells)
+        # GRAVITY
+        def _Gget(slicer):
+            return vhone.data.zgr[slicer,0,0]*units.gravity
+        def _Gset(slicer,val):
+            vhone.data.zgr[slicer,0,0] = val/units.gravity
+        def _Garr():
+            return vhone.data.zgr[0:self.ncells,0,0]*units.gravity
+        self.grav = _Field(_Gget,_Gset,_Garr)
         # HARD-CODED EXTERNAL PRESSURE FIELD (TODO)
         self.Pext = np.zeros(self.ncells)
         # VOLUME
