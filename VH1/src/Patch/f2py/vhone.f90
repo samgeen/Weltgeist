@@ -34,6 +34,7 @@ implicit none
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zuy
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zuz
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zfl
+!f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zgr
  
 !f2py   real(kind=8) :: xmin, xmax, ymin, ymax, zmin, zmax
 !f2py   real(kind=8) :: time, dt, timem, timep, svel, vdtext 

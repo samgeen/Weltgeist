@@ -37,6 +37,7 @@ do k = 1, kmax
      v  (n) = zuy(i,j,k)
      w  (n) = zuz(i,j,k)
      f  (n) = zfl(i,j,k)
+     g  (n) = zgr(i,j,k)
 
      xa0(n) = zxa(i)
      dx0(n) = zdx(i)
@@ -59,6 +60,7 @@ do k = 1, kmax
      zuy(i,j,k) = v(n)
      zuz(i,j,k) = w(n)
      zfl(i,j,k) = f(n)
+     zgr(i,j,k) = g(n)
    enddo
 
  enddo

@@ -21,21 +21,21 @@ if(sweep=='x') then
   if(ngeom==0) then  ! CARTESIAN
   
     do n = nmin-4, nmax+5
-      grav(n) = 0.
+      grav(n) = g(n)
       fict(n) = 0.
     enddo
 
   else if(ngeom==1) then  ! CYLINDRICAL R 
 
     do n = nmin-4, nmax+5
-      grav(n) = 0.
+      grav(n) = g(n)
       fict(n) = v(n)*v(n)/xf(n)
     enddo
 
   else if(ngeom==2) then  ! SPHERICAL R
 
     do n = nmin-4, nmax+5
-      grav(n) = 0.0
+      grav(n) = g(n)
       if (xf(n)/=0.0) then
         fict(n) = (w(n)*w(n)+v(n)*v(n))/xf(n)
       else
@@ -51,14 +51,14 @@ else if(sweep=='y') then
   if(ngeom==0) then  ! CARTESIAN
 
     do n = nmin-4, nmax+5
-      grav(n) = 0.
+      grav(n) = g(n)
       fict(n) = 0.
     enddo
 
   else if(ngeom==1) then  ! CYLINDRICAL R (2D)
 
     do n = nmin-4, nmax+5
-      grav(n) = 0.
+      grav(n) = g(n)
       if (xf(n)/=0.0) then
         fict(n) = v(n)*v(n)/xf(n)
       else
@@ -69,7 +69,7 @@ else if(sweep=='y') then
   else if(ngeom==3) then  ! CYLINDRICAL THETA
 
     do n = nmin-4, nmax+5
-      grav(n) = 0.
+      grav(n) = g(n)
       fict(n) = -u(n)*w(n) / radius
     enddo
 
@@ -81,7 +81,7 @@ else if(sweep=='y') then
       if(abs(sinxf0)>1.0e-5) then
         fict(n) = fict(n)+v(n)*v(n)/radius*cos(xf(n))/sinxf0
       endif
-      grav(n) = 0.
+      grav(n) = g(n)
    enddo
 
   endif
@@ -92,14 +92,14 @@ else
   if(ngeom==0) then  ! CARTESIAN OR CYLINDRICAL
 
      do n = nmin-4, nmax+5
-       grav(n) = 0.
+       grav(n) = g(n)
        fict(n) = 0.
      enddo
 
   else if(ngeom==5) then  ! SPHERICAL PHI
 
     do n = nmin-4, nmax+5
-      grav(n) = 0.0
+      grav(n) = g(n)
       fict(n) = -u(n)*v(n)/radius*stheta - u(n)*w(n)/radius*cos(theta) 
     enddo
 

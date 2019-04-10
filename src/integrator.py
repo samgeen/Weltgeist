@@ -6,8 +6,8 @@ Sam Geen, February 2018
 from hydro import hydro
 import cooling, gravity, init, sources, units, vhone
 
-gravity_on = True
-cooling_on = False
+gravity_on = False
+cooling_on = True
 
 class Integrator(object):
     def __init__(self):
@@ -26,6 +26,8 @@ class Integrator(object):
         # Gravity step
         if gravity_on:
             gravity.calculate_gravity()
+        else:
+            hydro.grav[0:hydro.ncells] = 0.0
         # Hydro step
         vhone.data.step()
         # Final sanity check

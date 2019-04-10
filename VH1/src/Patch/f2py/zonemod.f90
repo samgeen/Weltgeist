@@ -12,6 +12,7 @@ module zone
  REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zuy
  REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zuz
  REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zfl
+ REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zgr
  
  ! DIMENSION imax, jmax, kmax respectively
  REAL(kind=8), ALLOCATABLE,DIMENSION(:) :: zxa, zdx, zxc

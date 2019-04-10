@@ -4,7 +4,7 @@ import vhone, units
 initialised = False
 
 # Physical values to initialise grid to
-rmax = 10*units.pc # 10 pc
+rmax = 20.0*units.pc # 3 pc
 n0 = 1000.0 # H atoms / cm^-3
 rho0 = n0*units.mp # g cm^-3
 T0 = 10.0 # K
@@ -35,7 +35,7 @@ def init():
     if not initialised:
     
         # Define the computational grid...
-        vhone.data.imax = 1024
+        vhone.data.imax = 512
         vhone.data.jmax = 1
         vhone.data.kmax = 1
         
