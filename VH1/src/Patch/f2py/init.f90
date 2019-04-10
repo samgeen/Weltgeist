@@ -50,6 +50,7 @@ allocate(zux(imax,jmax,kmax))
 allocate(zuy(imax,jmax,kmax))
 allocate(zuz(imax,jmax,kmax))
 allocate(zfl(imax,jmax,kmax))
+allocate(zgr(imax,jmax,kmax))
 
 allocate(zxa(imax))
 allocate(zdx(imax))
@@ -133,6 +134,7 @@ zux = 0d0
 zuy = 0d0
 zuz = 0d0
 zfl = 0d0
+zgr = 0d0
 
 return
 end
