@@ -35,9 +35,13 @@ def trace_radiation(Sphotons):
     gracefact = 5.0 # Cool everything below 5 Tion to Tion to prevent wiggles
     alpha_B = alpha_B_HII(Tion) 
     nx = hydro.ncells
+    
     recombinations = np.cumsum(4.0*np.pi*(hydro.x[0:nx]+hydro.dx)**2.0 * hydro.nH[0:nx]**2.0 * alpha_B * hydro.dx)
 
     dTau_dust = hydro.nH[0:nx] * sigma_dust * dgr * hydro.dx
+    # This is wrong. All of Sphotons is not available to dust. 
+    # Need to calculate effective cross section for each species and
+    # do both at the same time. 
     dN_dust = Sphotons_dust*(1-np.exp(-dTau_dust))
 
     ionised = np.where(recombinations + dN_dust*0 < Sphotons)[0]
