@@ -25,13 +25,22 @@ def trace_radiation(Sphotons):
     # No photons? Don't bother
     if Sphotons == 0:
         return
+
+    #Dust Parameters
+    sigma_dust = 1.0
+    dgr = 1.0
     # Find total recombinations from the centre outwards
+    Sphotons_dust = 0
     Tion = 8400.0 # K, value used in Geen+ 2015b
     gracefact = 5.0 # Cool everything below 5 Tion to Tion to prevent wiggles
     alpha_B = alpha_B_HII(Tion) 
     nx = hydro.ncells
     recombinations = np.cumsum(4.0*np.pi*(hydro.x[0:nx]+hydro.dx)**2.0 * hydro.nH[0:nx]**2.0 * alpha_B * hydro.dx)
-    ionised = np.where(recombinations < Sphotons)[0]
+
+    dTau_dust = hydro.nH[0:nx] * sigma_dust * dgr * hydro.dx
+    dN_dust = Sphotons_dust*(1-np.exp(-dTau_dust))
+
+    ionised = np.where(recombinations + dN_dust*0 < Sphotons)[0]
     # Ionise all fully-ionised cells
     edge = 0
     if len(ionised) > 0:
