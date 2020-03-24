@@ -183,6 +183,6 @@ class Renderer(object):
         glEnable(GL_BLEND)
         glPointSize(2)
         # Set up pyglet to run
-        pyglet.clock.set_fps_limit(60)
+        #pyglet.clock.set_fps_limit(60)
         pyglet.clock.schedule_interval(stepfunc,1.0/60.0)
         pyglet.app.run()

@@ -28,4 +28,4 @@ energy = mass*velocity**2.0
 # Note: this is acceleration! In the code (e.g. forces.f90), grav = v*v/r
 # e.g. 2*GM/r = v_esc^2, so g=GM/r^2=0.5*v_esc^2/r
 gravity = G*mass/distance**2 # velocity*velocity/distance 
-print "GRAVITY", gravity
+#print "GRAVITY", gravity
