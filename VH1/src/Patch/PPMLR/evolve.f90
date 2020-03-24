@@ -9,7 +9,7 @@ use sweeps
       
 IMPLICIT NONE
 ! LOCALS
-INTEGER :: n
+INTEGER :: n, nad
 REAL(kind=8) :: dtheta
 REAL(kind=8), DIMENSION(maxsweep) :: umid, pmid, amid, uold, xa1, dvol1, upmid, dm, dtbdm
 REAL(kind=8), DIMENSION(maxsweep) :: grav0, grav1, xa2, fict0, fict1, xa3
@@ -22,7 +22,7 @@ call volume (nmin, nmax, ngeom, radius, xa , dx , dvol1 )
 ! grid position evolution
 
 do n = nmin-3, nmax + 4
-  dm   (n) = r(n) * dvol1(n)
+  dm   (n) = r(n,1) * dvol1(n)
   dtbdm(n) = dt / dm(n)
   xa1  (n) = xa(n)
   xa   (n) = xa(n) + dt * umid(n) / radius
@@ -70,8 +70,10 @@ do n = nmin-3, nmax+3
 
 ! density evolution. lagrangian code, so all we have to do is watch the change in the geometry.
 
-  r(n) = r(n) * ( dvol1(n) / dvol(n) )
-  r(n) = max(r(n),smallr)
+  r(n,:) = r(n,:) * ( dvol1(n) / dvol(n) )
+  do nad = 1,nadvect+1
+    r(n,nad) = max(r(n,nad),smallr)
+  enddo
 
 ! velocity evolution due to pressure acceleration and forces.
 
@@ -82,7 +84,7 @@ do n = nmin-3, nmax+3
 
   e(n) = e(n) - dtbdm(n)*(amid(n+1)*upmid(n+1) - amid(n)*upmid(n)) + 0.5*dt*(uold(n)*grav0(n) + u(n)*grav1(n))
   q(n) = e(n) - 0.5*(u(n)**2+v(n)**2+w(n)**2)
-  q(n) = max(q(n),smallp/(gamm*r(n)))
+  q(n) = max(q(n),smallp/(gamm*r(n,1)))
 
 enddo
 

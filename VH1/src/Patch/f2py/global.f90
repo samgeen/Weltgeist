@@ -42,9 +42,13 @@ module sweeps
 
 use sweepsize
 
+
+INTEGER,PARAMETER :: nadvect=0 ! Number of advected quantities (e.g. metallicity, ionised gas fraction)
+
 character(len=1) :: sweep                                    ! direction of sweep: x,y,z
 integer :: nmin, nmax, ngeom, nleft, nright                  ! number of first and last real zone  
-real(kind=8), dimension(maxsweep) :: r, p, e, q, u, v, w, g          ! fluid variables
+real(kind=8), dimension(maxsweep,nadvect+1) :: r                       ! fluid variables (density + advected passive scalars)
+real(kind=8), dimension(maxsweep) :: p, e, q, u, v, w, g             ! other fluid variables
 real(kind=8), dimension(maxsweep) :: xa, xa0, dx, dx0, dvol          ! coordinate values
 real(kind=8), dimension(maxsweep) :: f, flat                         ! flattening parameter
 real(kind=8), dimension(maxsweep,5) :: para                          ! parabolic interpolation coefficients

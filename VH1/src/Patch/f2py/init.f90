@@ -44,7 +44,7 @@ endif
 
 !======================================================================
 ! Allocate hydro variables in zonemod.f90 (module zone)
-allocate(zro(imax,jmax,kmax))
+allocate(zro(imax,jmax,kmax,nadvect+1))
 allocate(zpr(imax,jmax,kmax))
 allocate(zux(imax,jmax,kmax))
 allocate(zuy(imax,jmax,kmax))

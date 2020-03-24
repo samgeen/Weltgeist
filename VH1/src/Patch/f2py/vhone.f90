@@ -28,7 +28,7 @@ implicit none
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:) :: zxa, zdx, zxc
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:) :: zya, zdy, zyc
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:) :: zza, zdz, zzc
-!f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zro
+!f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:,:) :: zro
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zpr
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zux
 !f2py REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zuy

@@ -3,10 +3,12 @@ module zone
 ! (formerly zone.h) global (3D) data arrays
 !======================================================================= 
  
+use sweeps
+
  INTEGER :: imax=1000, jmax=1, kmax=1   ! Memory dimensions
 
  ! DIMENSION (imax,jmax,kmax)
- REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zro
+ REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:,:) :: zro
  REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zpr
  REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zux
  REAL(kind=8), ALLOCATABLE,DIMENSION(:,:,:) :: zuy

@@ -35,7 +35,7 @@ do j = 1, jmax
    do k = 1,kmax
      n = k + 6
 
-     r  (n) = zro(i,j,k)
+     r  (n,:) = zro(i,j,k,:)
      p  (n) = zpr(i,j,k)
      u  (n) = zuz(i,j,k)
      v  (n) = zux(i,j,k)
@@ -48,7 +48,7 @@ do j = 1, jmax
      dx0(n) = zdz(k)
 
      p  (n) = max(smallp,p(n))
-     e  (n) = p(n)/(r(n)*gamm)+0.5*(u(n)**2+v(n)**2+w(n)**2)
+     e  (n) = p(n)/(r(n,1)*gamm)+0.5*(u(n)**2+v(n)**2+w(n)**2)
    enddo
 
    ! Perform 1D hydrodynamic update using PPMLR algorithm
@@ -57,7 +57,7 @@ do j = 1, jmax
    ! Put updated values back into 3D arrays, dropping ghost zones
    do k = 1, kmax
      n = k + 6
-     zro(i,j,k) = r(n)
+     zro(i,j,k,:) = r(n,:)
      zpr(i,j,k) = p(n)
      zuz(i,j,k) = u(n)
      zux(i,j,k) = v(n)

@@ -15,8 +15,9 @@ IMPLICIT NONE
 
 ! LOCALS
 INTEGER :: n, np
-REAL(kind=8), DIMENSION(maxsweep) :: plft, ulft, rlft, prgh, urgh, rrgh, dp, du, dr
-REAL(kind=8), DIMENSION(maxsweep) :: pl, ul, rl, p6, u6, r6, grav, fict, Cdtdx, fCdtdx
+REAL(kind=8), DIMENSION(maxsweep) :: plft, ulft, prgh, urgh, dp, du
+REAL(kind=8), DIMENSION(maxsweep) :: pl, ul, p6, u6, grav, fict, Cdtdx, fCdtdx
+REAL(kind=8), DIMENSION(maxsweep,nadvect+1) :: dr, r6, rl, rlft, rrgh
 REAL(kind=8) :: hdt
 
 REAL(kind=8), PARAMETER :: fourthd = 4.0 / 3.0
@@ -48,7 +49,7 @@ REAL(kind=8), PARAMETER :: fourthd = 4.0 / 3.0
 
 hdt   = 0.5*dt
 do n = nmin-4, nmax+4
-  Cdtdx (n) = sqrt(gam*p(n)/r(n))/(dx(n)*radius)
+  Cdtdx (n) = sqrt(gam*p(n)/r(n,1))/(dx(n)*radius)
   svel      = max(svel,Cdtdx(n))
   Cdtdx (n) = Cdtdx(n)*hdt
   fCdtdx(n) = 1. - fourthd*Cdtdx(n)

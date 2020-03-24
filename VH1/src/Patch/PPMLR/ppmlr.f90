@@ -18,7 +18,7 @@ IMPLICIT NONE
 ! LOCALS
 INTEGER :: n
 REAL(kind=8) :: xwag
-REAL(kind=8), DIMENSION(maxsweep) :: dr, du, dp, r6, u6, p6, rl, ul, pl
+REAL(kind=8), DIMENSION(maxsweep) :: dr, du, dp, u6, p6, rl, ul, r6, pl
 REAL(kind=8), DIMENSION(maxsweep) :: rrgh, urgh, prgh, rlft, ulft, plft, umid, pmid
 REAL(kind=8), DIMENSION(maxsweep) :: xaf, dxf
 

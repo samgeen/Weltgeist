@@ -22,7 +22,7 @@ ridt = 0.
 
 if(ndim==1) then
   do i = 1, imax
-    svel = sqrt(gam*zpr(i,1,1)/zro(i,1,1))/zdx(i)
+    svel = sqrt(gam*zpr(i,1,1)/zro(i,1,1,1))/zdx(i)
     xvel = abs(zux(i,1,1)) / zdx(i)
     ridt = max(xvel,ridt,svel)
   enddo
@@ -32,7 +32,7 @@ else if(ndim==2) then
      widthy = zdy(j)
      if(ngeomy > 2) widthy = widthy*zxc(i)
      width  = min(zdx(i),widthy)
-     svel = sqrt(gam*zpr(i,j,1)/zro(i,j,1))/width
+     svel = sqrt(gam*zpr(i,j,1)/zro(i,j,1,1))/width
      xvel = abs(zux(i,j,1)) / zdx(i)
      yvel = abs(zuy(i,j,1)) / widthy
      ridt = max(xvel,yvel,svel,ridt)
@@ -48,7 +48,7 @@ else if(ndim==3) then
       if(ngeomz >  2) widthz = widthz*zxc(i)
       if(ngeomz == 5) widthz = widthz*sin(zyc(j))
       width  = min(zdx(i),widthy,widthz)
-      svel = sqrt(gam*zpr(i,j,k)/zro(i,j,k))/width
+      svel = sqrt(gam*zpr(i,j,k)/zro(i,j,k,1))/width
       xvel = abs(zux(i,j,k)) / zdx(i)
       yvel = abs(zuy(i,j,k)) / widthy
       zvel = abs(zuz(i,j,k)) / widthz

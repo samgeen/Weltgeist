@@ -33,7 +33,7 @@ do k = 1, kmax
    do j = 1, jmax
      n = j + 6
 
-     r  (n) = zro(i,j,k)
+     r  (n,:) = zro(i,j,k,:)
      p  (n) = zpr(i,j,k)
      u  (n) = zuy(i,j,k)
      v  (n) = zuz(i,j,k)
@@ -46,7 +46,7 @@ do k = 1, kmax
      dx0(n) = zdy(j)
 
      p  (n) = max(smallp,p(n))
-     e  (n) = p(n)/(r(n)*gamm)+0.5*(u(n)**2+v(n)**2+w(n)**2)
+     e  (n) = p(n)/(r(n,1)*gamm)+0.5*(u(n)**2+v(n)**2+w(n)**2)
    enddo
 
    ! Perform 1D hydrodynamic update using PPMLR algorithm
@@ -56,7 +56,7 @@ do k = 1, kmax
 
    do j = 1, jmax
       n = j + 6
-      zro(i,j,k) = r(n)
+      zro(i,j,k,:) = r(n,:)
       zpr(i,j,k) = p(n)
       zuy(i,j,k) = u(n)
       zuz(i,j,k) = v(n)
