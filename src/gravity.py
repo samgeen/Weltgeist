@@ -32,7 +32,7 @@ def calculate_gravity():
     #grav[hydro.nH[0:ncells]<1e-6] = 0.0 # Prevent small timesteps
     if not wholevol:
         # Do this
-        print "Implement wholevol=False for just the shocked region in gravity.py"
+        print("Implement wholevol=False for just the shocked region in gravity.py")
         raise NotImplementedError
     else:
         # Add gravitational force to the whole grid

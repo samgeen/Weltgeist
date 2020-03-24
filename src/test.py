@@ -46,7 +46,7 @@ class Tester(object):
         T0 = 10.0
         if self._step:
             if self._first:
-                hydro.nH[0:nx] = n0 * (hydro.x[0:nx]/r0)**(-2.0)
+                hydro.nH[0:nx] = n0# * (hydro.x[0:nx]/r0)**(-2.0)
                 hydro.nH[0] = hydro.nH[1]
                 hydro.P[0:nx] = hydro.nH[0:nx] * (units.kB * T0)
                 #sources.MakeRadiation(1e49)
@@ -150,7 +150,7 @@ class Tester(object):
             #rsedov = init.n0/(1.0-t/tff)**1.5# - init.n0
             #print rpeak
     
-            if (rs > 0.0):
+            #if (rs > 0.0):
             #if (t > tstart):
                 #testfile = open("testdata.txt","w")
                 #testfile.write(str(t/tff)+" "+str(rs/init.n0)+"\n")
@@ -158,8 +158,8 @@ class Tester(object):
                 #self._rvtline.Append(t,rs)
                 #self._anline1.Append(t,rsedov)
                 #self._anline2.Append(t,rcooled)
-                if self._itick == 1:
-                    print "t, Rsim, rhomax/rho0", t/units.Myr, rs/units.pc, rhomax / rhoout
+                #if self._itick == 1:
+                    #print "t, Rsim, rhomax/rho0", t/units.Myr, rs/units.pc, rhomax / rhoout
                     #print "t, Rsim, Rsedov, ratio, Tmin/max, evir", t/units.Myr, rs/units.pc, rsedov/units.pc, \
                     #                     rs / rsedov, allkte-0.5*allge
                     #print "t, tgrav, t/grav, n, n0", t/units.time, tgrav/units.time, t/tgrav, rs, init.n0

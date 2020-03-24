@@ -41,7 +41,7 @@ def RemoveSource(source):
     '''
     global _sources
     _sources.remove(source)
-    print len(_sources)
+    print(len(_sources))
 
 def MakeStar(mass,tbirth=0.0,rad=True,wind=True):
     '''

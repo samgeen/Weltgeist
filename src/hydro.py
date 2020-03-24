@@ -61,7 +61,7 @@ class _Hydro(object):
         def _xget(slicer):
             return vhone.data.zxa[slicer]*units.distance
         def _xset(slicer,val):
-            print "Can't set the grid once the simulation has started!"
+            print("Can't set the grid once the simulation has started!")
             raise ValueError
             #vhone.data.x[slicer,0,0] = val/units.distance
         def _xarr():
@@ -72,7 +72,7 @@ class _Hydro(object):
         dx = self.x[1]
         self.dx = dx
         if self.dx != (self.x[2] - self.x[1]):
-            print "Grid not evenly spaced!"
+            print("Grid not evenly spaced!")
             raise ValueError
         # RHO
         def _rhoget(slicer):
@@ -165,7 +165,7 @@ class _Hydro(object):
             return units.G * self.mass[slicer] * Minside[slicer] * invx[slicer]
         def _GPEset(slicer,val):
             # Not implemented yet!
-            print "GPE setting not implemented! (What would you set, though?)"
+            print("GPE setting not implemented! (What would you set, though?)")
             raise NotImplementedError
         def _GPEarr():
             # G*M*m/r
@@ -209,4 +209,4 @@ hydro = _Hydro()
 
 # Test functions
 if __name__=="__main__":
-    print hydro.mass
+    print(hydro.mass)
