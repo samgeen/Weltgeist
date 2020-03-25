@@ -5,7 +5,7 @@ Sam Geen, September 2016
 
 import numpy as np
 
-import gravity, init, radiation, units
+import gravity, radiation, units
 
 Myr = 3.1557e13 # seconds
 yr = 1e-6 * Myr
@@ -73,7 +73,8 @@ def SpitzerSolution(Sphotons,n0,time):
     Spitzer solution for a photoionisation front
     '''
     Tion = 8400.0 # K, value used in Geen+ 2015b
-    ci = np.sqrt(Tion * init.gamma * units.kB / mp)
+    gamma = integrator.Integrator().variables.gamma
+    ci = np.sqrt(Tion * gamma * units.kB / mp)
     alpha_B = radiation.alpha_B_HII(Tion)
     rs = (Sphotons / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
     # Hosokawa & Inutsuka 2004 approx

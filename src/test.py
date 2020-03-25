@@ -6,9 +6,7 @@ Created on 3 Jun 2014
 
 import numpy as np
 
-from hydro import hydro
-from integrator import integrator
-import sources, gravity, init, units, windsolutions, graphics
+import integrator, sources, gravity, units, windsolutions, graphics
 
 
 class Tester(object):
@@ -20,12 +18,10 @@ class Tester(object):
         self._anline1 = graphics.Line([0.0,1.0,0.0,1.0])
         self._anline2 = graphics.Line([0.0,1.0,0.0,1.0])
         self._lines = [self._anline1,self._anline2,self._rvtline]
+        self._integrator = integrator.Integrator()
         self._renderer = graphics.Renderer(self._lines)
         
     def Setup(self):
-            
-        # Initialise sim data
-        init.init()
         #sources.MakeSupernova(1e51,2e33)
         self.windlum = 3e34 # 2e38
         self.windml = 1e19 # 2e22
@@ -37,15 +33,19 @@ class Tester(object):
         
     def Step(self, dt):
         global sn, testfile
-        nx = hydro.ncells
         # Some initialisation
+        nx = 512
         n0 = 1000.0
+        rmax = 20.0 * units.pc
         rho0 = n0*units.mp
         rhoout = rho0
-        r0 = 0.1*init.rmax
+        r0 = 0.1*rmax
         T0 = 10.0
+
         if self._step:
             if self._first:
+                self._integrator.Setup(ncells = nx, rmax=rmax)
+                hydro = self._integrator.variables
                 hydro.nH[0:nx] = n0# * (hydro.x[0:nx]/r0)**(-2.0)
                 hydro.nH[0] = hydro.nH[1]
                 hydro.P[0:nx] = hydro.nH[0:nx] * (units.kB * T0)
@@ -77,6 +77,8 @@ class Tester(object):
                 #print "NHMAXFIRST", hydro.nH.max()
                 self._first = False
             self._itick += 1
+            
+            hydro = self._integrator.variables
             #hydro.nH[:30] = 1e-6
             #hydro.CourantLimiter(1e5)
             rho = hydro.rho[0:nx]
@@ -87,11 +89,11 @@ class Tester(object):
             Tmax = T.max()
             Tmin = T.min()
             #print Tmax, Tmin
-            integrator.Step()
+            self._integrator.Step()
             #hydro.T[0:nx] = 10.0
             #hydro.rho[0:5] = self.rhoisoT[0:5]
             rs = hydro.nH[0:nx].max()# - init.n0
-            t = integrator.time
+            t = self._integrator.time
             #Tback = T[-1]
             #print Tback
             try:
@@ -130,8 +132,8 @@ class Tester(object):
             #rsedov = beta*(1e51*(t**2.0) / init.rho0)**0.2
             # Winds
             #rcooled = windsolutions.AdiabaticWind(self.windlum,self.windml,init.n0,integrator.time,model="Cooled")
-            rcooled = windsolutions.AdiabaticWind(self.windlum,self.windml,init.n0,integrator.time,model="SlowCool")
-            rsedov = windsolutions.AdiabaticWind(self.windlum,self.windml,init.n0,integrator.time,model="WeaverIntermediate")
+            rcooled = windsolutions.AdiabaticWind(self.windlum,self.windml,n0,self._integrator.time,model="SlowCool")
+            rsedov = windsolutions.AdiabaticWind(self.windlum,self.windml,n0,self._integrator.time,model="WeaverIntermediate")
             #rsedov = windsolutions.AdiabaticWind(self.windlum,self.windml,init.n0,integrator.time,model="CooledNoAcc")
             # Radiation
             #rsedov = windsolutions.SpitzerSolution(self.Sphotons,init.n0,t)

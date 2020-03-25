@@ -1,12 +1,14 @@
-'''
+"""
 Manage gravity in the simulation volume
 Sam Geen, March 2018
-'''
+"""
 
 import numpy as np
 
-from hydro import hydro 
-import units
+import integrator, units
+
+# Use gravity?
+gravity_on = False
 
 # Add gravity to the whole volume?
 # - if true, apply gravity to the whole volume
@@ -15,9 +17,11 @@ wholevol = True
 centralmass = 0.0
 
 def calculate_gravity():
-    '''
+    """
     Inject gravitational *acceleration* onto the grid
-    '''
+    NOTE: This is not fully tested yet, so be careful
+    """
+    hydro = integrator.Integrator().variables
     # g = G*M/r^2
     ncells = hydro.ncells
     mass = hydro.mass[0:ncells]
