@@ -1,29 +1,60 @@
-'''
+"""
 Spread radiation from a central source through the grid
 Sam Geen, March 2018
-'''
+"""
 
 import numpy as np
 
-from hydro import hydro
-import sources, init, units, windsolutions
+import sources, integrator, units, windsolutions
 
-def alpha_B_HII(T):
+def alpha_B_HII(temperature):
+    """
+    Calculate the HII recombination rate
+    This is the rate at which ionised hydrogen recombines 
+      into neutral hydrogen
+    Total recombinations per second per unit volume = alpha * ne * nH
+    ne = electron number density
+    nH = hydrogen number density
+
+    Parameters
+    ----------
+
+    temperature: float
+        Temperature in K
+
+    Returns
+    -------
+
+    alpha_B_HII : float
+        The recombination rate
+    """
     # HII recombination rate
     # input  : T in K
     # output : HII recombination rate (in cm3 / s)
-    l = 315614./T
+    l = 315614./temperature
     a = 2.753e-14 * l**1.5 / (1. + (l/2.74)**0.407)**2.242
     return a                                                                                                                          
 
-def trace_radiation(Sphotons):
-    '''
+def trace_radiation(QH, Tion=8400.0):
+    """
     Trace a ray through the spherical grid and ionise everything in the way
     Use very simple instant ionisation/recombination model
-    Sphotons = d(nphotons)/dt = integrate(4*pi*r^2*nH(r)^2*alpha_B*dr)
-    '''
+    d(nphotons)/dt = integrate(4*pi*r^2*nH(r)^2*alpha_B*dr)
+
+    Parameters
+    ----------
+    QH : float
+        Input hydrogen-ionising photon emission rate (per second)
+
+    Tion : float
+        Equilibrium temperature of photoionised gas in K
+        default: 8400 K, value used in Geen+ 2015b
+    """
+
+    hydro = integrator.Integrator().variables
+
     # No photons? Don't bother
-    if Sphotons == 0:
+    if QH == 0:
         return
 
     #Dust Parameters
@@ -31,8 +62,7 @@ def trace_radiation(Sphotons):
     dgr = 1.0
     # Find total recombinations from the centre outwards
     Sphotons_dust = 0
-    Tion = 8400.0 # K, value used in Geen+ 2015b
-    gracefact = 5.0 # Cool everything below 5 Tion to Tion to prevent wiggles
+    gracefact = 2.0 # Cool everything below 2*Tion to Tion to limit wiggles
     alpha_B = alpha_B_HII(Tion) 
     nx = hydro.ncells
     
@@ -44,16 +74,16 @@ def trace_radiation(Sphotons):
     # do both at the same time. 
     dN_dust = Sphotons_dust*(1-np.exp(-dTau_dust))
 
-    ionised = np.where(recombinations + dN_dust*0 < Sphotons)[0]
+    ionised = np.where(recombinations + dN_dust*0 < QH)[0]
     # Ionise all fully-ionised cells
     edge = 0
     if len(ionised) > 0:
-        toionise = (recombinations < Sphotons)*(hydro.T[0:nx]<gracefact*Tion)
+        toionise = (recombinations < QH)*(hydro.T[0:nx]<gracefact*Tion)
         hydro.xhii[ionised] = 1.0
         hydro.T[toionise] = Tion
         edge = ionised[-1]+1
     # Ionise the partially ionised frontier cell
-    Sextra = recombinations[edge] - Sphotons
+    Sextra = recombinations[edge] - QH
     if edge > 0:
         fracion = Sextra / (recombinations[edge]-recombinations[edge-1])
     else:

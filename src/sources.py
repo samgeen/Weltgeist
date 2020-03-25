@@ -7,8 +7,7 @@ import abc
 
 import numpy as np
 
-import singlestar, units, radiation
-from hydro import hydro
+import singlestar, units, radiation, integrator
 
 # This should be a singleton object really
 # OH WELL
@@ -78,6 +77,7 @@ def InjectSources(t,dt):
     _totalke = 0.0
     _totalmass = 0.0
     _totalphotons = 0.0
+    hydro = integrator.Integrator().variables
     # Add to the input arrays
     for source in _sources:
         source.Inject(t,dt)
@@ -143,7 +143,7 @@ class WindSource(AbstractSource):
         # Convert dt to seconds from internal units
         _totalmass += self._massloss*dt
         _totalke += self._lum*dt
-        hydro.CourantLimiter(self._vcourant)
+        integrator.Integrator().CourantLimiter(self._vcourant)
 
 class RadiationSource(AbstractSource):
     def __init__(self,Sphotons):

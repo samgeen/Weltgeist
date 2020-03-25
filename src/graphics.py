@@ -1,8 +1,15 @@
-'''
+# -*- coding: utf-8 -*-
+"""
+Graphics module
+
+This module contains code for visualising the output of the simulation
+ in real-time. This is useful for diagnostics and to get a feel for how
+ the setup works. Use matplotlib/pyplot to produce "official" figures
+
 Created on 8 Feb 2019
 
 @author: samgeen
-'''
+"""
 
 import numpy as np
 
@@ -11,7 +18,23 @@ from pyglet.gl import *
 
 
 class Line(object):
+    """
+    A line object, used to draw the simulation state to screen in
+     real time
+    """
     def __init__(self,colour,width=1.0):
+        """
+        Constructor
+
+        Parameters
+        ----------
+
+        colour : list 
+            The colour - 4 elements - red, green, blue, alpha
+            e.g. [1.0, 0.0, 0.0, 0.5] = red, half transparent
+        width : float
+            width of the line on-screen in pixels
+        """
         self._colour = colour
         self._currlen = 0
         self._x = np.zeros(100)
@@ -22,9 +45,16 @@ class Line(object):
         self._width = width
 
     def Update(self,x,y):
-        '''
-        Replace arrays
-        '''
+        """
+        Replace arrays in the line completely
+
+        Parameters
+        ----------
+
+        x, y : numpy array
+            numpy arrays containing x and y data for the line
+            NOTE: x and y must be the same length
+        """
         newlen = len(x)
         self._currlen = newlen
         if newlen > self._x.shape[0]:
@@ -35,9 +65,15 @@ class Line(object):
         self._y[0:newlen] = y
 
     def Append(self,x,y):
-        '''
+        """
         Add a single point
-        '''
+
+        Parameters
+        ----------
+
+        x, y : float
+            points to add to the line
+        """
         if self._currlen >= len(self._x):
             xnew = np.zeros(self._currlen*2)
             ynew = np.zeros(self._currlen*2)
@@ -51,18 +87,35 @@ class Line(object):
         self._currlen += 1
 
     def MinMax(self,yminin=None,ymaxin=None):
-        '''
+        """
         Return min/max in arrays
-        '''
+
+        Parameters
+        ----------
+
+        yminin, ymaxin : float
+            (optional) fixes y values for plotting
+            Useful if you want to stop the line moving up and down
+              over time
+
+        Returns
+        -------
+
+        (xmin, xmax, ymin, ymax): tuple of floats
+            min/max values in x and y
+        """
         if yminin is not None:
             self._ymin = yminin
         if ymaxin is not None:
             self._ymax = ymaxin
+        # Get non-empty x and y values
         x = self._x[0:self._currlen]
         y = self._y[0:self._currlen]
+        # If no data, return zeros
         if len(x) == 0:
             return 0.0,0.0,0.0,0.0
         else:
+            # Set ymin, ymax to chosen values if given
             if self._ymin is not None:
                 ymin = self._ymin
             else:
@@ -71,12 +124,21 @@ class Line(object):
                 ymax = self._ymax
             else:
                 ymax = y.max()
+            # Return min and max values in x and y
             return x.min(), x.max(), ymin, ymax
 
     def Draw(self,xmin,xmax,ymin,ymax):
-        '''
+        """
         Draw line to screen
-        '''
+        Called by the Lines object Draw function
+        
+        Parameters
+        ----------
+
+        xmin, xmax, ymin, ymax : float
+            Gives limits of the screen in x and y
+            Lines scaled to these values
+        """
         if self._currlen > 0:
             glLineWidth(self._width)
             self._pts[:,0] = (self._x - xmin) / (xmax-xmin)
@@ -89,8 +151,23 @@ class Line(object):
             glDrawArrays(GL_LINE_STRIP,0,len(pts)//2)
 
 
-class Lines(object):
+class Lines(object):  
+    """
+    A container for lines you want to draw to screen
+    """
     def __init__(self,lines,width=1.0):
+        """
+        Constructor
+
+        Parameters
+        ----------
+
+        lines : list (or other iterable) of Line objects
+            The lines you want to draw 
+            (external function should set the data points)
+        width : float
+            width of the lines on-screen in pixels
+        """
         self._lines = lines
         self._xmin = 1e30
         self._xmax = -1e30
@@ -98,6 +175,10 @@ class Lines(object):
         self._ymax = -1e30
 
     def _FindMinMax(self):
+        """
+        Finds the min/max of the lines for clamping to the screen
+        (private method, don't call outside)
+        """
         first = True
         self._xmin = 1e30
         self._xmax = -1e30
@@ -115,28 +196,56 @@ class Lines(object):
                 self._ymax = max(self._ymax,yh)
 
     def Draw(self):
+        """
+        Draws the lines, called by the renderer
+        """
         self._FindMinMax()
         for line in self._lines:
             line.Draw(self._xmin,self._xmax,self._ymin,self._ymax)
 
 class Renderer(object):
-    '''
-    Controls the basic line interface
-    '''
+    """
+    Controls the basic line drawing interface.
+    This uses pyglet, which is a module for drawing to the screen with
+     OpenGL
+    WARNING! Due to the way pyglet works, you need to feed it the
+     step function from the integrator, and pyglet will control the
+     stepping at a maximum of 120 frames per second
+     See example scripts for an example of this
+    """
     def __init__(self, lines):
+        """
+        Constructor
+
+        Parameters
+        ----------
+
+        lines : list (or other iterable) of Line objects
+            The lines you want to draw 
+            (external function should set the data points)
+        """
         self._glPoints = None
+        # Pyglet window. This controls most of the pyglet drawing
         self._window = pyglet.window.Window(512,512)
-        self._window._integrator = self
+        # Mouse position - this isn't really used, but is left in
+        #  in case you want to use it
         self._mx = 0.5
         self._my = 0.5
+        # Lines object
         self._lines = Lines(lines)
 
     def Start(self, stepfunc):
-        '''
+        """
         This will set up and start the renderer
-        stepfunc: function to run every graphical step
-        '''
+
+        Parameters
+        ----------
+
+        stepfunc : function
+            function to run every graphical step
+        """
         # Graphical setup stuff
+        # Mostly just simplifying OpenGL to display in basic 2D
         @self._window.event
         def on_draw():
             glClearColor(1,1,1,1)
@@ -155,6 +264,8 @@ class Renderer(object):
             glEnableClientState(GL_VERTEX_ARRAY)
             self._lines.Draw()
             
+        # Mouse movement controls
+        # This isn't really used, but kept in in case it's useful later
         @self._window.event
         def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
             w, h = self._window.get_size()
@@ -171,18 +282,17 @@ class Renderer(object):
                 return
             self._mx = x
             self._my = y
-            #self._step = buttons == 1
             
+        # Mouse button press
+        # Also not used here, but could be in future
         @self._window.event
         def on_mouse_release(x, y, button, modifiers):
             pass
-            #self._step = False
 
         # Set up rendering
-        s = 0.02
         glEnable(GL_BLEND)
         glPointSize(2)
-        # Set up pyglet to run
-        #pyglet.clock.set_fps_limit(60)
-        pyglet.clock.schedule_interval(stepfunc,1.0/60.0)
+
+        # Set up pyglet to run at up to 120 frames every second
+        pyglet.clock.schedule_interval(stepfunc,1.0/120.0)
         pyglet.app.run()
