@@ -35,7 +35,7 @@ def alpha_B_HII(temperature):
     a = 2.753e-14 * l**1.5 / (1. + (l/2.74)**0.407)**2.242
     return a                                                                                                                          
 
-def trace_radiation(QH, Tion=8400.0):
+def trace_radiation(totalphotons, Tion=8400.0):
     """
     Trace a ray through the spherical grid and ionise everything in the way
     Use very simple instant ionisation/recombination model
@@ -43,15 +43,18 @@ def trace_radiation(QH, Tion=8400.0):
 
     Parameters
     ----------
-    QH : float
-        Input hydrogen-ionising photon emission rate (per second)
+    totalphotons : float
+        Number of ionising photons emitted
 
     Tion : float
         Equilibrium temperature of photoionised gas in K
         default: 8400 K, value used in Geen+ 2015b
     """
 
-    hydro = integrator.Integrator().variables
+    hydro = integrator.Integrator().hydro
+    dt = integrator.Integrator().dt
+    # Photon emission rate
+    QH = totalphotons / dt
 
     # No photons? Don't bother
     if QH == 0:

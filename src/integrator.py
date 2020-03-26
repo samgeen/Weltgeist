@@ -146,7 +146,7 @@ class _Integrator(object):
         if cooling.cooling_on:
             cooling.solve_cooling(self.dt)
         # Inject sources (includes radiation step!)
-        sources.InjectSources(self.time, self.dt)
+        sources.Sources().InjectSources()
         # Gravity step
         # NOTE: gravity is currently in-testing, use with caution
         if gravity.gravity_on:
@@ -196,6 +196,11 @@ class _Integrator(object):
         """
         Get the time on the grid
         NOTE: don't use self._time_code yourself! Use this
+
+        Returns
+        -------
+        dt : float
+            current simulation time in seconds
         """
         return self._time_code*units.time
     
@@ -204,12 +209,22 @@ class _Integrator(object):
         """
         Get the last timestep length on the grid
         NOTE: don't use self._dt_code yourself! Use this
+
+        Returns
+        -------
+        dt : float
+            timestep in seconds
         """
         return self._dt_code*units.time
 
     @property
-    def variables(self):
+    def hydro(self):
         """
-        Return the object for accessing the hydrodynamic variables
+        Return the object containing the grid of hydrodynamic variables
+
+        Returns
+        -------
+        hydro : _Hydro
+            object containing grid of hydrodynamic variables
         """
         return self._hydro
