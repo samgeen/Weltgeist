@@ -27,7 +27,7 @@ class Tester(object):
         self.windml = 1e19 # 2e22
         #sources.MakeWind(self.windlum,self.windml)
         self.Sphotons = 1e49
-        sources.MakeRadiation(self.Sphotons)
+        sources.Sources().MakeRadiation(self.Sphotons)
         # Display and run
         self._renderer.Start(self.Step)
         
@@ -45,7 +45,7 @@ class Tester(object):
         if self._step:
             if self._first:
                 self._integrator.Setup(ncells = nx, rmax=rmax)
-                hydro = self._integrator.variables
+                hydro = self._integrator.hydro
                 hydro.nH[0:nx] = n0# * (hydro.x[0:nx]/r0)**(-2.0)
                 hydro.nH[0] = hydro.nH[1]
                 hydro.P[0:nx] = hydro.nH[0:nx] * (units.kB * T0)
@@ -78,7 +78,7 @@ class Tester(object):
                 self._first = False
             self._itick += 1
             
-            hydro = self._integrator.variables
+            hydro = self._integrator.hydro
             #hydro.nH[:30] = 1e-6
             #hydro.CourantLimiter(1e5)
             rho = hydro.rho[0:nx]

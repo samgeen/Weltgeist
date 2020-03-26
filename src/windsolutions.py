@@ -1,7 +1,7 @@
-'''
-Composite Spitzer solution
+"""
+Analytic solutions for test problems
 Sam Geen, September 2016
-'''
+"""
 
 import numpy as np
 
@@ -14,14 +14,14 @@ mH  = 1.66e-24 # g
 mp = mH / units.X # g (mH / X)
 
 def AdiabaticWind(lum,ml,rho,time,model="Castor"):
-    '''
+    """
     Adiabatic solution
     lum = luminosity in ergs/s
     ml = mass loss rate in g/s
     rho = density in H/cc
     time = time in s
     model = which model to use ("Castor","Avedisova")
-    '''
+    """
     # Convert units
     rho = rho * mp
     #time = time * Myr
@@ -69,9 +69,11 @@ def AdiabaticWind(lum,ml,rho,time,model="Castor"):
     return wconst*(lum * time ** 3 / rho)**0.2
 
 def SpitzerSolution(Sphotons,n0,time):
-    '''
+    """
     Spitzer solution for a photoionisation front
-    '''
+    n0 = hydrogen number density in cm^-3
+    time - time in s
+    """
     Tion = 8400.0 # K, value used in Geen+ 2015b
     gamma = integrator.Integrator().variables.gamma
     ci = np.sqrt(Tion * gamma * units.kB / mp)
@@ -83,12 +85,12 @@ def SpitzerSolution(Sphotons,n0,time):
     return rspitzer
 
 def CollapseSolution(rho,rho0):
-    '''
+    """
     Calculate a free-fall collapse solution
-    rho - density to calculate time at
-    rho0 - initial density (used to calculate tff)
+    rho - density to calculate time at in g/cm^3
+    rho0 - initial density (used to calculate tff) in g/cm^3
     Sam Geen, March 2018
-    '''
+    """
     tff = np.sqrt(3.0*np.pi / (32.0 * units.G * rho0))
     X = (rho / rho0)**(-0.5)
     #print X, tff, rho, rho0
@@ -96,12 +98,12 @@ def CollapseSolution(rho,rho0):
     return t
 
 def CollapseSolutionPosition(x,x0):
-    '''
+    """
     Calculate a free-fall collapse solution
-    x - position to calculate time at
-    x0 - initial position
+    x - position to calculate time at in cm
+    x0 - initial position in cm
     Sam Geen, March 2018
-    '''
+    """
     X = x/x0
     t = (np.arccos(np.sqrt(X)) + np.sqrt(X * (1.0-X))) * x0**1.5 / np.sqrt(2.0*units.G*gravity.centralmass)
     return t
