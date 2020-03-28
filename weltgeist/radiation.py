@@ -5,7 +5,7 @@ Sam Geen, March 2018
 
 import numpy as np
 
-import sources, integrator, units, windsolutions
+from . import sources, integrator, units
 
 def alpha_B_HII(temperature):
     """
@@ -96,7 +96,3 @@ def trace_radiation(totalphotons, Tion=8400.0):
     if hydro.T[edge] < Tion:
         hydro.T[edge] = hydro.T[edge]*(1.0-fracion) + fracion*Tion
     # Done!
-
-if __name__=="__main__":
-    init.init()
-    trace_radiation(1e48)

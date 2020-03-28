@@ -5,7 +5,7 @@ Sam Geen, September 2016
 
 import numpy as np
 
-import gravity, radiation, units
+from . import gravity, radiation, units
 
 Myr = 3.1557e13 # seconds
 yr = 1e-6 * Myr
@@ -13,9 +13,37 @@ pc = 3.0857e18 # cm
 mH  = 1.66e-24 # g
 mp = mH / units.X # g (mH / X)
 
+def SedovTaylorSolution(time,energy,density):
+    """
+    Adiabatic solution for a blastwave
+    See http://www.astronomy.ohio-state.edu/~ryden/ast825/ch5-6.pdf
+
+    Parameters
+    ----------
+
+    time : float/array
+        time(s) to calculate at in seconds
+    energy : float
+        energy of the blastwave in erg
+    density : float
+        density of the background in g cm^-3
+
+    Returns
+    -------
+
+    radius : float/array
+        a radius for each time inputted
+    """ 
+    return 1.17 * (energy * time**2 / density)**0.2
+
+
 def AdiabaticWind(lum,ml,rho,time,model="Castor"):
     """
-    Adiabatic solution
+    Adiabatic solution for a constant wind
+    
+    Parameters
+    ----------
+
     lum = luminosity in ergs/s
     ml = mass loss rate in g/s
     rho = density in H/cc

@@ -3,10 +3,10 @@ Controls gas cooling
 Sam Geen, March 2018
 """
 
-import cooling_module, integrator
+from . import cooling_module, integrator
 
 # Use cooling?
-cooling_on = True
+cooling_on = False
 
 def solve_cooling(dt):
     """
