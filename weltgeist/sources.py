@@ -8,7 +8,7 @@ import abc
 
 import numpy as np
 
-import singlestar, units, radiation, integrator
+from . import singlestar, units, radiation, integrator
 
 # This should be a singleton object really
 # OH WELL
@@ -35,6 +35,7 @@ class _Injector(object):
         self._totalke = 0.0
         self._totalmass = 0.0
         self._totalphotons = 0.0
+        self._sources = None
 
     def InjectSources(self, sources):       
         """
@@ -45,8 +46,9 @@ class _Injector(object):
         self._totalke = 0.0
         self._totalmass = 0.0
         self._totalphotons = 0.0
+        self._sources = sources
         # Add to the input arrays
-        for source in sources:
+        for source in sources.sources:
             source.Inject(self)
         # Dump input values onto the grid
         if self._totalmass > 0:
@@ -55,6 +57,19 @@ class _Injector(object):
             hydro.KE[0] += self._totalke
         if self._totalphotons > 0:
             radiation.trace_radiation(self._totalphotons)
+        self._sources = None
+
+    def RemoveSource(self,source):
+        """
+        Remove a source object
+        
+        Parameters
+        ----------
+        source : Source
+            Source object to remove from active sources
+        """
+        self._sources.RemoveSource(source)
+
 
     def AddKE(self, ke):
         """
@@ -102,6 +117,18 @@ class _Sources(object):
         self._sources = []
         # Injector object that handles injecting values onto grid
         self._injector = _Injector()
+
+    @property
+    def sources(self):
+        """
+        List of sources
+
+        Returns
+        -------
+        sources : list
+            list of sources contained in this class
+        """
+        return self._sources
 
     def AddSource(self, source):
         """
@@ -181,7 +208,7 @@ class _Sources(object):
         Gathers all of the sources and injects them onto the grid
         """
         # This role is passed onto the injector
-        self._injector.InjectSources(self._sources)
+        self._injector.InjectSources(self)
 
 # Singleton sources object - access it via Sources()
 _sources = _Sources()
@@ -224,7 +251,7 @@ class SupernovaSource(AbstractSource):
             injector.AddKE(self._energy)
             # Remove the SN so it doesn't happen again next timestep
             # (Unnecessary since self._exploded is set, but makes things a bit quicker)
-            RemoveSource(self)
+            injector.RemoveSource(self)
 
             
 class WindSource(AbstractSource):

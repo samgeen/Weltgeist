@@ -5,7 +5,7 @@ Sam Geen, March 2018
 
 import numpy as np
 
-import integrator, units
+from . import integrator, units
 
 # Use gravity?
 gravity_on = False

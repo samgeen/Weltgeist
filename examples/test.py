@@ -1,12 +1,24 @@
 '''
+This is scratch space for me, ignore it, it's garbage
+
 Created on 3 Jun 2014
 
 @author: samgeen
 '''
 
-import numpy as np
 
-import integrator, sources, gravity, units, windsolutions, graphics
+
+# This piece of code basically adds the parent directory to PYTHONPATH
+import os, sys
+parent = os.path.dirname(os.getcwd())
+sys.path.append(parent)
+
+import numpy as np
+#
+import weltgeist
+import weltgeist.units as units
+
+#import integrator, sources, gravity, units, analyticsolutions, graphics
 
 
 class Tester(object):
@@ -14,29 +26,30 @@ class Tester(object):
         self._step = True
         self._first = True
         self._itick = 0
-        self._rvtline = graphics.Line([0.0,0.0,1.0,1.0],width=3.0)
-        self._anline1 = graphics.Line([0.0,1.0,0.0,1.0])
-        self._anline2 = graphics.Line([0.0,1.0,0.0,1.0])
-        self._lines = [self._anline1,self._anline2,self._rvtline]
-        self._integrator = integrator.Integrator()
-        self._renderer = graphics.Renderer(self._lines)
+        self._rvtline = weltgeist.graphics.Line([0.0,0.0,1.0,1.0],width=3.0)
+        #self._anline1 = graphics.Line([0.0,1.0,0.0,1.0])
+        #self._anline2 = graphics.Line([0.0,1.0,0.0,1.0])
+        self._lines = [self._rvtline]
+        self._integrator = weltgeist.integrator.Integrator()
+        self._renderer = weltgeist.graphics.Renderer(self._lines)
         
     def Setup(self):
         #sources.MakeSupernova(1e51,2e33)
         self.windlum = 3e34 # 2e38
         self.windml = 1e19 # 2e22
         #sources.MakeWind(self.windlum,self.windml)
-        self.Sphotons = 1e49
-        sources.Sources().MakeRadiation(self.Sphotons)
+        #weltgeist.sources.Sources().MakeSupernova(1e51,2e33)
+        #self.Sphotons = 1e49
+        #sources.Sources().MakeRadiation(self.Sphotons)
         # Display and run
         self._renderer.Start(self.Step)
         
     def Step(self, dt):
         global sn, testfile
         # Some initialisation
-        nx = 512
-        n0 = 1000.0
-        rmax = 20.0 * units.pc
+        nx = 256
+        n0 = 100.0
+        rmax = 10.0 * units.pc
         rho0 = n0*units.mp
         rhoout = rho0
         r0 = 0.1*rmax
@@ -45,10 +58,14 @@ class Tester(object):
         if self._step:
             if self._first:
                 self._integrator.Setup(ncells = nx, rmax=rmax)
+                weltgeist.cooling.cooling_on = False
                 hydro = self._integrator.hydro
                 hydro.nH[0:nx] = n0# * (hydro.x[0:nx]/r0)**(-2.0)
                 hydro.nH[0] = hydro.nH[1]
                 hydro.P[0:nx] = hydro.nH[0:nx] * (units.kB * T0)
+                
+                hydro.mass[0] += 4e33
+                hydro.KE[0] += 1e51
                 #sources.MakeRadiation(1e49)
                 #testfile = open("testdata.txt","w")
                 # Do something here if needed
@@ -132,8 +149,8 @@ class Tester(object):
             #rsedov = beta*(1e51*(t**2.0) / init.rho0)**0.2
             # Winds
             #rcooled = windsolutions.AdiabaticWind(self.windlum,self.windml,init.n0,integrator.time,model="Cooled")
-            rcooled = windsolutions.AdiabaticWind(self.windlum,self.windml,n0,self._integrator.time,model="SlowCool")
-            rsedov = windsolutions.AdiabaticWind(self.windlum,self.windml,n0,self._integrator.time,model="WeaverIntermediate")
+            #rcooled = windsolutions.AdiabaticWind(self.windlum,self.windml,n0,self._integrator.time,model="SlowCool")
+            #rsedov = windsolutions.AdiabaticWind(self.windlum,self.windml,n0,self._integrator.time,model="WeaverIntermediate")
             #rsedov = windsolutions.AdiabaticWind(self.windlum,self.windml,init.n0,integrator.time,model="CooledNoAcc")
             # Radiation
             #rsedov = windsolutions.SpitzerSolution(self.Sphotons,init.n0,t)
@@ -144,7 +161,7 @@ class Tester(object):
             # LOG LOG SPACE
             #self._rvtline.Update(np.log10(hydro.x[1:nx]/hydro.x[1]),np.log10(hydro.rho[1:nx]/hydro.rho[1]))
             # LINEAR SPACE
-            self._rvtline.Update(hydro.x[0:nx],np.log10(hydro.rho[0:nx]))
+            self._rvtline.Update(hydro.x[0:nx],np.log10(hydro.T[0:nx]))
             #self._rvtline.Update(hydro.x[0:nx],np.log10(hydro.rho[0:nx]/self.rhoBE))
             #self._sedov.Update(hydro.x[0:nx],hydro.x[0:nx]*0.0)
             #self._rvtline.Update(hydro.x[0:nx],hydro.T[0:nx])

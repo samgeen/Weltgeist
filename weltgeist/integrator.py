@@ -3,8 +3,7 @@ Engine for running the integrator
 Sam Geen, February 2018
 """
 
-import hydro
-import cooling, gravity, sources, units, vhone
+from . import cooling, hydro, gravity, sources, units, vhone
 
 # Instance the integrator, using singleton pattern
 _integrator = None

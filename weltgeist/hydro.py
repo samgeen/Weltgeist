@@ -3,8 +3,9 @@ Hydro solver and grid variables
 Sam Geen, January 2018
 """
 
-import vhone, units
 import numpy as np
+
+from . import vhone, units
 
 class _Field(object):
     """
