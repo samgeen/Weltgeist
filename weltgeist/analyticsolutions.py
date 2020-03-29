@@ -5,7 +5,7 @@ Sam Geen, September 2016
 
 import numpy as np
 
-from . import gravity, radiation, units
+from . import gravity, radiation, units, integrator
 
 Myr = 3.1557e13 # seconds
 yr = 1e-6 * Myr
@@ -96,21 +96,60 @@ def AdiabaticWind(lum,ml,rho,time,model="Castor"):
     # Equation 6, Castor et al 1975 (see also Avedisova 1972, Weaver 1977)
     return wconst*(lum * time ** 3 / rho)**0.2
 
-def SpitzerSolution(Sphotons,n0,time):
+def SpitzerSolution(QH,n0,time, Tion = 8400.0):
     """
     Spitzer solution for a photoionisation front
-    n0 = hydrogen number density in cm^-3
-    time - time in s
+
+    Parameters
+    ----------
+    QH : float
+        photon emission rate in photons/second
+    n0 : float
+        hydrogen number density in cm^-3
+    time : float or numpy array
+        time in s
+    Tion : float
+        ionised gas temperature in K
+
+    Returns
+    -------
+    radius : float or numpy array
+        radius in cm (same length as time)
     """
-    Tion = 8400.0 # K, value used in Geen+ 2015b
-    gamma = integrator.Integrator().variables.gamma
+    gamma = integrator.Integrator().hydro.gamma
     ci = np.sqrt(Tion * gamma * units.kB / mp)
     alpha_B = radiation.alpha_B_HII(Tion)
-    rs = (Sphotons / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
+    rs = (QH / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
     # Hosokawa & Inutsuka 2004 approx
     #rspitzer = rs  * (1.0 + 7.0/4.0 * np.sqrt(4.0/3.0) * ci / rs * time)**(4.0/7.0)
     rspitzer = rs  * (1.0 + 7.0/4.0 * ci / rs * time)**(4.0/7.0)
     return rspitzer
+
+def SpitzerDensity(QH,n0,time,Tion = 8400.0):
+    """
+    Spitzer solution for the ionised gas density
+
+    Parameters
+    ----------
+    QH : float
+        photon emission rate in photons/second
+    n0 : float
+        hydrogen number density in cm^-3
+    time : float or numpy array
+        time in s
+
+    Returns
+    -------
+    ni : float or numpy array
+        hydrogen number density in ionised gas
+    """
+    # Get the radius
+    ri = SpitzerSolution(QH,n0,time,Tion)
+    # Get density from photoionisation equilibrium
+    alpha_B = radiation.alpha_B_HII(Tion)
+    ni = np.sqrt(3.0 * QH / (4.0 * np.pi * alpha_B * ri**3.0))
+    return ni
+
 
 def CollapseSolution(rho,rho0):
     """

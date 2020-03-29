@@ -1,8 +1,9 @@
-'''
-Created on 3 Jun 2014
+"""
+Example 1 - Hallo, Welt!
+Get the code running for one timestep
 
 @author: samgeen
-'''
+"""
 
 # This piece of code basically adds the parent directory to PYTHONPATH
 import os, sys

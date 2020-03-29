@@ -1,8 +1,9 @@
-'''
-Created on 3 Jun 2014
+"""
+Example 2 - Leonid Sedov
+Run a simple test problem and compare it to an analytic solution
 
 @author: samgeen
-'''
+"""
 
 # This piece of code basically adds the parent directory to PYTHONPATH
 import os, sys

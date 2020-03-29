@@ -18,9 +18,9 @@ TODO file for Spherical Hydro project:
 - Test Sedov, Weaver, Spitzer - DONE
 - Add stellar module
 - Add gravity / turbulent support of gravitating fluid
-- Set up sources in python - HALF DONE
+- Set up sources in python - DONE
 - Add astropy units
-- Run simple uniform experiments
+- Run simple uniform experiments - DONE
 - Compare to results from Geen+2015a
 - Add profiles, turbulence
 - Get results

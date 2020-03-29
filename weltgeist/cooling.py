@@ -28,11 +28,12 @@ def solve_cooling(dt):
     gamma = hydro.gamma
     # Solve the change in temperature and modify the grid
     # Uses the model by Audit & Hennebelle (2005)
-    # Used in the FRIG project by Patrick Hennebelle
+    # Used in the FRIGG project by Patrick Hennebelle
     dT2 = cooling_module.solve_cooling_frig(nH,T2,zsolar,dt,gamma,ncell)
     T2 += dT2
-    #hydro.T[xhii < 0.1] = T2[xhii < 0.1]
-    hydro.T[0:ncell] = T2 * (1.0-xhii)
+    hydro.T[0:ncell] = T2
+    # Note that the radiation module, if it runs, will heat the 
+    #  photoionised gas back up
     # Make sure the resulting temperatures aren't negative
     CheckTemperature()
 
