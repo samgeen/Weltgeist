@@ -10,14 +10,6 @@ import numpy as np
 
 from . import singlestar, units, radiation, integrator
 
-# This should be a singleton object really
-# OH WELL
-_sources = []
-_totalke = 0.0
-_totalmass = 0.0
-_totalphotons = 0.0
-
-
 def Sources():
     """
     Returns the sources object; should only be one of them
@@ -32,6 +24,7 @@ class _Injector(object):
         """
         Constructor
         """
+        self._totalte = 0.0
         self._totalke = 0.0
         self._totalmass = 0.0
         self._totalphotons = 0.0
@@ -43,6 +36,7 @@ class _Injector(object):
         """
         hydro = integrator.Integrator().hydro
         # Clear values first
+        self._totalte = 0.0
         self._totalke = 0.0
         self._totalmass = 0.0
         self._totalphotons = 0.0
@@ -53,6 +47,8 @@ class _Injector(object):
         # Dump input values onto the grid
         if self._totalmass > 0:
             hydro.mass[0] += self._totalmass
+        if self._totalte > 0:
+            hydro.TE[0] += self._totalte
         if self._totalke > 0:
             hydro.KE[0] += self._totalke
         if self._totalphotons > 0:
@@ -70,6 +66,16 @@ class _Injector(object):
         """
         self._sources.RemoveSource(source)
 
+    def AddTE(self, te):
+        """
+        Add thermal energy to grid
+
+        Parameters
+        ----------
+        te : float
+            thermal energy to add in erg
+        """
+        self._totalte += te
 
     def AddKE(self, ke):
         """
@@ -151,18 +157,6 @@ class _Sources(object):
             Source object to remove from active sources
         """
         self._sources.remove(source)
-
-    def AddTableSource(self, tablesource):
-        """
-        Inject a single star using the singlestar tables
-        (TODO: ADD SNe)
-
-        Parameters
-        ----------
-        tablesource : TableSource
-            A table source object
-        """
-        self.AddSource(tablesource)
 
     def MakeSupernova(self, energy, mass, time=0.0):
         """
@@ -309,10 +303,25 @@ class TableSource(AbstractSource):
     """
     Source of energy & photons based on a lookup table
     """
-    def __init__(self,mass,tbirth=0.0,rad=True,wind=True):
+    def __init__(self,mass,tbirth=0.0,radiation=True,wind=True):
+        """
+        Constructor
+    
+        Parameters
+        ----------
+
+        mass : float
+            Mass of star in solar masses
+        tbirth : float
+            Birth time of the star in seconds
+        radiation : bool
+            Turn radiation on?
+        wind : bool
+            Turn winds on?
+        """
         self._tbirth = tbirth
         self._mass = mass
-        self._rad = rad
+        self._radiation = radiation
         self._wind = wind
 
     def Inject(self,injector):
@@ -342,7 +351,15 @@ class TableSource(AbstractSource):
                 injector.AddMass(massloss)
                 # Add energy to grid as kinetic energy
                 injector.AddKE(energy)
-            if self._rad:
+                # Add some thermal energy to account for star's temperature
+                # TODO: Add star's actual temperature
+                Tstar = 40000.0 # K
+                TE = 1.5 * units.kB * massloss/(units.mH/units.X)*Tstar
+                injector.AddTE(TE)
+                # Set the Courant condition
+                vwind = np.sqrt(2.0*energy/massloss)
+                integrator.Integrator().CourantLimiter(vwind)
+            if self._radiation:
                 #DO RAD
                 nphotons = singlestar.star_radiation(self._mass,age,dt)
                 # NOTE !!! ASSUMES 5 RADIATION BINS!!!
@@ -360,7 +377,7 @@ class TableSource(AbstractSource):
         global _tablesetup
         global singlestarLocation
         if not _tablesetup:
-            singlestar.star_setup(self._tableloc)
+            singlestar.star_setup(singlestarLocation)
             _tablesetup = True
 
 # Location of single star tables

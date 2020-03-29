@@ -16,6 +16,9 @@ import numpy as np
 import pyglet
 from pyglet.gl import *
 
+red = [1.0,0.0,0.0,1.0]
+blue = [0.0,0.0,1.0,1.0]
+black = [0.0,0.0,1.0,1.0]
 
 class Line(object):
     """

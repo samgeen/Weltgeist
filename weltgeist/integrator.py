@@ -176,7 +176,7 @@ class _Integrator(object):
         vin: float
             velocity to limit the timestep to 
         """
-        vnew = vin / units.velocity / (self.variables.dx / units.distance)
+        vnew = vin / units.velocity / (self.hydro.dx / units.distance)
         vhone.data.vdtext = max(vhone.data.vdtext,vnew)
 
     def _UpdateTime(self):
