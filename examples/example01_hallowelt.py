@@ -35,14 +35,15 @@ def run_example():
             gamma = 5.0/3.0) # monatomic gas (close enough...)
     # Now let's make the first timestep
     integrator.Step()
-    # First timestep is zero seconds
-    print("Current time: ", integrator.time, "seconds")
-    integrator.Step()
     # Now the current time should be something like 100 kyr
     # This is because of the Courant condition: 
     # https://en.wikipedia.org/wiki/Courant%E2%80%93Friedrichs%E2%80%93Lewy_condition
     # The box is a uniform gas at 10 K, and a cell is 20 pc / 256,
     #  so the crossing time of a cell is ~ 100 kyr 
+    print("Current time: ", integrator.time, "seconds")
+    print("Timestep: ", integrator.dt, "seconds")
+    integrator.Step()
+    # Now the time is twice that again.
     print("Current time: ", integrator.time, "seconds")
     # That's it for the first example. Next we'll look at a simple test problem.
 
