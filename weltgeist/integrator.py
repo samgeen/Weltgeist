@@ -154,6 +154,8 @@ class _Integrator(object):
             hydro.grav[0:hydro.ncells] = 0.0
         # Hydro step
         vhone.data.step()
+        # Update time to make sure the code sees the correct time
+        self._UpdateTime()
         # Final sanity check
         if cooling.cooling_on:
             cooling.CheckTemperature()

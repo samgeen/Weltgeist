@@ -357,7 +357,8 @@ class TableSource(AbstractSource):
                 TE = 1.5 * units.kB * massloss/(units.mH/units.X)*Tstar
                 injector.AddTE(TE)
                 # Set the Courant condition
-                vwind = np.sqrt(2.0*energy/massloss)
+                ecourant, mcourant = singlestar.star_winds(self._mass,age,1.0)
+                vwind = np.sqrt(2.0*ecourant/mcourant)
                 integrator.Integrator().CourantLimiter(vwind)
             if self._radiation:
                 #DO RAD
@@ -365,7 +366,7 @@ class TableSource(AbstractSource):
                 # NOTE !!! ASSUMES 5 RADIATION BINS!!!
                 # 1 = IR, 2 = optical+FUV, 3 = H-ionising, 
                 # 4 = HeI->HeII, 5 = HeII->HeIII and up
-                nuv = np.sum(nphotons[3:5])
+                nuv = np.sum(nphotons[2:5])
                 injector.AddPhotons(nuv)
 
     def _TableSetup(self):
