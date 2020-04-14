@@ -356,7 +356,6 @@ class TableSource(AbstractSource):
                 Tstar = 40000.0 # K
                 TE = 1.5 * units.kB * massloss/(units.mH/units.X)*Tstar
                 injector.AddTE(TE)
-                print (massloss, energy, TE, dt)
                 # Set the Courant condition
                 ecourant, mcourant = singlestar.star_winds(self._mass,age,1.0)
                 vwind = np.sqrt(2.0*ecourant/mcourant)
