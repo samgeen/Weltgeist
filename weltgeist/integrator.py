@@ -140,7 +140,7 @@ class _Integrator(object):
             print("Error: grid not initialised! Run integrator.Init()")
             raise RuntimeError
         # Update time
-        self._UpdateTime()
+        #self._UpdateTime()
         # Cooling step
         if cooling.cooling_on:
             cooling.solve_cooling(self.dt)
