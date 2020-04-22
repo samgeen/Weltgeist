@@ -22,6 +22,7 @@ def run_example():
     niterations = 1000
     #  We need the integrator again
     integrator = weltgeist.integrator.Integrator()
+    weltgeist.cooling.cooling_on = True
     # And the setup
     integrator.Setup(ncells = ncells, # 256 cells
             rmax = 10.0*wunits.pc, # 20 pc box

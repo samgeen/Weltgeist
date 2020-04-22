@@ -3,6 +3,9 @@ Engine for running the integrator
 Sam Geen, February 2018
 """
 
+import h5py
+import numpy as np
+
 from . import cooling, hydro, gravity, sources, units, vhone
 
 # Instance the integrator, using singleton pattern
@@ -32,6 +35,42 @@ class _Integrator(object):
         self._dt_code = 0.0
         # Hydro variables
         self._hydro = None
+
+    def Save(self,filename):
+        '''
+        Save the file to an 
+        '''
+        file = h5py.File(filename+".hdf5", "w")
+        # Save a file format version 
+        file.attrs['version']="1.0.0"
+        # Save setup parameters
+        hydro = self.hydro
+        ncells = hydro.ncells
+        file.create_dataset("ncells", (ncells,), dtype=np.int32)
+        rmax = vhone.data.xmax * units.distance
+        file.create_dataset("rmax", (rmax,), dtype=np.float64)
+        # (Note: we don't save n0 and T0 because these overwritten by the grid state)
+        file.create_dataset("gamma",(hydro.gamma,),dtype=np.float64)
+        # Save the time variables
+        file.create_dataset("time",(vhone.data.time,),dtype=np.float64)
+        file.create_dataset("dt",(self._dt_code,),dtype=np.float64)
+        # Save courant limiter
+        file.create_dataset("vcourant",(vhone.data.vdtext,),dtype=np.float64)
+        # Save the basic hydro variables
+        file.create_dataset("rho",hydro.rho[0:ncells],dtype=np.float64)
+        file.create_dataset("P",hydro.P[0:ncells],dtype=np.float64)
+        file.create_dataset("vel",hydro.vel[0:ncells],dtype=np.float64)
+        # Save python-only hydro variables
+        file.create_dataset("xhii",hydro.xhii[0:ncells],dtype=np.float64)
+        file.create_dataset("Zsolar",hydro.Zsolar[0:ncells],dtype=np.float64)
+        file.create_dataset("grav",hydro.grav[0:ncells],dtype=np.float64)
+        # Save switches in the modules
+        file.create_dataset("switches",(cooling.cooling_on,gravity.gravity_on),dtype=np.float64)
+        # TODO: Save sources (this is the hard one...)
+        # We probably have to have serialisation options inside sources
+        # ...
+        # Done!
+        file.close()
 
     def Setup(self,
             ncells = 512,
