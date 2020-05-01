@@ -18,7 +18,7 @@ subroutine solve_cooling_frig(nH,T2,zsolar,dt,gamma,ncell,deltaT2)
   real(kind=8),dimension(1:ncell),intent(in)::nH,T2,zsolar
   real(kind=8),dimension(1:ncell),intent(out)::deltaT2
   ! Input/output variables to analytic function calc_temp 
-  real(kind=8)::NN,TT, dt_tot
+  real(kind=8)::NN,TT, ZZ, dt_tot
   ! Temporary variables
   integer::i
   real(kind=8)::TT_ini, mu
@@ -29,7 +29,8 @@ subroutine solve_cooling_frig(nH,T2,zsolar,dt,gamma,ncell,deltaT2)
                 ! SO WE LEAVE THIS AS IT IS TO KEEP UNITS CONSISTENCY
      TT = T2(i)
      TT_ini = TT
-     call calc_temp(NN,TT,dt_tot,gamma)
+     ZZ = zsolar(i)
+     call calc_temp(NN,TT,ZZ,dt_tot,gamma)
      deltaT2(i) = (TT - TT_ini)
   end do
 end subroutine solve_cooling_frig
@@ -38,7 +39,7 @@ end subroutine solve_cooling_frig
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-subroutine  calc_temp(NN,TT,dt_tot,gamma)
+subroutine  calc_temp(NN,TT,zsolar,dt_tot,gamma)
     !use amr_parameters
     !use hydro_commons
 
@@ -51,7 +52,7 @@ subroutine  calc_temp(NN,TT,dt_tot,gamma)
 
     !alpha replaced by alpha_ct because of conflict with another alpha by PH 19/01/2017
     real(kind=8) :: mm,uma, kb, alpha_ct,mu,kb_mm
-    real(kind=8) :: NN,TT, TTold, ref,ref2,dRefdT, eps, vardt,varrel, dTemp,dummy
+    real(kind=8) :: NN,TT,zsolar, TTold, ref,ref2,dRefdT, eps, vardt,varrel, dTemp,dummy
     real(kind=8) :: rhoutot2,gamma
     ! HARD-CODED mu TO MAKE TEMPERATURE AGREE WITH HENNEBELLE CODE
     mu = 1.4d0
@@ -106,11 +107,11 @@ subroutine  calc_temp(NN,TT,dt_tot,gamma)
         ! Calculate cooling rate
         !NN is assumed to be in cc and TT in Kelvin
         if (TT < 10035.d0) then
-            call cooling_low(TT,NN,ref,dummy)
-            call cooling_low(TT*(1d0+eps),NN,ref2,dummy)
+            call cooling_low(TT,NN,zsolar,ref,dummy)
+            call cooling_low(TT*(1d0+eps),NN,zsolar,ref2,dummy)
         else
-            call cooling_high(TT,NN,ref)
-            call cooling_high(TT*(1d0+eps),NN,ref2)
+            call cooling_high(TT,NN,zsolar,ref)
+            call cooling_high(TT*(1d0+eps),NN,zsolar,ref2)
         end if
         
         ! dT = T*(1+eps)-T = eps*T
@@ -167,11 +168,11 @@ end subroutine calc_temp
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-subroutine cooling_high(T,n,ref)
+subroutine cooling_high(T,n,zsolar,ref)
     !use amr_parameters
     implicit none
 
-    real(kind=8) :: T,P,N,x,ne                    !x est le taux d'ionisation
+    real(kind=8) :: T,P,N,zsolar,x,ne                    !x est le taux d'ionisation
     real(kind=8) :: T2, ref2
     real(kind=8) :: froid,chaud,ref,nc, froidc
     real(kind=8) :: froidcII, froido, froidh
@@ -219,7 +220,7 @@ end subroutine cooling_high
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-subroutine cooling_low(T,n,ref,chaud)
+subroutine cooling_low(T,n,zsolar,ref,chaud)
 ! Note: (et oui c'est en anglais maintenant, desole)
 ! T,n - temperature and density input
 ! ref - *total* cooling rate with cooling as -ve (i.e. heating - cooling)
@@ -230,7 +231,7 @@ subroutine cooling_low(T,n,ref,chaud)
 
   implicit none
 
-  real(kind=8) :: T,P,N,x,ne,x_ana                 !x est le taux d'ionisation
+  real(kind=8) :: T,P,N,zsolar,x,ne,x_ana                 !x est le taux d'ionisation
   real(kind=8) :: froid,chaud,ref,nc, froidc
   real(kind=8) :: froidcII, froido, froidh
   real(kind=8) :: froidc_m,froidcII_m,froido_m
@@ -371,7 +372,7 @@ subroutine cooling_low(T,n,ref,chaud)
 
 
 !!! on somme les refroidissements
-  froid = froidcII  + froidh  + froido  + froido_m +  froidcII_m
+  froid = froidh + zsolar*(froidcII  + froido  + froido_m +  froidcII_m)
 
 
   !      froid=froid*1.d-13    !conversion en MKS
