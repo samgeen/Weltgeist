@@ -38,7 +38,8 @@ class _Integrator(object):
 
     def Save(self,filename):
         '''
-        Save the file to an 
+        Save the current simulation state to file
+        TODO: Add sources
         '''
         file = h5py.File(filename+".hdf5", "w")
         # Save a file format version 
@@ -67,6 +68,69 @@ class _Integrator(object):
         # Save switches in the modules
         file.create_dataset("switches",(cooling.cooling_on,gravity.gravity_on),dtype=np.float64)
         # TODO: Save sources (this is the hard one...)
+        # We probably have to have serialisation options inside sources
+        # ...
+        # Done!
+        file.close()
+
+    def Load(self,filename):
+        '''
+        Load the current simulation state from file
+        TODO: Add sources
+        '''
+        # Check for an already initialised VH1
+        if self._initialised:
+            print("VH-1 already initialised, will try to load anyway...")
+        # Open file
+        file = h5py.File(filename+".hdf5", "r")
+        # Save a file format version 
+        #file.attrs['version']="1.0.0"
+        # Save setup parameters
+        ncells = file.get("ncells")
+        rmax = file.get("rmax")
+        gamma = file.get("gamma")
+        # Do a check that the loaded values don't clash with the setup values
+        if self._initialised:
+            hydro = self.hydro
+            if hydro.ncells == ncells:
+                print ("Error loading: ncells is incorrect (try not calling integrator.Setup)")
+                raise ValueError
+            if vhone.data.xmax == rmax / units.distance:
+                print ("Error loading: rmax is incorrect (try not calling integrator.Setup)")
+                raise ValueError
+            if gamma != hydro.gamma:
+                print ("Error loading: gamma is incorrect (try not calling integrator.Setup)")
+                raise ValueError
+        else:
+            # Note: n, T will change anyway
+            self.Setup(ncells = 512,
+                rmax = rmax,
+                n0 = 1000.0, # H atoms / cm^-3
+                T0 = 10.0, # K
+                gamma = gamma)
+            hydro = self.hydro
+        # Update time
+        time = file.get("time")
+        dt = file.get("dt")
+        self._time_code = time
+        vhone.data.time = time
+        self._dt_code = dt
+        vhone.data.time = time
+        # Update the courant limiter
+        vhone.data.vdtext = file.get("vcourant")
+        # Update the hydro variables
+        hydro.rho[0:ncells] = file.get("rho")
+        hydro.P[0:ncells] = file.get("P")
+        hydro.vel[0:ncells] = file.get("vel")
+        # Update the python-only hydro variables
+        hydro.xhii[0:ncells] = file.get("xhii")
+        hydro.Zsolar[0:ncells] = file.get("Zsolar")
+        hydro.grav[0:ncells] = file.get("grav")
+        # Save switches in the modules
+        switches = file.get("switches")
+        cooling.cooling_on = bool(switches[0])
+        gravity.gravity_on = bool(switches[1])
+        # TODO: Load sources (this is the hard one...)
         # We probably have to have serialisation options inside sources
         # ...
         # Done!
