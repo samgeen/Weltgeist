@@ -14,7 +14,7 @@ TODO file for Spherical Hydro project:
 - Add radiation tracing
           (simple H-only ray-tracing from single central source in 1D) - DONE
 - Add cooling function - DONE
-- Set up better visualisation in OpenGL (allow showing T in red, rho in blue) - ON HOLD (no GPU support in WSL)
+- Set up better visualisation in OpenGL (allow showing T in red, rho in blue) - DONE (doesn't work on WSL)
 - Test Sedov, Weaver, Spitzer - DONE
 - Add stellar module - DONE
 - Add gravity / turbulent support of gravitating fluid
