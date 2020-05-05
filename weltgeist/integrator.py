@@ -47,26 +47,26 @@ class _Integrator(object):
         # Save setup parameters
         hydro = self.hydro
         ncells = hydro.ncells
-        file.create_dataset("ncells", (ncells,), dtype=np.int32)
+        file.create_dataset("ncells", data=(ncells,), dtype=np.int32)
         rmax = vhone.data.xmax * units.distance
-        file.create_dataset("rmax", (rmax,), dtype=np.float64)
+        file.create_dataset("rmax", data=(rmax,), dtype=np.float64)
         # (Note: we don't save n0 and T0 because these overwritten by the grid state)
-        file.create_dataset("gamma",(hydro.gamma,),dtype=np.float64)
+        file.create_dataset("gamma",data=(hydro.gamma,),dtype=np.float64)
         # Save the time variables
-        file.create_dataset("time",(vhone.data.time,),dtype=np.float64)
-        file.create_dataset("dt",(self._dt_code,),dtype=np.float64)
+        file.create_dataset("time",data=(vhone.data.time,),dtype=np.float64)
+        file.create_dataset("dt",data=(self._dt_code,),dtype=np.float64)
         # Save courant limiter
-        file.create_dataset("vcourant",(vhone.data.vdtext,),dtype=np.float64)
+        file.create_dataset("vcourant",data=(vhone.data.vdtext,),dtype=np.float64)
         # Save the basic hydro variables
-        file.create_dataset("rho",hydro.rho[0:ncells],dtype=np.float64)
-        file.create_dataset("P",hydro.P[0:ncells],dtype=np.float64)
-        file.create_dataset("vel",hydro.vel[0:ncells],dtype=np.float64)
+        file.create_dataset("rho",data=hydro.rho[0:ncells],dtype=np.float64)
+        file.create_dataset("P",data=hydro.P[0:ncells],dtype=np.float64)
+        file.create_dataset("vel",data=hydro.vel[0:ncells],dtype=np.float64)
         # Save python-only hydro variables
-        file.create_dataset("xhii",hydro.xhii[0:ncells],dtype=np.float64)
-        file.create_dataset("Zsolar",hydro.Zsolar[0:ncells],dtype=np.float64)
-        file.create_dataset("grav",hydro.grav[0:ncells],dtype=np.float64)
+        file.create_dataset("xhii",data=hydro.xhii[0:ncells],dtype=np.float64)
+        file.create_dataset("Zsolar",data=hydro.Zsolar[0:ncells],dtype=np.float64)
+        file.create_dataset("grav",data=hydro.grav[0:ncells],dtype=np.float64)
         # Save switches in the modules
-        file.create_dataset("switches",(cooling.cooling_on,gravity.gravity_on),dtype=np.float64)
+        file.create_dataset("switches",data=(cooling.cooling_on,gravity.gravity_on),dtype=np.float64)
         # TODO: Save sources (this is the hard one...)
         # We probably have to have serialisation options inside sources
         # ...
@@ -86,9 +86,14 @@ class _Integrator(object):
         # Save a file format version 
         #file.attrs['version']="1.0.0"
         # Save setup parameters
-        ncells = file.get("ncells")
-        rmax = file.get("rmax")
-        gamma = file.get("gamma")
+        def loaditem(varname):
+            data = np.array(file.get(varname))
+            if len(data) == 1:
+                data = data[0]
+            return data
+        ncells = loaditem("ncells")
+        rmax = loaditem("rmax")
+        gamma = loaditem("gamma")
         # Do a check that the loaded values don't clash with the setup values
         if self._initialised:
             hydro = self.hydro
@@ -103,31 +108,31 @@ class _Integrator(object):
                 raise ValueError
         else:
             # Note: n, T will change anyway
-            self.Setup(ncells = 512,
+            self.Setup(ncells = ncells,
                 rmax = rmax,
                 n0 = 1000.0, # H atoms / cm^-3
                 T0 = 10.0, # K
                 gamma = gamma)
             hydro = self.hydro
         # Update time
-        time = file.get("time")
-        dt = file.get("dt")
+        time = loaditem("time")
+        dt = loaditem("dt")
         self._time_code = time
         vhone.data.time = time
         self._dt_code = dt
         vhone.data.time = time
         # Update the courant limiter
-        vhone.data.vdtext = file.get("vcourant")
+        vhone.data.vdtext = loaditem("vcourant")
         # Update the hydro variables
-        hydro.rho[0:ncells] = file.get("rho")
-        hydro.P[0:ncells] = file.get("P")
-        hydro.vel[0:ncells] = file.get("vel")
+        hydro.rho[0:ncells] = loaditem("rho")
+        hydro.P[0:ncells] = loaditem("P")
+        hydro.vel[0:ncells] = loaditem("vel")
         # Update the python-only hydro variables
-        hydro.xhii[0:ncells] = file.get("xhii")
-        hydro.Zsolar[0:ncells] = file.get("Zsolar")
-        hydro.grav[0:ncells] = file.get("grav")
+        hydro.xhii[0:ncells] = loaditem("xhii")
+        hydro.Zsolar[0:ncells] = loaditem("Zsolar")
+        hydro.grav[0:ncells] = loaditem("grav")
         # Save switches in the modules
-        switches = file.get("switches")
+        switches = loaditem("switches")
         cooling.cooling_on = bool(switches[0])
         gravity.gravity_on = bool(switches[1])
         # TODO: Load sources (this is the hard one...)

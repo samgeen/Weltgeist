@@ -111,10 +111,7 @@ def run_example():
     # Try plotting xHII instead of log(T) (or add a new line for it)
     # Now try setting the medium to uniform and see what happens
 
-    # And that's it. That's all the examples I could think of.
-    # You can explore the code if you like to see how it all works
-    # Gravity is also included, but I need to confirm it works with a
-    #  test problem, so that's for another time
+    # In the next example we explore saving the simulation state to file
 
 # This piece of code runs if you start this module versus importing it
 if __name__=="__main__":
