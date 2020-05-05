@@ -4,8 +4,8 @@ Sam Geen, March 2018
 """
 
 import numpy as np
-
-from . import sources, integrator, units
+from . import sources, integrator, units, ionisedtemperatures
+Tionn = 0
 
 def alpha_B_HII(temperature):
     """
@@ -33,7 +33,11 @@ def alpha_B_HII(temperature):
     # output : HII recombination rate (in cm3 / s)
     l = 315614./temperature
     a = 2.753e-14 * l**1.5 / (1. + (l/2.74)**0.407)**2.242
-    return a                                                                                                                          
+    return a             
+
+def T_ion(Teff, metalin):
+    Tionn = ionisedtemperatures.FindTemperature(Teff, metalin)
+    return Tionn
 
 def trace_radiation(totalphotons, Tion=8400.0):
     """
@@ -50,6 +54,8 @@ def trace_radiation(totalphotons, Tion=8400.0):
         Equilibrium temperature of photoionised gas in K
         default: 8400 K, value used in Geen+ 2015b
     """
+    if Tionn != 0:
+        Tion = Tionn
 
     hydro = integrator.Integrator().hydro
     dt = integrator.Integrator().dt
