@@ -7,6 +7,9 @@ python module singlestar ! in
             use singlestar_module
             character*200 intent(in) :: tableloc
         end subroutine star_setup
+        subroutine star_reset ! in :singlestar:../singlestar_f2py.f90
+            use singlestar_module
+        end subroutine star_reset
         subroutine star_lifetime(mass_ini,lifetime) ! in :singlestar:../singlestar_f2py.f90
             use singlestar_module
             real(kind=8) intent(in) :: mass_ini
