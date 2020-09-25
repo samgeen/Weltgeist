@@ -249,17 +249,17 @@ class _Integrator(object):
             raise RuntimeError
         # Update time
         #self._UpdateTime()
-        # Cooling step
-        if cooling.cooling_on:
-            cooling.solve_cooling(self.dt)
-        # Inject sources (includes radiation step!)
-        sources.Sources().InjectSources()
         # Gravity step
         # NOTE: gravity is currently in-testing, use with caution
         if gravity.gravity_on:
             gravity.calculate_gravity()
         else:
             hydro.grav[0:hydro.ncells] = 0.0
+        # Cooling step
+        if cooling.cooling_on:
+            cooling.solve_cooling(self.dt)
+        # Inject sources (includes radiation step!)
+        sources.Sources().InjectSources()
         # Hydro step
         vhone.data.step()
         # Update time to make sure the code sees the correct time

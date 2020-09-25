@@ -10,7 +10,6 @@ import numpy as np
 # Physical quantities (base units in cgs)
 pc = 3.086e+18
 mH = 1.66e-24
-g = mH
 year = 3.154e+7
 Myr = 1e6*year
 kB = 1.3806485279e-16 # in cgs
@@ -21,7 +20,7 @@ mp = mH / X
 # Code units
 # Used by VH1 - the Python parts of Weltgeist use cgs
 distance = pc # in cm
-density = g # 1 g/cm^3
+density = mH # 1 g/cm^3
 time = 1.0 / np.sqrt(G*density) # sets G=1 in VH1 (not super important here, though)
 # Derived units
 velocity = distance / time

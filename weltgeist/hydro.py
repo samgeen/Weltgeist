@@ -120,11 +120,11 @@ class _Hydro(object):
         This the density rho converted into a Hydrogen number density
         """
         def _nHget(slicer):
-            return self.rho[slicer]/units.g*units.X
+            return self.rho[slicer]/units.mH*units.X
         def _nHset(slicer,val):
-            vhone.data.zro[slicer,0,0] = val*units.g/units.X/units.density
+            vhone.data.zro[slicer,0,0] = val*units.mH/units.X/units.density
         def _nHarr():
-            return self.rho[0:self.ncells]/units.g*units.X
+            return self.rho[0:self.ncells]/units.mH*units.X
         self.nH = _Field(_nHget,_nHset,_nHarr)
         """ 
         PRESSURE
@@ -166,7 +166,7 @@ class _Hydro(object):
             self.rho[slicer] = val/self.vol[slicer]
             self.KE[slicer] = oldke
         def _Marr():
-            return self.vol*self.rho[0:ncells]
+            return self.vol*self.rho[0:self.ncells]
         self.mass = _Field(_Mget,_Mset,_Marr)
 
         """ 
@@ -274,6 +274,16 @@ class _Hydro(object):
         Given as a fraction of solar (Z=0.014)
         """
         self.Zsolar = np.zeros(self.ncells)+1.0
+        """ 
+        IONISING PHOTON RATE
+        Rate of ionising photons through each cell
+        """
+        self.Qion = np.zeros(self.ncells)
+        """ 
+        DUST ABSORPTION CROSS SECTION
+        Absorption cross-section of dust in each radial unit
+        """
+        self.sigmaDust = np.zeros(self.ncells)
         """ 
         GRAVITY
         The acceleration from gravity towards the centre

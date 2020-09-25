@@ -1,1 +1,2 @@
-f2py -c -m radiation radiation.f90
+f2py -c -m raytracing raytracing.f90
+cp raytracing*.so ../weltgeist/
