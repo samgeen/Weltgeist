@@ -18,7 +18,20 @@ from pyglet.gl import *
 
 red = [1.0,0.0,0.0,1.0]
 blue = [0.0,0.0,1.0,1.0]
-black = [0.0,0.0,1.0,1.0]
+black = [0.0,0.0,0.0,1.0]
+
+WINSIZEX = 512 
+WINSIZEY = 512
+
+def _newtext(x,y):
+    """
+    Just make a basic text object
+    """
+    return  pyglet.text.Label('',
+                font_name='Helvetica',
+                font_size=10,
+                x=x*WINSIZEX,y=y*WINSIZEY,
+                anchor_x='left', anchor_y='bottom',color=(0,0,0,255))
 
 class Line(object):
     """
@@ -176,6 +189,12 @@ class Lines(object):
         self._xmax = -1e30
         self._ymin = 1e30
         self._ymax = -1e30
+        # Text on screen for max/min labels
+        self._xmintext = _newtext(0.05,0.01)
+        self._xmaxtext = _newtext(0.97,0.01)
+        self._ymintext = _newtext(0.01,0.05)
+        self._ymaxtext = _newtext(0.01,0.97)
+        self._xmaxtext.anchor_x='right'
 
     def _FindMinMax(self):
         """
@@ -205,6 +224,17 @@ class Lines(object):
         self._FindMinMax()
         for line in self._lines:
             line.Draw(self._xmin,self._xmax,self._ymin,self._ymax)
+    
+    def DrawAxes(self):
+        # Draw axis markers
+        self._xmintext.text = "%.2g" % self._xmin
+        self._xmaxtext.text = "%.2g" % self._xmax
+        self._ymintext.text = "%.2g" % self._ymin
+        self._ymaxtext.text = "%.2g" % self._ymax
+        self._xmintext.draw()
+        self._xmaxtext.draw()
+        self._ymintext.draw()
+        self._ymaxtext.draw()
 
 class Renderer(object):
     """
@@ -229,13 +259,24 @@ class Renderer(object):
         """
         self._glPoints = None
         # Pyglet window. This controls most of the pyglet drawing
-        self._window = pyglet.window.Window(512,512)
+        self._window = pyglet.window.Window(WINSIZEX,WINSIZEY)
         # Mouse position - this isn't really used, but is left in
         #  in case you want to use it
         self._mx = 0.5
         self._my = 0.5
         # Lines object
         self._lines = Lines(lines)
+        # Text on screen
+        self._text = pyglet.text.Label('',
+                          font_name='Helvetica',
+                          font_size=16,
+                          x=self._window.width - 10, y=self._window.height - 10,
+                          anchor_x='right', anchor_y='top',color=(0,0,0,255))
+        # Pause the simulation?
+        self._pause = False
+
+    def Text(self,newtext):
+        self._text.text = newtext
 
     def Start(self, stepfunc):
         """
@@ -266,6 +307,17 @@ class Renderer(object):
             glLoadIdentity()
             glEnableClientState(GL_VERTEX_ARRAY)
             self._lines.Draw()
+            glMatrixMode(GL_PROJECTION)
+            glLoadIdentity()
+            glOrtho(0, self._window.width, 
+                    0, self._window.height,
+                    -2, 2)
+            glMatrixMode(GL_MODELVIEW)
+            glLoadIdentity()
+            self._lines.DrawAxes()
+            self._text.draw()
+        
+        stepInterval = 1.0/120.0
             
         # Mouse movement controls
         # This isn't really used, but kept in in case it's useful later
@@ -292,10 +344,40 @@ class Renderer(object):
         def on_mouse_release(x, y, button, modifiers):
             pass
 
+        @self._window.event
+        def on_key_press(symbol, modifiers):
+            if symbol == pyglet.window.key.SPACE:
+                if self._pause:
+                    pyglet.clock.schedule_interval(stepfunc,stepInterval)
+                    self._pause = False
+                else:
+                    pyglet.clock.unschedule(stepfunc)
+                    self._pause = True
+
+        @self._window.event
+        def on_move(x,y):
+            # Screen goes black on moving under WSL
+            # Might just be a WSL bug?
+            print ("MOVING", x, y)
+            #self._window.set_location(x, y)
+            #self._window.clear()
+
+        @self._window.event
+        def on_resize(w,h):
+            print ("RESIZING", w, h)
+
+        @self._window.event
+        def on_context_lost():
+            print ("CONTEXT LOST!!!")
+
+        @self._window.event
+        def on_context_state_lost():
+            print ("CONTEXT STATE LOST!!!")
+
         # Set up rendering
         glEnable(GL_BLEND)
         glPointSize(2)
 
         # Set up pyglet to run at up to 120 frames every second
-        pyglet.clock.schedule_interval(stepfunc,1.0/120.0)
+        pyglet.clock.schedule_interval(stepfunc,stepInterval)
         pyglet.app.run()

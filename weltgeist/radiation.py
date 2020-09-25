@@ -5,7 +5,7 @@ Sam Geen, March 2018
 
 import numpy as np
 from . import sources, integrator, units, ionisedtemperatures
-Tionn = 0
+from . import raytracing
 
 def alpha_B_HII(temperature):
     """
@@ -35,11 +35,20 @@ def alpha_B_HII(temperature):
     a = 2.753e-14 * l**1.5 / (1. + (l/2.74)**0.407)**2.242
     return a             
 
-def T_ion(Teff, metalin):
-    Tionn = ionisedtemperatures.FindTemperature(Teff, metalin)
-    return Tionn
+def IonisedGasTemperature(Teff, metal):
+    """
+    Calculate the temperature of the ionised gas in 
 
-def trace_radiation(totalphotons, Tion=8400.0):
+    Teff : float
+        Effective tempertaure of the star in K
+
+    metalin : float
+        Metallicity of the gas
+    """
+    Tion = ionisedtemperatures.FindTemperature(Teff, metal)
+    return Tion
+
+def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressure, sigmaDust = 1e-21):
     """
     Trace a ray through the spherical grid and ionise everything in the way
     Use very simple instant ionisation/recombination model
@@ -47,50 +56,69 @@ def trace_radiation(totalphotons, Tion=8400.0):
 
     Parameters
     ----------
-    totalphotons : float
-        Number of ionising photons emitted
+    Lionising, Lnonionising : float
+        Luminosity of (non-)ionising photons emitted (erg/s)
+
+    Eionising : float
+        Average energy of the ionising photons (erg)
 
     Tion : float
         Equilibrium temperature of photoionised gas in K
         default: 8400 K, value used in Geen+ 2015b
+
+    doRadiationPressure : bool
+        Do we use radiation pressure?
+
+    sigmaDust : float
+        Dust cross section to use (Draine suggests 1e-21 cm^2 / H)
     """
-    if Tionn != 0:
-        Tion = Tionn
+
+    # No photons? Don't bother
+    if Lionising == 0 and Lnonionising == 0:
+        return
 
     hydro = integrator.Integrator().hydro
     dt = integrator.Integrator().dt
     # Photon emission rate
-    QH = totalphotons / dt
-    #print(QH)
-
-    # No photons? Don't bother
-    if QH == 0:
-        return
-
+    QH = Lionising / Eionising
 
     # Find total recombinations from the centre outwards
     gracefact = 2.0 # Cool everything below 2*Tion to Tion to limit wiggles
     alpha_B = alpha_B_HII(Tion) 
     nx = hydro.ncells
-    
-    recombinations = np.cumsum(4.0*np.pi*(hydro.x[0:nx]+hydro.dx)**2.0 * hydro.nH[0:nx]**2.0 * alpha_B * hydro.dx)
+    x = hydro.x[0:nx]
+    dx = hydro.dx[0:nx]
 
-    # NOTE: Eric Pellegrini started adding in dust effects, but the code is incomplete
-    # TODO: finish this
-    #Dust Parameters
-    #sigma_dust = 1.0
-    #dgr = 1.0
-    #Sphotons_dust = 0
-    #dTau_dust = hydro.nH[0:nx] * sigma_dust * dgr * hydro.dx
-    # This is wrong. All of Sphotons is not available to dust. 
-    # Need to calculate effective cross section for each species and
-    # do both at the same time. 
-    #dN_dust = Sphotons_dust*(1-np.exp(-dTau_dust))
+    # Set up radiation tracing
+    hydro.Qion[0] = QH
+    hydro.sigmaDust[0:nx] = sigmaDust # cm^2 / H based on Draine+ 2011
+    hydro.sigmaDust[hydro.T[0:nx] > 1e5] = 0.0 # simplicity hack - remove dust from hot gas
 
-    #ionised = np.where(recombinations + dN_dust*0 < QH)[0]
+    # Rate of recombinations per radial element
+    drecombinationsdr = 4.0*np.pi*(x[0:nx]+dx)**2.0 * hydro.nH[0:nx]**2.0 * alpha_B
 
+    # Total number of ionising photon absorptions
+    recombinations = np.cumsum(drecombinationsdr) * dx
 
+    # Calculate new Qion along ray (function will modify hydro.Qion)
+    raytracing.trace_radiation(dx,hydro.Qion,hydro.sigmaDust[0:nx],hydro.nH[0:nx],drecombinationsdr,nx)
+
+    # Calculate optical depth for non-ionising radiation
+    opticalDepth = np.cumsum(hydro.nH[0:nx] * hydro.sigmaDust[0:nx]) * dx
+
+    # Calculate recombinations first
+    numatomspercell = hydro.nH*hydro.vol
+    numionspercell = numatomspercell * hydro.xhii
+    numionspercell -= recombinations*dt
+    numionspercell[numionspercell < 0] = 0.0
+    hydro.xhii[0:nx] = numionspercell / numatomspercell
+
+    # Calculate which gas should be ionised
     ionised = np.where(recombinations < QH)[0]
+
+    # Reset the ionisation fraction in case the bubble has collapsed
+    #hydro.xhii[0:nx] = 0.0
+
     # Ionise all fully-ionised cells
     edge = 0
     if len(ionised) > 0:
@@ -100,14 +128,38 @@ def trace_radiation(totalphotons, Tion=8400.0):
         hydro.T[toionise] = Tion
         edge = ionised[-1]+1
 
-    # Ionise the partially ionised frontier cell
-    Qextra = recombinations[edge] - QH
-    if edge > 0:
-        fracion = Qextra / (recombinations[edge]-recombinations[edge-1])
-    else:
-        fracion = Qextra / recombinations[edge]
-    hydro.xhii[edge] = fracion
-    # Fractionally heat the edge cell as if the ionisation front is sharp
-    if hydro.T[edge] < Tion:
-        hydro.T[edge] = hydro.T[edge]*(1.0-fracion) + fracion*Tion
-    # Done!
+    # Ionise the partially ionised frontier cell provided it's not outside the box
+    if edge < nx:
+        Qextra = recombinations[edge] - QH
+        if edge > 0:
+            fracion = Qextra / (recombinations[edge]-recombinations[edge-1])
+        else:
+            fracion = Qextra / recombinations[edge]
+        hydro.xhii[edge] = fracion
+        # Fractionally heat the edge cell as if the ionisation front is sharp
+        if hydro.T[edge] < Tion:
+            hydro.T[edge] = hydro.T[edge]*(1.0-fracion) + fracion*Tion
+    
+    # Now do radiation pressure
+    if doRadiationPressure:
+        # Convert to outward acceleration from gravity
+        # See Draine (2011) equation 1 * mp to give absolute pressure
+        mp = units.mH / units.X
+        vol = hydro.vol[0:nx]
+        # Note: we're using grav = acceleration here
+        # P = F/A = ma / A
+        # So a = P A / m
+        # A = 4 pi r^2
+        # m = rho * vol = nH * mp * vol
+        # So correct Draine equation 1 by
+        # 4 pi r^2 / (nH * vol)
+
+        # Add dust contribution
+        hydro.grav[0:nx] += hydro.sigmaDust * \
+            (Lnonionising * np.exp(-opticalDepth) + hydro.Qion[0:nx] * ) / (c * vol)
+
+        # Add the direct radiation pressure contribution
+        hydro.grav[0:nx] += alpha_B * hydro.nH * ionised**2 * Eionising / (c * vol) * 4 * np.pi * x**2
+
+        # Thermal pressure handled by hydro solver
+    # So we're done!
