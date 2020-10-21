@@ -10,6 +10,8 @@ import numpy as np
 
 from . import singlestar, units, radiation, integrator
 
+doRadiationPressure = True
+
 def Sources():
     """
     Returns the sources object; should only be one of them
@@ -27,7 +29,10 @@ class _Injector(object):
         self._totalte = 0.0
         self._totalke = 0.0
         self._totalmass = 0.0
-        self._totalphotons = 0.0
+        self._totalLionising = 0.0
+        self._totalLnonionising = 0.0
+        self._Eionising = 0.0
+        self._Tion = 0.0
         self._sources = None
 
     def InjectSources(self, sources):       
@@ -35,11 +40,16 @@ class _Injector(object):
         Runs through all of the sources and injects them onto the grid
         """
         hydro = integrator.Integrator().hydro
+        global doRadiationPressure
         # Clear values first
         self._totalte = 0.0
         self._totalke = 0.0
         self._totalmass = 0.0
-        self._totalphotons = 0.0
+        self._totalNionising = 0.0
+        self._totalLionising = 0.0
+        self._totalLnonionising = 0.0
+        self._Eionising = 0.0
+        self._Tion = 0.0
         self._sources = sources
         # Add to the input arrays
         for source in sources.sources:
@@ -51,8 +61,9 @@ class _Injector(object):
             hydro.TE[0] += self._totalte
         if self._totalke > 0:
             hydro.KE[0] += self._totalke
-        if self._totalphotons > 0:
-            radiation.trace_radiation(self._totalphotons)
+        if self._totalLionising > 0 or self._totalLnonionising > 0:
+            #radiation.trace_radiation(self._totalphotons)
+            radiation.trace_radiation(self._totalLionising, self._totalLnonionising, self._Eionising, self._Tion, doRadiationPressure)
         self._sources = None
 
     def RemoveSource(self,source):
@@ -99,16 +110,25 @@ class _Injector(object):
         """
         self._totalmass += mass
 
-    def AddPhotons(self, photons):
+    def AddPhotons(self, Lionising, Lnonionising, Eionising, Tion):
         """
         Add photons to grid
 
         Parameters
         ----------
-        photons : float
-            photons to add (number)
+        Lionising : float
+            Ionising photon luminosity (erg/s)
+        Lnonionising : float
+            Non-ionising photon luminosity (erg/s)
+        Eionising : float
+            Energy of ionising photons (ergs)
+        Tion : float
+            Temperature of photoionised gas (K)
         """
-        self._totalphotons += photons
+        self._totalLionising += Lionising
+        self._totalLnonionising += Lnonionising
+        self._Eionising = max(self._Eionising,Eionising)
+        self._Tion = max(self._Tion,Tion)
 
 
 class _Sources(object):
