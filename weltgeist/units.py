@@ -16,6 +16,8 @@ kB = 1.3806485279e-16 # in cgs
 G = 6.67428e-8
 X = 0.74
 mp = mH / X
+c = 2.998e+10
+eV = 1.60217662e-12 # in ergs
 
 # Code units
 # Used by VH1 - the Python parts of Weltgeist use cgs
