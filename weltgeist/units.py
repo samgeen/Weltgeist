@@ -18,6 +18,7 @@ X = 0.74
 mp = mH / X
 c = 2.998e+10
 eV = 1.60217662e-12 # in ergs
+Msun = 1.9891e33 # g
 
 # Code units
 # Used by VH1 - the Python parts of Weltgeist use cgs
