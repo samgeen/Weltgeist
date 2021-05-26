@@ -139,6 +139,44 @@ zgr = 0d0
 return
 end
 
+subroutine resetgrid
+
+  !=======================================================================
+  ! GLOBALS
+  use global
+  use zone
+  use sweepsize
+  
+  IMPLICIT NONE
+  
+  !--------------------------------------------------------------------------------
+  ! Reset the grid by deallocating the arrays in memory
+  
+  !======================================================================
+  ! Allocate hydro variables in zonemod.f90 (module zone)
+  deallocate(zro)
+  deallocate(zpr)
+  deallocate(zux)
+  deallocate(zuy)
+  deallocate(zuz)
+  deallocate(zfl)
+  deallocate(zgr)
+  
+  deallocate(zxa)
+  deallocate(zdx)
+  deallocate(zxc)
+  
+  deallocate(zya)
+  deallocate(zdy)
+  deallocate(zyc)
+  
+  deallocate(zza)
+  deallocate(zdz)
+  deallocate(zzc)
+  
+  return
+end
+
 !#########################################################################
 
 subroutine grid( nzones, xmin, xmax, xa, xc, dx )

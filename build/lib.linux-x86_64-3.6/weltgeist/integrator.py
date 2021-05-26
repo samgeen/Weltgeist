@@ -21,45 +21,6 @@ def Integrator():
         _integrator = _Integrator()
     return _integrator
 
-class Saver(object):
-    """
-    This class monitors when to save, controlled by either Integrator or user
-    """
-    def __init__(self,folder,dtout):
-        """
-        Constructor
-        
-        Parameters
-        ----------
-
-        folder: string
-            Where to save the outputs?
-        dtout: float
-            How frequently to output?
-        """
-        self._folder = folder
-        self._dtout = dtout
-        self._iout = 0
-        integrator = Integrator()
-        self._tlast = integrator.time
-
-    def Save(self):
-        """
-        Save at the current time
-        """
-        integrator = Integrator()
-        self._iout += 1
-        self._tlast = integrator.time
-        filename = self._folder+"/snapshot_"+str(self._iout).zfill(5)
-        integrator.Save(filename)
-
-    def CheckSave(self):
-        """
-        Check if we need to save, and do it if so
-        """
-        if Integrator().time >= self._tlast + self._dtout:
-            self.Save()
-
 class _Integrator(object):
     """
     This class controls the operation of the underlying simulation code
@@ -74,22 +35,15 @@ class _Integrator(object):
         self._dt_code = 0.0
         # Hydro variables
         self._hydro = None
-        # Saver objects
-        # Question: do we really need multiple ones? Unclear. Up to the user to sort out properly
-        self._savers = []
 
     def Save(self,filename):
         '''
         Save the current simulation state to file
         TODO: Add sources
         '''
-        if not ".hdf5" in filename[-5:]:
-            filename += ".hdf5"
-        file = h5py.File(filename, "w")
-        # Save a file format version
-        # v1.0.0 - Original format
-        # v1.01 - Added B field
-        file.attrs['version']="1.01"
+        file = h5py.File(filename+".hdf5", "w")
+        # Save a file format version 
+        file.attrs['version']="1.0.0"
         # Save setup parameters
         hydro = self.hydro
         ncells = hydro.ncells
@@ -111,7 +65,6 @@ class _Integrator(object):
         file.create_dataset("xhii",data=hydro.xhii[0:ncells],dtype=np.float64)
         file.create_dataset("Zsolar",data=hydro.Zsolar[0:ncells],dtype=np.float64)
         file.create_dataset("grav",data=hydro.grav[0:ncells],dtype=np.float64)
-        file.create_dataset("Bfield",data=hydro.Bfield[0:ncells],dtype=np.float64)
         # Save switches in the modules
         file.create_dataset("switches",data=(cooling.cooling_on,gravity.gravity_on),dtype=np.float64)
         # TODO: Save sources (this is the hard one...)
@@ -126,13 +79,10 @@ class _Integrator(object):
         TODO: Add sources
         '''
         # Check for an already initialised VH1
-        #if self._initialised:
-        #    print("VH-1 already initialised, will try to load anyway...")
+        if self._initialised:
+            print("VH-1 already initialised, will try to load anyway...")
         # Open file
-        if not ".hdf5" in filename[-5:]:
-            filename += ".hdf5"
-        file = h5py.File(filename, "r")
-        version = file.attrs["version"]
+        file = h5py.File(filename+".hdf5", "r")
         # Save a file format version 
         #file.attrs['version']="1.0.0"
         # Save setup parameters
@@ -147,20 +97,16 @@ class _Integrator(object):
         # Do a check that the loaded values don't clash with the setup values
         if self._initialised:
             hydro = self.hydro
-            toReset = False
-            # Reset the grid?
-            if hydro.ncells != ncells:
-                toReset = True
-            if vhone.data.xmax != rmax / units.distance:
-                toReset = True
+            if hydro.ncells == ncells:
+                print ("Error loading: ncells is incorrect (try not calling integrator.Setup)")
+                raise ValueError
+            if vhone.data.xmax == rmax / units.distance:
+                print ("Error loading: rmax is incorrect (try not calling integrator.Setup)")
+                raise ValueError
             if gamma != hydro.gamma:
-                # TODO: Don't just reset for this? Check
-                toReset = True
-            if toReset:
-                print("Grid properties have changed, resetting grid...")
-                self.Reset()
-        # The above code might have reset the grid, so check again
-        if not self._initialised:
+                print ("Error loading: gamma is incorrect (try not calling integrator.Setup)")
+                raise ValueError
+        else:
             # Note: n, T will change anyway
             self.Setup(ncells = ncells,
                 rmax = rmax,
@@ -185,9 +131,6 @@ class _Integrator(object):
         hydro.xhii[0:ncells] = loaditem("xhii")
         hydro.Zsolar[0:ncells] = loaditem("Zsolar")
         hydro.grav[0:ncells] = loaditem("grav")
-        # Available above version 1.01:
-        if "Bfield" in file.keys():
-            hydro.Bfield[0:ncells] = loaditem("Bfield")
         # Save switches in the modules
         switches = loaditem("switches")
         cooling.cooling_on = bool(switches[0])
@@ -197,37 +140,6 @@ class _Integrator(object):
         # ...
         # Done!
         file.close()
-
-    def AddSaver(self, saver):
-        """
-        Add a Saver object to the list of savers to monitor
-
-        Constructor
-        
-        Parameters
-        ----------
-
-        folder: string
-            Where to save the outputs?
-        dtout: float
-            How frequently to output?
-        """
-        self._savers.append(saver)
-
-    def RemoveSaver(self, saver):
-        """
-        Remove Saver from list to monitor
-
-        Constructor
-        
-        Parameters
-        ----------
-
-        saver: _Saver object
-            Object to pop off the list of savers to monitor
-        """
-        self._savers.remove(Saver)
-
 
     def Setup(self,
             ncells = 512,
@@ -326,16 +238,6 @@ class _Integrator(object):
             #       might be useful...
             self._initialised = True
 
-    def Reset(self):
-        """
-        Reset the grid
-        This allows Setup to be called again with a new gridsize
-        If ncells and rmax is the same, you don't need to change anything
-        """
-        vhone.data.reset()
-        self._initialised = False
-        self._hydro = None
-
     def Step(self):
         """
         Run a single hydrodynamic step
@@ -365,9 +267,6 @@ class _Integrator(object):
         # Final sanity check
         if cooling.cooling_on:
             cooling.CheckTemperature()
-        # Save if necessary
-        for saver in self._savers:
-            saver.CheckSave()
 
 
     # ---------------
@@ -413,12 +312,6 @@ class _Integrator(object):
             current simulation time in seconds
         """
         return self._time_code*units.time
-
-    def Time(self):
-        """
-        Convenience function if you want to just call time as a function
-        """
-        return self.time
     
     @property
     def dt(self):

@@ -83,7 +83,7 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
     QH = Lionising / Eionising
 
     # Find total recombinations from the centre outwards
-    gracefact = 1.001 # Cool everything below gracefact*Tion to Tion to limit wiggles
+    gracefact = 2.0 # Cool everything below 2*Tion to Tion to limit wiggles
     alpha_B = alpha_B_HII(Tion) 
     nx = hydro.ncells
     T = hydro.T[0:nx]
@@ -176,7 +176,7 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
         #hydro.grav[np.isnan(hydro.grav[0:nx])] = 0.0
 
 
-        #print("EDGE CELL, CONTRIBUTION FROM RADIATION PRESSURE", edge, dFdr[edge-1] / (4 * np.pi * x[edge-1]) / hydro.P[edge-1])
+        print("EDGE CELL, CONTRIBUTION FROM RADIATION PRESSURE", edge, dFdr[edge-1] / (4 * np.pi * x[edge-1]) / hydro.P[edge-1])
         #print (QH, hydro.Qion[10])
 
         # Thermal pressure handled by hydro solver

@@ -15,6 +15,8 @@ import numpy as np
 import weltgeist
 import weltgeist.units as wunits # make this easier to type
 
+import weltgeist.graphics # Separate in case we don't want to import it
+
 def run_example():
     #  We need the integrator again
     integrator = weltgeist.integrator.Integrator()

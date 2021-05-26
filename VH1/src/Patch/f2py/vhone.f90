@@ -48,6 +48,12 @@ subroutine setup
 
 end subroutine setup
 
+subroutine reset
+  implicit none
+  call resetgrid
+
+end subroutine reset
+
 ! A single hydro step
 subroutine step
   implicit none
