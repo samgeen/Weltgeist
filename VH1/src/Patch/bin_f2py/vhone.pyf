@@ -59,6 +59,8 @@ python module vhone ! in
             real(kind=8) :: gam
             subroutine setup ! in :vhone:../f2py/vhone.f90:data
             end subroutine setup
+            subroutine reset ! in :vhone:../f2py/vhone.f90:data
+            end subroutine reset
             subroutine step ! in :vhone:../f2py/vhone.f90:data
             end subroutine step
         end module data

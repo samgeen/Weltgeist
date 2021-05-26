@@ -15,6 +15,8 @@ import numpy as np
 import weltgeist
 import weltgeist.units as wunits # make this easier to type
 
+import weltgeist.graphics # Separate in case we don't want to import it
+
 def run_example():
     #  We need the integrator again
     integrator = weltgeist.integrator.Integrator()
@@ -34,7 +36,7 @@ def run_example():
     # We can use the source module to put energy onto the grid
     # This can be winds, radiation, supernovae
     QH = 1e49 # photons per second emitted, roughly a 35 solar mass star
-    weltgeist.sources.Sources().MakeRadiation(QH)
+    weltgeist.sources.Sources().MakeSimpleRadiation(QH)
 
     # Weltgeist has a real-time visualisation tool for checking quickly
     #  what the code is doing

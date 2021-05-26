@@ -127,11 +127,11 @@ class _Hydro(object):
             return self.rho[0:self.ncells]/units.mH*units.X
         self.nH = _Field(_nHget,_nHset,_nHarr)
         """ 
-        TOTAL PRESSURE
-        This is the thermal + magnetic pressure in each cell
+        PRESSURE
+        This is the *thermal* pressure in each cell
         Note: in some codes this is the total energy in the cell
          (kinetic + thermal + magnetic + etc etc)
-         VH1 does not include kinetic energy in this
+         VH1 does not do this, so this is just thermal energy density
         """
         def _Pget(slicer):
             return vhone.data.zpr[slicer,0,0]*units.pressure
@@ -140,18 +140,6 @@ class _Hydro(object):
         def _Parr():
             return vhone.data.zpr[0:self.ncells,0,0]*units.pressure
         self.P = _Field(_Pget,_Pset,_Parr)
-        """ 
-        THERMAL PRESSURE
-        Remove magnetic pressure from the gas and return thermal pressure
-        """
-        def _PThget(slicer):
-            return self.P[slicer] - self.PMagnetic[slicer]
-        def _PThset(slicer,val):
-            val2 = val + self.PMagnetic[slicer]
-            self.P[slicer] = val2
-        def _PTharr():
-            return self.P[0:self.ncells] - self.PMagnetic[0:self.ncells]
-        self.PThermal = _Field(_PThget,_PThset,_PTharr)
         """ 
         VELOCITY
         This is the velocity of the gas flow in each cell
@@ -193,13 +181,13 @@ class _Hydro(object):
         Changing it will alter the pressure & keep density the same
         """
         def _Tget(slicer):
-            return self.PThermal[slicer]/self.nH[slicer]/units.kB
+            return self.P[slicer]/self.nH[slicer]/units.kB
         def _Tset(slicer,val):
             # Set the pressure from the ideal gas equation
             newP = val*self.nH[slicer]*units.kB
-            self.PThermal[slicer] = newP
+            vhone.data.zpr[slicer,0,0] = newP/units.pressure
         def _Tarr():
-            return self.PThermal[0:self.ncells]/self.nH[0:self.ncells]/units.kB
+            return self.P[0:self.ncells]/self.nH[0:self.ncells]/units.kB
         self.T = _Field(_Tget,_Tset,_Tarr)
         """ 
         SOUND SPEED
@@ -207,13 +195,13 @@ class _Hydro(object):
         Changing it is similar to changing the temperature
         """
         def _Csget(slicer):
-            return np.sqrt(self.gamma*self.PThermal[slicer]/self.rho[slicer])
+            return np.sqrt(self.gamma*self.P[slicer]/self.rho[slicer])
         def _Csset(slicer,val):
             # Set the pressure from the ideal gas equation
             newP = val**2.0 * self.rho[slicer] / self.gamma
-            self.PThermal[slicer] = newP
+            vhone.data.zpr[slicer,0,0] = newP/units.pressure
         def _Csarr():
-            return np.sqrt(self.gamma*self.PThermal[0:self.ncells]/self.rho[0:self.ncells])
+            return np.sqrt(self.gamma*self.P[0:self.ncells]/self.rho[0:self.ncells])
         self.cs = _Field(_Csget,_Csset,_Csarr)
         """ 
         KINETIC ENERGY
@@ -241,15 +229,15 @@ class _Hydro(object):
         def _TEget(slicer):
             # 3/2 P V
             #print "KEGET"
-            return 1.5 * self.PThermal[slicer] * self.vol[slicer]
+            return 1.5 * self.P[slicer] * self.vol[slicer]
         def _TEset(slicer,val):
             # dv = sqrt(2.0 * dKE / mass)
             #print "KESET"
-            self.PThermal[slicer] = val/(1.5*self.vol[slicer])
+            vhone.data.zpr[slicer,0,0] = val/(1.5*self.vol[slicer]*units.pressure)
         def _TEarr():
             # 0.5 * mass * v^2
             #print "KEARR"
-            return 1.5 * self.PThermal[0:self.ncells] * self.vol[0:self.ncells]
+            return 1.5 * self.P[0:self.ncells] * self.vol[0:self.ncells]
         self.TE = _Field(_TEget,_TEset,_TEarr)
         """ 
         GRAVITATIONAL POTENTIAL ENERGY
@@ -264,40 +252,12 @@ class _Hydro(object):
             return units.G * self.mass[slicer] * Minside[slicer] * invx[slicer]
         def _GPEset(slicer,val):
             # Not implemented yet!
-            print("GPE setting not implemented! (What would you set, though? Mass?)")
+            print("GPE setting not implemented! (What would you set, though?)")
             raise NotImplementedError
         def _GPEarr():
             # G*M*m/r
             return _GPEget(slice(0,self.ncells))
         self.GPE = _Field(_GPEget,_GPEset,_GPEarr)
-        """ 
-        MAGNETIC PRESSURE
-        Magnetic pressure stored below
-        """
-        def _PBget(slicer):
-            return self._PMagnetic[slicer]
-        def _PBset(slicer,val):
-            # Modify both the global pressure and the magnetic pressure tracker
-            PBdiff = val - self._PMagnetic[slicer]
-            self._PMagnetic[slicer] += PBdiff
-            self.P[slicer] += PBdiff
-        def _PBarr():
-            return self._PMagnetic[0:self.ncells]
-        self.PMagnetic = _Field(_PBget,_PBset,_PBarr)
-        """ 
-        MAGNETIC FIELD
-        Magnetic field
-        """
-        EIGHTPI = 8.0*np.pi
-        def _Bget(slicer):
-            return np.sqrt(EIGHTPI * self.PMagnetic[slicer])
-        def _Bset(slicer,val):
-            # Modify both the global pressure and the magnetic pressure tracker
-            Pmag = val**2 / EIGHTPI
-            self.PMagnetic[slicer] = Pmag
-        def _Barr():
-            return np.sqrt(EIGHTPI * self.PMagnetic[0:self.ncells])
-        self.Bfield = _Field(_Bget,_Bset,_Barr)
         """ 
         PYTHON-ONLY VARIABLES---------------------------------------
         These variables do not affect the underlying simulation code
@@ -324,10 +284,6 @@ class _Hydro(object):
         Absorption cross-section of dust in each radial unit
         """
         self.sigmaDust = np.zeros(self.ncells)
-        """ 
-        MAGNETIC PRESSURE (JUST THE MEMORY SPACE, USE THE ABOVE TO MANIPULATE IT)
-        """
-        self._PMagnetic = np.zeros(self.ncells)
         """ 
         GRAVITY
         The acceleration from gravity towards the centre

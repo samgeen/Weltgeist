@@ -210,17 +210,11 @@ class _Sources(object):
         source = WindSource(lum,massloss)
         self.AddSource(source)
 
-    def MakeSimpleRadiation(self, QH):
+    def MakeRadiation(self, Sphotons):
         """
         Inject a radiation source
-
-        Parameters
-        ----------
-
-        QH : float
-            Emission rate of ionising photons in number / s
         """
-        source = SimpleRadiationSource(QH)
+        source = RadiationSource(Sphotons)
         self.AddSource(source)
 
     def InjectSources(self):
@@ -299,9 +293,9 @@ class WindSource(AbstractSource):
         injector.AddKE(self._lum*dt)
         integrator.Integrator().CourantLimiter(self._vcourant)
 
-class SimpleRadiationSource(AbstractSource):
+class RadiationSource(AbstractSource):
     """
-    A simple source of ionising radiation
+    A source of radiation
     """
     def __init__(self,QH):
         """
@@ -311,10 +305,6 @@ class SimpleRadiationSource(AbstractSource):
             ionising photon emission rate (in s^-1)
         """
         self._QH = QH
-         # Set average photon energy to 15 eV 
-        self._ephoton = 15.0 * units.eV
-        # Set average temperature of photoionised gas to 10000 K
-        self._Tion = 1e4
 
     def Inject(self,injector):
         """
@@ -327,10 +317,7 @@ class SimpleRadiationSource(AbstractSource):
             object that accepts values to inject to grid
         """
         dt = integrator.Integrator().dt
-        injector.AddPhotons(self._QH*self._ephoton,
-                            0.0,
-                            self._ephoton,
-                            self._Tion)
+        injector.AddPhotons(self._QH*dt)
 
 class TableSource(AbstractSource):
     """
