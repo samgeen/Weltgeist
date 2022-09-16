@@ -1,0 +1,69 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module vhone ! in 
+    interface  ! in :vhone
+        module data ! in :vhone:../f2py/vhone.f90
+            use sweepsize
+            use global
+            use sweeps
+            use zone
+            integer :: nleftz
+            real(kind=8) :: zmax
+            real(kind=8) :: vdtext
+            real(kind=8), allocatable,dimension(:) :: zya
+            real(kind=8) dimension(1048588) :: v
+            real(kind=8) :: zmin
+            integer, parameter,optional :: maxsweep=1048588
+            real(kind=8) :: xmin
+            real(kind=8) :: ymin
+            real(kind=8), allocatable,dimension(:) :: zxa
+            real(kind=8), allocatable,dimension(:) :: zxc
+            real(kind=8) :: ymax
+            real(kind=8) dimension(1048588) :: p
+            integer :: ngeomx
+            real(kind=8), allocatable,dimension(:,:,:) :: zgr
+            real(kind=8), allocatable,dimension(:,:,:) :: zpr
+            integer :: ngeomz
+            real(kind=8), allocatable,dimension(:,:,:) :: zro
+            integer :: jmax
+            real(kind=8) dimension(1048588) :: w
+            real(kind=8), allocatable,dimension(:,:,:) :: zfl
+            real(kind=8) :: svel
+            real(kind=8) :: gam
+            integer :: kmax
+            integer :: imax
+            integer :: nrighty
+            integer :: nrightx
+            real(kind=8) dimension(1048588) :: e
+            real(kind=8) :: dt
+            real(kind=8), allocatable,dimension(:) :: zzc
+            integer :: ngeomy
+            real(kind=8), allocatable,dimension(:) :: zza
+            real(kind=8), allocatable,dimension(:) :: zdx
+            real(kind=8), allocatable,dimension(:) :: zdy
+            real(kind=8), allocatable,dimension(:) :: zyc
+            real(kind=8), allocatable,dimension(:) :: zdz
+            integer :: nlefty
+            integer :: nleftx
+            real(kind=8), allocatable,dimension(:,:,:) :: zux
+            real(kind=8), allocatable,dimension(:,:,:) :: zuy
+            real(kind=8) :: timep
+            real(kind=8), allocatable,dimension(:,:,:) :: zuz
+            real(kind=8) dimension(1048588) :: q
+            real(kind=8) :: timem
+            real(kind=8) dimension(1048588) :: r
+            real(kind=8) dimension(1048588) :: u
+            real(kind=8) :: xmax
+            real(kind=8) :: time
+            integer :: nrightz
+            subroutine setup ! in :vhone:../f2py/vhone.f90:data
+            end subroutine setup
+            subroutine step ! in :vhone:../f2py/vhone.f90:data
+            end subroutine step
+        end module data
+    end interface 
+end python module vhone
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
