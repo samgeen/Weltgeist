@@ -172,7 +172,7 @@ subroutine cooling_high(T,n,zsolar,ref)
     !use amr_parameters
     implicit none
 
-    real(kind=8) :: T,P,N,zsolar,x,ne                    !x est le taux d'ionisation
+    real(kind=8) :: T,P,n,zsolar,x,ne                    !x est le taux d'ionisation
     real(kind=8) :: T2, ref2
     real(kind=8) :: froid,chaud,ref,nc, froidc
     real(kind=8) :: froidcII, froido, froidh
@@ -231,7 +231,7 @@ subroutine cooling_low(T,n,zsolar,ref,chaud)
 
   implicit none
 
-  real(kind=8) :: T,P,N,zsolar,x,ne,x_ana                 !x est le taux d'ionisation
+  real(kind=8) :: T,P,n,zsolar,x,ne,x_ana                 !x est le taux d'ionisation
   real(kind=8) :: froid,chaud,ref,nc, froidc
   real(kind=8) :: froidcII, froido, froidh
   real(kind=8) :: froidc_m,froidcII_m,froido_m

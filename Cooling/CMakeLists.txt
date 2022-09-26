@@ -1,10 +1,10 @@
-project(Radiation)
+project(cooling_module)
 
-message(STATUS "Making Radiation...")
+message(STATUS "Making Cooling...")
 
-# Build raytracing
-set(f2py_module_name "raytracing")
-set(fortran_src_file "${CMAKE_SOURCE_DIR}/Radiation/raytracing.f90")
+# Build cooling
+set(f2py_module_name "cooling_module")
+set(fortran_src_file "${CMAKE_SOURCE_DIR}/Cooling/cooling_module_frig.f90")
 set(generated_module_file ${f2py_module_name}${PYTHON_EXTENSION_MODULE_SUFFIX})
 
 add_custom_target(${f2py_module_name} ALL
@@ -44,7 +44,7 @@ if (UNIX)
 endif()
 
 if (SKBUILD)
-  install(TARGETS ${generated_module_file} DESTINATION raytracing)
+  install(TARGETS ${generated_module_file} DESTINATION cooling_module)
 else()
-  install(TARGETS ${generated_module_file} DESTINATION ${CMAKE_SOURCE_DIR}/raytracing)
+  install(TARGETS ${generated_module_file} DESTINATION ${CMAKE_SOURCE_DIR}/cooling_module)
 endif()
