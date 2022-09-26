@@ -1,22 +1,52 @@
-find_package(F2PY REQUIRED)
+cmake_minimum_required(VERSION 3.17.0)
 
+project(Radiation)
 
-set(f2py_module_name "_raytracing")
-set(fortran_src_file "${CMAKE_CURRENT_SOURCE_DIR}/raytracing.f90")
+message(STATUS "F2PY included from: ${F2PY_INCLUDE_DIR}")
 
-set(generated_module_file ${CMAKE_CURRENT_BINARY_DIR}/${f2py_module_name}${PYTHON_EXTENSION_MODULE_SUFFIX})
+# Build raytracing
+set(f2py_module_name "raytracing")
+set(fortran_src_file "${CMAKE_SOURCE_DIR}/Radiation/raytracing.f90")
+set(generated_module_file ${f2py_module_name}${PYTHON_EXTENSION_MODULE_SUFFIX})
 
 add_custom_target(${f2py_module_name} ALL
-  DEPENDS ${generated_module_file}
+  DEPENDS "${fortran_src_file}"
   )
 
 add_custom_command(
-  OUTPUT ${generated_module_file}
+  OUTPUT "${f2py_module_name}module.c" "${f2py_module_name}-f2pywrappers2.f90"
   COMMAND ${F2PY_EXECUTABLE}
     -m ${f2py_module_name}
-    -c
     ${fortran_src_file}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  DEPENDS ${fortran_src_file}
   )
 
-install(FILES ${generated_module_file} DESTINATION raytracing)
+add_library(${generated_module_file} MODULE
+            "${f2py_module_name}module.c"
+            "${F2PY_INCLUDE_DIR}/fortranobject.c"
+            "${f2py_module_name}-f2pywrappers2.f90"
+             ${fortran_src_file})
+
+target_include_directories(${generated_module_file} PUBLIC
+                           ${F2PY_INCLUDE_DIRS}
+                           ${PYTHON_INCLUDE_DIRS})
+set_target_properties(${generated_module_file} PROPERTIES SUFFIX "")
+set_target_properties(${generated_module_file} PROPERTIES PREFIX "")
+
+
+if (UNIX)
+  if (APPLE)
+    set_target_properties(${generated_module_file} PROPERTIES
+    LINK_FLAGS  '-Wl,-dylib,-undefined,dynamic_lookup')
+  else()
+    set_target_properties(${generated_module_file} PROPERTIES
+  LINK_FLAGS  '-Wl,--allow-shlib-undefined')
+  endif()
+endif()
+
+if (SKBUILD)
+  install(TARGETS ${generated_module_file} DESTINATION raytracing)
+else()
+  install(TARGETS ${generated_module_file} DESTINATION ${CMAKE_SOURCE_DIR}/raytracing)
+endif()
