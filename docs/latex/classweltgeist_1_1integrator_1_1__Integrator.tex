@@ -1,0 +1,237 @@
+\hypertarget{classweltgeist_1_1integrator_1_1__Integrator}{}\doxysection{weltgeist.\+integrator.\+\_\+\+Integrator Class Reference}
+\label{classweltgeist_1_1integrator_1_1__Integrator}\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+
+
+Inheritance diagram for weltgeist.\+integrator.\+\_\+\+Integrator\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=195pt]{classweltgeist_1_1integrator_1_1__Integrator__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for weltgeist.\+integrator.\+\_\+\+Integrator\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=195pt]{classweltgeist_1_1integrator_1_1__Integrator__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a672b2ce73d3b2e6b281212fd46555ecb}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a2a15ac7c8e5d66d4dc662c1f40cc0290}{Save}} (self, filename)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a83d6b952c07adf531c012fd0cde16280}{Load}} (self, filename)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_adcd0bf0cba7812e3d09aab332429cb5e}{Add\+Saver}} (self, saver)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a9ebf0d183337cb004f5a3ecf19b20b09}{Remove\+Saver}} (self, saver)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a86dc612370afca2ea37aa2f60aea16b7}{Setup}} (self, ncells=512, rmax=20.\+0 $\ast$\mbox{\hyperlink{namespaceweltgeist_1_1units_a2c6d3686a2f41050fbd6ed11a71e3b5d}{units.\+pc}}, n0=1000.\+0, T0=10.\+0, gamma=5.\+0/3.\+0)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a4260327018a9f6e31bcdc2daf211cfbe}{Reset}} (self)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_afc6db41e75a9f36e417bc855066031eb}{Step}} (self)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a7049066db6371e806fe8c4b274cb87d7}{Courant\+Limiter}} (self, vin)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_aae6e6ca620f5d2ff7db5c1bc1ca7f756}{time}} (self)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a2736b091890f3eadaf70083dc85e117a}{Time}} (self)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a52c0fb59157a54680a881b98bbadb57d}{dt}} (self)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1integrator_1_1__Integrator_a9a4c5ab4928f822b97ca2b804024010a}{hydro}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}This class controls the operation of the underlying simulation code
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a672b2ce73d3b2e6b281212fd46555ecb}\label{classweltgeist_1_1integrator_1_1__Integrator_a672b2ce73d3b2e6b281212fd46555ecb}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Constructor
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_adcd0bf0cba7812e3d09aab332429cb5e}\label{classweltgeist_1_1integrator_1_1__Integrator_adcd0bf0cba7812e3d09aab332429cb5e}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!AddSaver@{AddSaver}}
+\index{AddSaver@{AddSaver}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{AddSaver()}{AddSaver()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+Add\+Saver (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{saver }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Add a Saver object to the list of savers to monitor
+
+Constructor
+
+Parameters
+----------
+
+folder: string
+    Where to save the outputs?
+dtout: float
+    How frequently to output?
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a7049066db6371e806fe8c4b274cb87d7}\label{classweltgeist_1_1integrator_1_1__Integrator_a7049066db6371e806fe8c4b274cb87d7}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!CourantLimiter@{CourantLimiter}}
+\index{CourantLimiter@{CourantLimiter}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{CourantLimiter()}{CourantLimiter()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+Courant\+Limiter (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{vin }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Limits the timestep to prevent flows faster than vin
+VH1 has this already, so in general this isn't really needed
+This is mainly useful for winds where we need to prepare the
+ grid to accept fast flows and prevent a too-long first 
+ timestep
+
+Parameters
+----------
+vin: float
+    velocity to limit the timestep to 
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a52c0fb59157a54680a881b98bbadb57d}\label{classweltgeist_1_1integrator_1_1__Integrator_a52c0fb59157a54680a881b98bbadb57d}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!dt@{dt}}
+\index{dt@{dt}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{dt()}{dt()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+dt (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get the last timestep length on the grid
+NOTE: don't use self._dt_code yourself! Use this
+
+Returns
+-------
+dt : float
+    timestep in seconds
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a9a4c5ab4928f822b97ca2b804024010a}\label{classweltgeist_1_1integrator_1_1__Integrator_a9a4c5ab4928f822b97ca2b804024010a}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!hydro@{hydro}}
+\index{hydro@{hydro}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{hydro()}{hydro()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+hydro (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return the object containing the grid of hydrodynamic variables
+
+Returns
+-------
+hydro : _Hydro
+    object containing grid of hydrodynamic variables
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a83d6b952c07adf531c012fd0cde16280}\label{classweltgeist_1_1integrator_1_1__Integrator_a83d6b952c07adf531c012fd0cde16280}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!Load@{Load}}
+\index{Load@{Load}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{Load()}{Load()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+Load (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{filename }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load the current simulation state from file
+TODO: Add sources
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a9ebf0d183337cb004f5a3ecf19b20b09}\label{classweltgeist_1_1integrator_1_1__Integrator_a9ebf0d183337cb004f5a3ecf19b20b09}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!RemoveSaver@{RemoveSaver}}
+\index{RemoveSaver@{RemoveSaver}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{RemoveSaver()}{RemoveSaver()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+Remove\+Saver (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{saver }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Remove Saver from list to monitor
+
+Constructor
+
+Parameters
+----------
+
+saver: _Saver object
+    Object to pop off the list of savers to monitor
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a4260327018a9f6e31bcdc2daf211cfbe}\label{classweltgeist_1_1integrator_1_1__Integrator_a4260327018a9f6e31bcdc2daf211cfbe}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!Reset@{Reset}}
+\index{Reset@{Reset}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+Reset (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Reset the grid
+This allows Setup to be called again with a new gridsize
+If ncells and rmax is the same, you don't need to change anything
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a2a15ac7c8e5d66d4dc662c1f40cc0290}\label{classweltgeist_1_1integrator_1_1__Integrator_a2a15ac7c8e5d66d4dc662c1f40cc0290}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!Save@{Save}}
+\index{Save@{Save}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{Save()}{Save()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+Save (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{filename }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Save the current simulation state to file
+TODO: Add sources
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a86dc612370afca2ea37aa2f60aea16b7}\label{classweltgeist_1_1integrator_1_1__Integrator_a86dc612370afca2ea37aa2f60aea16b7}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!Setup@{Setup}}
+\index{Setup@{Setup}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{Setup()}{Setup()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+Setup (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{ncells = {\ttfamily 512},  }\item[{}]{rmax = {\ttfamily 20.0$\ast$\mbox{\hyperlink{namespaceweltgeist_1_1units_a2c6d3686a2f41050fbd6ed11a71e3b5d}{units.\+pc}}},  }\item[{}]{n0 = {\ttfamily 1000.0},  }\item[{}]{T0 = {\ttfamily 10.0},  }\item[{}]{gamma = {\ttfamily 5.0/3.0} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Main initialisation function
+Note that the grid can be altered at any time using the hydro module
+
+Parameters
+----------
+
+ncells: integer
+    Number of cells to use
+    default: 512
+rmax: float
+    Sets the maximum size of the grid
+    default: 20 pc
+n0: float
+    Sets the initial Hydrogen number density of the gas
+    default: 1000 cm^-3
+T0: float
+    Sets the initial temperature of the gas
+    default: 10 K
+gamma: float
+    Sets the adiabatic index of the gas
+    default: 5/3 (monatomic)
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_afc6db41e75a9f36e417bc855066031eb}\label{classweltgeist_1_1integrator_1_1__Integrator_afc6db41e75a9f36e417bc855066031eb}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!Step@{Step}}
+\index{Step@{Step}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{Step()}{Step()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+Step (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Run a single hydrodynamic step
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_aae6e6ca620f5d2ff7db5c1bc1ca7f756}\label{classweltgeist_1_1integrator_1_1__Integrator_aae6e6ca620f5d2ff7db5c1bc1ca7f756}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!time@{time}}
+\index{time@{time}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{time()}{time()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+time (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get the time on the grid
+NOTE: don't use self._time_code yourself! Use this
+
+Returns
+-------
+dt : float
+    current simulation time in seconds
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1integrator_1_1__Integrator_a2736b091890f3eadaf70083dc85e117a}\label{classweltgeist_1_1integrator_1_1__Integrator_a2736b091890f3eadaf70083dc85e117a}} 
+\index{weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}!Time@{Time}}
+\index{Time@{Time}!weltgeist.integrator.\_Integrator@{weltgeist.integrator.\_Integrator}}
+\doxysubsubsection{\texorpdfstring{Time()}{Time()}}
+{\footnotesize\ttfamily def weltgeist.\+integrator.\+\_\+\+Integrator.\+Time (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Convenience function if you want to just call time as a function
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+weltgeist/\mbox{\hyperlink{integrator_8py}{integrator.\+py}}\end{DoxyCompactItemize}

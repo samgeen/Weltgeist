@@ -1,0 +1,8 @@
+<map id="weltgeist.sources.AbstractSource" name="weltgeist.sources.AbstractSource">
+<area shape="rect" id="node1" title=" " alt="" coords="116,100,311,141"/>
+<area shape="rect" id="node3" href="$classweltgeist_1_1sources_1_1SimpleRadiationSource.html" title=" " alt="" coords="375,5,561,47"/>
+<area shape="rect" id="node4" href="$classweltgeist_1_1sources_1_1SupernovaSource.html" title=" " alt="" coords="363,71,573,112"/>
+<area shape="rect" id="node5" href="$classweltgeist_1_1sources_1_1TableSource.html" title=" " alt="" coords="359,137,577,163"/>
+<area shape="rect" id="node6" href="$classweltgeist_1_1sources_1_1WindSource.html" title=" " alt="" coords="359,187,577,214"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,107,68,134"/>
+</map>

@@ -1,0 +1,40 @@
+\hypertarget{cooling__module__frig_8f90}{}\doxysection{Cooling/cooling\+\_\+module\+\_\+frig.f90 File Reference}
+\label{cooling__module__frig_8f90}\index{Cooling/cooling\_module\_frig.f90@{Cooling/cooling\_module\_frig.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{cooling__module__frig_8f90_a7db2fc2fc6b2c518fe278bd437fca2f4}{solve\+\_\+cooling\+\_\+frig}} (nH, T2, zsolar, dt, gamma, ncell, delta\+T2)
+\item 
+subroutine \mbox{\hyperlink{cooling__module__frig_8f90_a8514815c1f31fcd6d46e953fe4235f40}{calc\+\_\+temp}} (NN, TT, zsolar, dt\+\_\+tot, gamma)
+\item 
+subroutine \mbox{\hyperlink{cooling__module__frig_8f90_a0ef823d3fd9da17b242d3250ceb2c300}{cooling\+\_\+high}} (T, n, zsolar, ref)
+\item 
+subroutine \mbox{\hyperlink{cooling__module__frig_8f90_a874dfe8e3e62ad9058e94dbcf3226dbd}{cooling\+\_\+low}} (T, n, zsolar, ref, chaud)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{cooling__module__frig_8f90_a8514815c1f31fcd6d46e953fe4235f40}\label{cooling__module__frig_8f90_a8514815c1f31fcd6d46e953fe4235f40}} 
+\index{cooling\_module\_frig.f90@{cooling\_module\_frig.f90}!calc\_temp@{calc\_temp}}
+\index{calc\_temp@{calc\_temp}!cooling\_module\_frig.f90@{cooling\_module\_frig.f90}}
+\doxysubsubsection{\texorpdfstring{calc\_temp()}{calc\_temp()}}
+{\footnotesize\ttfamily subroutine calc\+\_\+temp (\begin{DoxyParamCaption}\item[{real(kind=8)}]{NN,  }\item[{real(kind=8)}]{TT,  }\item[{real(kind=8)}]{zsolar,  }\item[{real(kind=8)}]{dt\+\_\+tot,  }\item[{real(kind=8)}]{gamma }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{cooling__module__frig_8f90_a0ef823d3fd9da17b242d3250ceb2c300}\label{cooling__module__frig_8f90_a0ef823d3fd9da17b242d3250ceb2c300}} 
+\index{cooling\_module\_frig.f90@{cooling\_module\_frig.f90}!cooling\_high@{cooling\_high}}
+\index{cooling\_high@{cooling\_high}!cooling\_module\_frig.f90@{cooling\_module\_frig.f90}}
+\doxysubsubsection{\texorpdfstring{cooling\_high()}{cooling\_high()}}
+{\footnotesize\ttfamily subroutine cooling\+\_\+high (\begin{DoxyParamCaption}\item[{real(kind=8)}]{T,  }\item[{real(kind=8)}]{n,  }\item[{real(kind=8)}]{zsolar,  }\item[{real(kind=8)}]{ref }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{cooling__module__frig_8f90_a874dfe8e3e62ad9058e94dbcf3226dbd}\label{cooling__module__frig_8f90_a874dfe8e3e62ad9058e94dbcf3226dbd}} 
+\index{cooling\_module\_frig.f90@{cooling\_module\_frig.f90}!cooling\_low@{cooling\_low}}
+\index{cooling\_low@{cooling\_low}!cooling\_module\_frig.f90@{cooling\_module\_frig.f90}}
+\doxysubsubsection{\texorpdfstring{cooling\_low()}{cooling\_low()}}
+{\footnotesize\ttfamily subroutine cooling\+\_\+low (\begin{DoxyParamCaption}\item[{real(kind=8)}]{T,  }\item[{real(kind=8)}]{n,  }\item[{real(kind=8)}]{zsolar,  }\item[{real(kind=8)}]{ref,  }\item[{real(kind=8)}]{chaud }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{cooling__module__frig_8f90_a7db2fc2fc6b2c518fe278bd437fca2f4}\label{cooling__module__frig_8f90_a7db2fc2fc6b2c518fe278bd437fca2f4}} 
+\index{cooling\_module\_frig.f90@{cooling\_module\_frig.f90}!solve\_cooling\_frig@{solve\_cooling\_frig}}
+\index{solve\_cooling\_frig@{solve\_cooling\_frig}!cooling\_module\_frig.f90@{cooling\_module\_frig.f90}}
+\doxysubsubsection{\texorpdfstring{solve\_cooling\_frig()}{solve\_cooling\_frig()}}
+{\footnotesize\ttfamily subroutine solve\+\_\+cooling\+\_\+frig (\begin{DoxyParamCaption}\item[{real(kind=8), dimension(1\+:ncell), intent(in)}]{nH,  }\item[{real(kind=8), dimension(1\+:ncell), intent(in)}]{T2,  }\item[{real(kind=8), dimension(1\+:ncell), intent(in)}]{zsolar,  }\item[{real(kind=8), intent(in)}]{dt,  }\item[{real(kind=8), intent(in)}]{gamma,  }\item[{integer, intent(in)}]{ncell,  }\item[{real(kind=8), dimension(1\+:ncell), intent(out)}]{delta\+T2 }\end{DoxyParamCaption})}
+

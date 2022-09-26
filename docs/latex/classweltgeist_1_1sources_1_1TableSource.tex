@@ -1,0 +1,81 @@
+\hypertarget{classweltgeist_1_1sources_1_1TableSource}{}\doxysection{weltgeist.\+sources.\+Table\+Source Class Reference}
+\label{classweltgeist_1_1sources_1_1TableSource}\index{weltgeist.sources.TableSource@{weltgeist.sources.TableSource}}
+
+
+Inheritance diagram for weltgeist.\+sources.\+Table\+Source\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{classweltgeist_1_1sources_1_1TableSource__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for weltgeist.\+sources.\+Table\+Source\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{classweltgeist_1_1sources_1_1TableSource__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1TableSource_ac621291b8dcad30968c42510cfc4e6e3}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, mass, tbirth=0.\+0, radiation=True, wind=True)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1TableSource_a0e0a5aee0f614b74e04f30f403c87b58}{Inject}} (self, injector)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Source of energy & photons based on a lookup table
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1sources_1_1TableSource_ac621291b8dcad30968c42510cfc4e6e3}\label{classweltgeist_1_1sources_1_1TableSource_ac621291b8dcad30968c42510cfc4e6e3}} 
+\index{weltgeist.sources.TableSource@{weltgeist.sources.TableSource}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!weltgeist.sources.TableSource@{weltgeist.sources.TableSource}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+Table\+Source.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{mass,  }\item[{}]{tbirth = {\ttfamily 0.0},  }\item[{}]{radiation = {\ttfamily True},  }\item[{}]{wind = {\ttfamily True} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Constructor
+
+Parameters
+----------
+
+mass : float
+    Mass of star in solar masses
+tbirth : float
+    Birth time of the star in seconds
+radiation : bool
+    Turn radiation on?
+wind : bool
+    Turn winds on?
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1sources_1_1TableSource_a0e0a5aee0f614b74e04f30f403c87b58}\label{classweltgeist_1_1sources_1_1TableSource_a0e0a5aee0f614b74e04f30f403c87b58}} 
+\index{weltgeist.sources.TableSource@{weltgeist.sources.TableSource}!Inject@{Inject}}
+\index{Inject@{Inject}!weltgeist.sources.TableSource@{weltgeist.sources.TableSource}}
+\doxysubsubsection{\texorpdfstring{Inject()}{Inject()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+Table\+Source.\+Inject (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{injector }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Injects feedback from single stars over the timestep
+
+Parameters
+----------
+
+injector : _Injector object
+    object that accepts values to inject to grid
+\end{DoxyVerb}
+ 
+
+Reimplemented from \mbox{\hyperlink{classweltgeist_1_1sources_1_1AbstractSource_a02542c03d5f027f68685c2f469fa4328}{weltgeist.\+sources.\+Abstract\+Source}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+weltgeist/\mbox{\hyperlink{sources_8py}{sources.\+py}}\end{DoxyCompactItemize}

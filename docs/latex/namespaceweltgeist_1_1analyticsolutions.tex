@@ -1,0 +1,182 @@
+\hypertarget{namespaceweltgeist_1_1analyticsolutions}{}\doxysection{weltgeist.\+analyticsolutions Namespace Reference}
+\label{namespaceweltgeist_1_1analyticsolutions}\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a69e945cb2254eaac53c642c4d564dd94}{Sedov\+Taylor\+Solution}} (time, energy, density)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a5a665805486b5400423a0c8d09e53f99}{Adiabatic\+Wind}} (lum, ml, rho, time, model=\char`\"{}Castor\char`\"{})
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a711785ba3f0228bfcd51833c65140010}{Spitzer\+Solution}} (QH, n0, time, Tion=8400.\+0)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a41d4775e6b606d2af73e0ae939d7e644}{Spitzer\+Density}} (QH, n0, time, Tion=8400.\+0)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_ab3e46c382756314b34c297d9afc0791d}{Collapse\+Solution}} (rho, rho0)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_abd569fff86b309884024f7a0250aa68b}{Collapse\+Solution\+Position}} (x, x0)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a26daa5428ba9dc6619e9b1adac3c3956}{Myr}} = 3.\+1557e13
+\item 
+int \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a8a80043ae1f742ecc420a2bea4fa330f}{yr}} = 1e-\/6 $\ast$ \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a26daa5428ba9dc6619e9b1adac3c3956}{Myr}}
+\item 
+float \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a6dff19751e3abcaccff4850ca5752421}{pc}} = 3.\+0857e18
+\item 
+float \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a8adb26a5d67f80f797ca664ce9b09f84}{mH}} = 1.\+66e-\/24
+\item 
+float \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_afd2f3e4cb96ae58082bed4d8661cb598}{mp}} = \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a8adb26a5d67f80f797ca664ce9b09f84}{mH}} / \mbox{\hyperlink{namespaceweltgeist_1_1units_a7b9d9ff6c405baaf06acba4dad4d5367}{units.\+X}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Analytic solutions for test problems
+Sam Geen, September 2016
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_a5a665805486b5400423a0c8d09e53f99}\label{namespaceweltgeist_1_1analyticsolutions_a5a665805486b5400423a0c8d09e53f99}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!AdiabaticWind@{AdiabaticWind}}
+\index{AdiabaticWind@{AdiabaticWind}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{AdiabaticWind()}{AdiabaticWind()}}
+{\footnotesize\ttfamily def weltgeist.\+analyticsolutions.\+Adiabatic\+Wind (\begin{DoxyParamCaption}\item[{}]{lum,  }\item[{}]{ml,  }\item[{}]{rho,  }\item[{}]{time,  }\item[{}]{model = {\ttfamily \char`\"{}Castor\char`\"{}} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Adiabatic solution for a constant wind
+
+Parameters
+----------
+
+lum = luminosity in ergs/s
+ml = mass loss rate in g/s
+rho = density in H/cc
+time = time in s
+model = which model to use ("Castor","Avedisova")
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_ab3e46c382756314b34c297d9afc0791d}\label{namespaceweltgeist_1_1analyticsolutions_ab3e46c382756314b34c297d9afc0791d}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!CollapseSolution@{CollapseSolution}}
+\index{CollapseSolution@{CollapseSolution}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{CollapseSolution()}{CollapseSolution()}}
+{\footnotesize\ttfamily def weltgeist.\+analyticsolutions.\+Collapse\+Solution (\begin{DoxyParamCaption}\item[{}]{rho,  }\item[{}]{rho0 }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Calculate a free-fall collapse solution
+rho - density to calculate time at in g/cm^3
+rho0 - initial density (used to calculate tff) in g/cm^3
+Sam Geen, March 2018
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_abd569fff86b309884024f7a0250aa68b}\label{namespaceweltgeist_1_1analyticsolutions_abd569fff86b309884024f7a0250aa68b}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!CollapseSolutionPosition@{CollapseSolutionPosition}}
+\index{CollapseSolutionPosition@{CollapseSolutionPosition}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{CollapseSolutionPosition()}{CollapseSolutionPosition()}}
+{\footnotesize\ttfamily def weltgeist.\+analyticsolutions.\+Collapse\+Solution\+Position (\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{x0 }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Calculate a free-fall collapse solution
+x - position to calculate time at in cm
+x0 - initial position in cm
+Sam Geen, March 2018
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_a69e945cb2254eaac53c642c4d564dd94}\label{namespaceweltgeist_1_1analyticsolutions_a69e945cb2254eaac53c642c4d564dd94}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!SedovTaylorSolution@{SedovTaylorSolution}}
+\index{SedovTaylorSolution@{SedovTaylorSolution}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{SedovTaylorSolution()}{SedovTaylorSolution()}}
+{\footnotesize\ttfamily def weltgeist.\+analyticsolutions.\+Sedov\+Taylor\+Solution (\begin{DoxyParamCaption}\item[{}]{time,  }\item[{}]{energy,  }\item[{}]{density }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Adiabatic solution for a blastwave
+See http://www.astronomy.ohio-state.edu/~ryden/ast825/ch5-6.pdf
+
+Parameters
+----------
+
+time : float/array
+    time(s) to calculate at in seconds
+energy : float
+    energy of the blastwave in erg
+density : float
+    density of the background in g cm^-3
+
+Returns
+-------
+
+radius : float/array
+    a radius for each time inputted
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_a41d4775e6b606d2af73e0ae939d7e644}\label{namespaceweltgeist_1_1analyticsolutions_a41d4775e6b606d2af73e0ae939d7e644}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!SpitzerDensity@{SpitzerDensity}}
+\index{SpitzerDensity@{SpitzerDensity}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{SpitzerDensity()}{SpitzerDensity()}}
+{\footnotesize\ttfamily def weltgeist.\+analyticsolutions.\+Spitzer\+Density (\begin{DoxyParamCaption}\item[{}]{QH,  }\item[{}]{n0,  }\item[{}]{time,  }\item[{}]{Tion = {\ttfamily 8400.0} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Spitzer solution for the ionised gas density
+
+Parameters
+----------
+QH : float
+    photon emission rate in photons/second
+n0 : float
+    hydrogen number density in cm^-3
+time : float or numpy array
+    time in s
+
+Returns
+-------
+ni : float or numpy array
+    hydrogen number density in ionised gas
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_a711785ba3f0228bfcd51833c65140010}\label{namespaceweltgeist_1_1analyticsolutions_a711785ba3f0228bfcd51833c65140010}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!SpitzerSolution@{SpitzerSolution}}
+\index{SpitzerSolution@{SpitzerSolution}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{SpitzerSolution()}{SpitzerSolution()}}
+{\footnotesize\ttfamily def weltgeist.\+analyticsolutions.\+Spitzer\+Solution (\begin{DoxyParamCaption}\item[{}]{QH,  }\item[{}]{n0,  }\item[{}]{time,  }\item[{}]{Tion = {\ttfamily 8400.0} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Spitzer solution for a photoionisation front
+
+Parameters
+----------
+QH : float
+    photon emission rate in photons/second
+n0 : float
+    hydrogen number density in cm^-3
+time : float or numpy array
+    time in s
+Tion : float
+    ionised gas temperature in K
+
+Returns
+-------
+radius : float or numpy array
+    radius in cm (same length as time)
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_a8adb26a5d67f80f797ca664ce9b09f84}\label{namespaceweltgeist_1_1analyticsolutions_a8adb26a5d67f80f797ca664ce9b09f84}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!mH@{mH}}
+\index{mH@{mH}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{mH}{mH}}
+{\footnotesize\ttfamily float weltgeist.\+analyticsolutions.\+mH = 1.\+66e-\/24}
+
+\mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_afd2f3e4cb96ae58082bed4d8661cb598}\label{namespaceweltgeist_1_1analyticsolutions_afd2f3e4cb96ae58082bed4d8661cb598}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!mp@{mp}}
+\index{mp@{mp}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{mp}{mp}}
+{\footnotesize\ttfamily float weltgeist.\+analyticsolutions.\+mp = \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a8adb26a5d67f80f797ca664ce9b09f84}{mH}} / \mbox{\hyperlink{namespaceweltgeist_1_1units_a7b9d9ff6c405baaf06acba4dad4d5367}{units.\+X}}}
+
+\mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_a26daa5428ba9dc6619e9b1adac3c3956}\label{namespaceweltgeist_1_1analyticsolutions_a26daa5428ba9dc6619e9b1adac3c3956}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!Myr@{Myr}}
+\index{Myr@{Myr}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{Myr}{Myr}}
+{\footnotesize\ttfamily float weltgeist.\+analyticsolutions.\+Myr = 3.\+1557e13}
+
+\mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_a6dff19751e3abcaccff4850ca5752421}\label{namespaceweltgeist_1_1analyticsolutions_a6dff19751e3abcaccff4850ca5752421}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!pc@{pc}}
+\index{pc@{pc}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{pc}{pc}}
+{\footnotesize\ttfamily float weltgeist.\+analyticsolutions.\+pc = 3.\+0857e18}
+
+\mbox{\Hypertarget{namespaceweltgeist_1_1analyticsolutions_a8a80043ae1f742ecc420a2bea4fa330f}\label{namespaceweltgeist_1_1analyticsolutions_a8a80043ae1f742ecc420a2bea4fa330f}} 
+\index{weltgeist.analyticsolutions@{weltgeist.analyticsolutions}!yr@{yr}}
+\index{yr@{yr}!weltgeist.analyticsolutions@{weltgeist.analyticsolutions}}
+\doxysubsubsection{\texorpdfstring{yr}{yr}}
+{\footnotesize\ttfamily int weltgeist.\+analyticsolutions.\+yr = 1e-\/6 $\ast$ \mbox{\hyperlink{namespaceweltgeist_1_1analyticsolutions_a26daa5428ba9dc6619e9b1adac3c3956}{Myr}}}
+

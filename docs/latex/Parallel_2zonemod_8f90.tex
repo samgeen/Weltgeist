@@ -1,0 +1,116 @@
+\hypertarget{Parallel_2zonemod_8f90}{}\doxysection{VH1/src/\+Parallel/zonemod.f90 File Reference}
+\label{Parallel_2zonemod_8f90}\index{VH1/src/Parallel/zonemod.f90@{VH1/src/Parallel/zonemod.f90}}
+\doxysubsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \mbox{\hyperlink{namespacezone}{zone}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+integer, parameter \mbox{\hyperlink{namespacezone_a14ecf9caee6caf9bb4f93d5e79dc3151}{zone\+::imax}} = 100
+\item 
+integer, parameter \mbox{\hyperlink{namespacezone_afd8c43a3c57d91c725d7aa4b485615f9}{zone\+::jmax}} = 100
+\item 
+integer, parameter \mbox{\hyperlink{namespacezone_a2f73f803af7d6b60afe8e8917595e025}{zone\+::kmax}} = 100
+\item 
+integer, parameter \mbox{\hyperlink{namespacezone_aa421f013e80f2730edac913f28c11e48}{zone\+::pey}} = 4
+\item 
+integer, parameter \mbox{\hyperlink{namespacezone_a79f0b5f4c1a48b0fbd7dce7531be493f}{zone\+::pez}} = 4
+\item 
+integer, parameter \mbox{\hyperlink{namespacezone_a0ea364be40ee6ac7f795b456486b39ec}{zone\+::nvar}} = 6
+\item 
+integer \mbox{\hyperlink{namespacezone_aaf5fb59f45ad78d07b87cd14091ce8f4}{zone\+::isy}}
+\item 
+integer \mbox{\hyperlink{namespacezone_ab947b9c7e7be2ceb8aae47e7716eb137}{zone\+::isz}}
+\item 
+integer \mbox{\hyperlink{namespacezone_afd8f15235908bffb5fb2d943587d63a7}{zone\+::js}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a99233743ad3b5a66893fd594ffaa1253}{zone\+::ks}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a75a2f2f111377f937739574fb81b3dcf}{zone\+::ya2abuff\+\_\+size}}
+\item 
+integer \mbox{\hyperlink{namespacezone_ad8ba1a6571046d6c30705df96a65a7b3}{zone\+::za2abuff\+\_\+size}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a7930b3df84f29d0f0b126a1637f5d814}{zone\+::npe}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a78e3c1d01d9f5b3b5cc8f3d96e6f5162}{zone\+::npey}}
+\item 
+integer \mbox{\hyperlink{namespacezone_afe2b77bc0764c518f5c3061b1705f3cc}{zone\+::npez}}
+\item 
+integer \mbox{\hyperlink{namespacezone_ace9b83d0925fff0fe304efbc4313bb3c}{zone\+::mype}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a2fd531b8ee40152c83d4f0c9ca66f09f}{zone\+::mypey}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a4c16af8607ea7a6c32a3e8569d754339}{zone\+::mypez}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a49a4b1f6f696e0a701bc66b578f972c8}{zone\+::mpi\+\_\+comm\+\_\+row}}
+\item 
+integer \mbox{\hyperlink{namespacezone_af42cd39f75555960729117a575d4a1c7}{zone\+::mpi\+\_\+comm\+\_\+col}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a7c4001cc33aa4abb7cf0a4186800f659}{zone\+::vh1\+\_\+datatype}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a69052e822d1c8b3b6d665c954b9f4228}{zone\+::ngeomx}}
+\item 
+integer \mbox{\hyperlink{namespacezone_aa6e936b7211bab03f7cf436d000d4b8b}{zone\+::ngeomy}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a9db6fece88f9821c128f93ea21be57c3}{zone\+::ngeomz}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a9a8d22ae388cc059f187dfb20f04c9ec}{zone\+::nleftx}}
+\item 
+integer \mbox{\hyperlink{namespacezone_ad1c366c451262bf6de67f3aa37f99b68}{zone\+::nlefty}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a31fb13771c8a882829050d753cf58205}{zone\+::nleftz}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a989bbfc6a7747912f3be6ce752d43c66}{zone\+::nrightx}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a5586df64dfc14de1af13398dddbc867f}{zone\+::nrighty}}
+\item 
+integer \mbox{\hyperlink{namespacezone_a3201b2ef5c7765636b9a616166fb0b18}{zone\+::nrightz}}
+\item 
+real, dimension(imax, jmax/pey, kmax/pez) \mbox{\hyperlink{namespacezone_aecaaf6e28ee5aa96823ed11db7e48f41}{zone\+::zro}}
+\item 
+real, dimension(imax, jmax/pey, kmax/pez) \mbox{\hyperlink{namespacezone_a89f87bdd0e790c2ad71e9b71691816bf}{zone\+::zpr}}
+\item 
+real, dimension(imax, jmax/pey, kmax/pez) \mbox{\hyperlink{namespacezone_a267b0aab969d95c8410e423b5916bc25}{zone\+::zux}}
+\item 
+real, dimension(imax, jmax/pey, kmax/pez) \mbox{\hyperlink{namespacezone_a94e268be135ce895041e3a3931f680ae}{zone\+::zuy}}
+\item 
+real, dimension(imax, jmax/pey, kmax/pez) \mbox{\hyperlink{namespacezone_a8380de44d422b906213c6387e80245c6}{zone\+::zuz}}
+\item 
+real, dimension(imax, jmax/pey, kmax/pez) \mbox{\hyperlink{namespacezone_a86b7d44a973fdcaa1d62583e3242596f}{zone\+::zfl}}
+\item 
+real, dimension(imax) \mbox{\hyperlink{namespacezone_a5ab73b945576f50d05cfa9af4b77fae3}{zone\+::zxa}}
+\item 
+real, dimension(imax) \mbox{\hyperlink{namespacezone_abd6bb765e2dddee954bc78ee974d30a7}{zone\+::zdx}}
+\item 
+real, dimension(imax) \mbox{\hyperlink{namespacezone_a339157186bcf1485473e580d243a232d}{zone\+::zxc}}
+\item 
+real, dimension(jmax) \mbox{\hyperlink{namespacezone_a90f51b6286435eb33c3ed871a6bfa48c}{zone\+::zya}}
+\item 
+real, dimension(jmax) \mbox{\hyperlink{namespacezone_a52c1fd08b4802f442992148466a6af08}{zone\+::zdy}}
+\item 
+real, dimension(jmax) \mbox{\hyperlink{namespacezone_a27276b6f122f4d1168bd232708300c63}{zone\+::zyc}}
+\item 
+real, dimension(kmax) \mbox{\hyperlink{namespacezone_a83ac5bbf5ff2d72af149f5b88f79c554}{zone\+::zza}}
+\item 
+real, dimension(kmax) \mbox{\hyperlink{namespacezone_a5d57f41f27b28fd06c652e45bea3a3ad}{zone\+::zdz}}
+\item 
+real, dimension(kmax) \mbox{\hyperlink{namespacezone_a2a11b90936cc93c6fc2a8d8233f8c469}{zone\+::zzc}}
+\item 
+real, dimension(nvar, kmax/pez, jmax/pey, imax) \mbox{\hyperlink{namespacezone_a434d816f6fda2efc23ef6450124f8b99}{zone\+::send1}}
+\item 
+real, dimension(nvar, kmax/pez, imax/pey, jmax) \mbox{\hyperlink{namespacezone_a6d903622ca0cf997a5c81c352d6f3674}{zone\+::send2}}
+\item 
+real, dimension(nvar, jmax/pey, kmax/pez, imax) \mbox{\hyperlink{namespacezone_ad317c3a5425ae20e3ca685517290f8fb}{zone\+::send3}}
+\item 
+real, dimension(nvar, jmax/pey, imax/pez, kmax) \mbox{\hyperlink{namespacezone_a23ff3cbf7637e3594f754ec2b75eaaa2}{zone\+::send4}}
+\item 
+real, dimension(nvar, kmax/pez, jmax/pey, imax/pey, pey) \mbox{\hyperlink{namespacezone_a4d49dc394cc41d61812eb205f55dbb88}{zone\+::recv1}}
+\item 
+real, dimension(nvar, kmax/pez, imax/pey, jmax/pey, pey) \mbox{\hyperlink{namespacezone_a636151746785ccea287bba39db735c30}{zone\+::recv2}}
+\item 
+real, dimension(nvar, jmax/pey, kmax/pez, imax/pez, pez) \mbox{\hyperlink{namespacezone_a896a1ad3a2e716c2d487b6cd649c0da4}{zone\+::recv3}}
+\item 
+real, dimension(nvar, jmax/pey, imax/pez, kmax/pez, pez) \mbox{\hyperlink{namespacezone_a519003ce3cc66b402651bd853e63e5cc}{zone\+::recv4}}
+\end{DoxyCompactItemize}

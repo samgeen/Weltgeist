@@ -1,0 +1,86 @@
+\hypertarget{classweltgeist_1_1graphics_1_1Renderer}{}\doxysection{weltgeist.\+graphics.\+Renderer Class Reference}
+\label{classweltgeist_1_1graphics_1_1Renderer}\index{weltgeist.graphics.Renderer@{weltgeist.graphics.Renderer}}
+
+
+Inheritance diagram for weltgeist.\+graphics.\+Renderer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{classweltgeist_1_1graphics_1_1Renderer__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for weltgeist.\+graphics.\+Renderer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{classweltgeist_1_1graphics_1_1Renderer__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1graphics_1_1Renderer_a8d5a85e0616dd152fc585bb7c5e14e32}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, lines)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1graphics_1_1Renderer_ab3a94303ca5d3d1e1c5aea5521f09dbd}{Text}} (self, newtext)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1graphics_1_1Renderer_ae8e93142467c323f99ad519491eb186a}{Start}} (self, stepfunc)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Controls the basic line drawing interface.
+This uses pyglet, which is a module for drawing to the screen with
+ OpenGL
+WARNING! Due to the way pyglet works, you need to feed it the
+ step function from the integrator, and pyglet will control the
+ stepping at a maximum of 120 frames per second
+ See example scripts for an example of this
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1graphics_1_1Renderer_a8d5a85e0616dd152fc585bb7c5e14e32}\label{classweltgeist_1_1graphics_1_1Renderer_a8d5a85e0616dd152fc585bb7c5e14e32}} 
+\index{weltgeist.graphics.Renderer@{weltgeist.graphics.Renderer}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!weltgeist.graphics.Renderer@{weltgeist.graphics.Renderer}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def weltgeist.\+graphics.\+Renderer.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{lines }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Constructor
+
+Parameters
+----------
+
+lines : list (or other iterable) of Line objects
+    The lines you want to draw 
+    (external function should set the data points)
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1graphics_1_1Renderer_ae8e93142467c323f99ad519491eb186a}\label{classweltgeist_1_1graphics_1_1Renderer_ae8e93142467c323f99ad519491eb186a}} 
+\index{weltgeist.graphics.Renderer@{weltgeist.graphics.Renderer}!Start@{Start}}
+\index{Start@{Start}!weltgeist.graphics.Renderer@{weltgeist.graphics.Renderer}}
+\doxysubsubsection{\texorpdfstring{Start()}{Start()}}
+{\footnotesize\ttfamily def weltgeist.\+graphics.\+Renderer.\+Start (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{stepfunc }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}This will set up and start the renderer
+
+Parameters
+----------
+
+stepfunc : function
+    function to run every graphical step
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1graphics_1_1Renderer_ab3a94303ca5d3d1e1c5aea5521f09dbd}\label{classweltgeist_1_1graphics_1_1Renderer_ab3a94303ca5d3d1e1c5aea5521f09dbd}} 
+\index{weltgeist.graphics.Renderer@{weltgeist.graphics.Renderer}!Text@{Text}}
+\index{Text@{Text}!weltgeist.graphics.Renderer@{weltgeist.graphics.Renderer}}
+\doxysubsubsection{\texorpdfstring{Text()}{Text()}}
+{\footnotesize\ttfamily def weltgeist.\+graphics.\+Renderer.\+Text (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{newtext }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+weltgeist/\mbox{\hyperlink{graphics_8py}{graphics.\+py}}\end{DoxyCompactItemize}

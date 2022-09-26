@@ -1,0 +1,132 @@
+\hypertarget{f2py_2global_8f90}{}\doxysection{VH1/src/\+Patch/f2py/global.f90 File Reference}
+\label{f2py_2global_8f90}\index{VH1/src/Patch/f2py/global.f90@{VH1/src/Patch/f2py/global.f90}}
+\doxysubsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \mbox{\hyperlink{namespaceglobal}{global}}
+\item 
+module \mbox{\hyperlink{namespacesweepsize}{sweepsize}}
+\item 
+module \mbox{\hyperlink{namespacesweeps}{sweeps}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+character(len=50) \mbox{\hyperlink{namespaceglobal_aefbc4f4e423957a55b9ca4f3cbb4319c}{global\+::prefix}}
+\item 
+integer \mbox{\hyperlink{namespaceglobal_af21c166f7f7bd6e53d7342baa5d0c242}{global\+::ncycle}}
+\item 
+integer \mbox{\hyperlink{namespaceglobal_ae80305448c8f4c7f10f54c212ac7552b}{global\+::ncycp}}
+\item 
+integer \mbox{\hyperlink{namespaceglobal_a3b23f124b7e82a88aef77c8401b66690}{global\+::ncycm}}
+\item 
+integer \mbox{\hyperlink{namespaceglobal_a0fb6ef595e6c2b6fe6d5980cd6a38332}{global\+::ncycd}}
+\item 
+integer \mbox{\hyperlink{namespaceglobal_a6e29ef0c908bd39d91966f393d8b91b4}{global\+::nfile}}
+\item 
+integer \mbox{\hyperlink{namespaceglobal_ac3e9d7e6ec49898af80ea39a55be74a6}{global\+::ndim}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_ab07763e29ac20bea40b745d25dd90eb9}{global\+::time}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_ac2a100c27d94c7edf5e026947156594f}{global\+::dt}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a03dd5db31bba4793f7baae017f5fdc48}{global\+::timem}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a44c1854512673d8db78315cf29b065d8}{global\+::timep}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a954f59986beac9e15d885fb74b07f8c5}{global\+::svel}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_abfa135f5512f55173ef068bbea93ffb4}{global\+::vdtext}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_af8656935a0718eeffff57fcfb3828fc0}{global\+::gam}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_ac24b040bdb756fc03ffe2297218bc5fe}{global\+::gamm}}
+\item 
+real(kind=8), parameter \mbox{\hyperlink{namespaceglobal_af93ea5f73d4f4fb43a1e3c75f5c5900e}{global\+::courant}} = 0.\+5
+\item 
+real(kind=8), parameter \mbox{\hyperlink{namespaceglobal_afdc7cbc1a3bcfef6977890ab504571e1}{global\+::pi}} = 3.\+1415926535897931
+\item 
+real(kind=8), parameter \mbox{\hyperlink{namespaceglobal_a2448e3b7bb20da7c167ece5ef6910cf1}{global\+::xwig}} = 0.\+00
+\item 
+real(kind=8), parameter \mbox{\hyperlink{namespaceglobal_ae0b5fbd1c085c60009bf95746c528a2c}{global\+::smallp}} = 1.\+0e-\/30
+\item 
+real(kind=8), parameter \mbox{\hyperlink{namespaceglobal_a91b1b3eb98571d368c440e1f8b921489}{global\+::smallr}} = 1.\+0e-\/30
+\item 
+real(kind=8), parameter \mbox{\hyperlink{namespaceglobal_ad55ebb3342a7e9dc9f6adf1f7bbbc8b0}{global\+::small}} = 1.\+0e-\/30
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_af28dda7960256820aee5d9c03e24d792}{global\+::uinflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a524d24af543152922ecdd997a0d43692}{global\+::dinflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_ad8e14d7ad0b78e9a4e0bcdc1c3573217}{global\+::vinflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a48152724641988f8f83d6707d819e1b3}{global\+::winflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_ac2335e99545569b7ef588fbad2ecd053}{global\+::pinflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a31f1f2822dc2ca5dc3b4219ed365828c}{global\+::einflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a3e4bbc6ca47a91b09a12a564e55c5037}{global\+::uotflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a12032e94b8833395d94c1af6c5c62f63}{global\+::dotflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a4f8c420ced40502485e66788b28a0e5c}{global\+::votflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_aad00b2b164dd0e9d74f3e1facc7c3f46}{global\+::wotflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a879de70aa6a5dc2dbf89cf2e65d8291a}{global\+::potflo}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespaceglobal_a4c899e311d22a809153822f0a10174ed}{global\+::eotflo}}
+\item 
+integer, parameter \mbox{\hyperlink{namespacesweepsize_a248de739ef88ff0661ff3b6b72e00047}{sweepsize\+::maxsweep}} =1048588
+\item 
+character(len=1) \mbox{\hyperlink{namespacesweeps_a410048e8fb8255c4b88cf3eef99dc44d}{sweeps\+::sweep}}
+\item 
+integer \mbox{\hyperlink{namespacesweeps_a86908c93800e7dfcf4831f29ac5ac2ef}{sweeps\+::nmin}}
+\item 
+integer \mbox{\hyperlink{namespacesweeps_aefbca992eac8eacb47c1ddeb2a72cda8}{sweeps\+::nmax}}
+\item 
+integer \mbox{\hyperlink{namespacesweeps_adbfba3ef73ba727a372053c3be51e4a6}{sweeps\+::ngeom}}
+\item 
+integer \mbox{\hyperlink{namespacesweeps_a21f2628c3367299ed20aba74dd9fcb1a}{sweeps\+::nleft}}
+\item 
+integer \mbox{\hyperlink{namespacesweeps_af7e36ced5f69d1175cd56d0e2085474a}{sweeps\+::nright}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_ac22579c5b2ee324ca19b24a86d2e1e7b}{sweeps\+::r}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a3a3b6135171de89a9a9da8cfafa31f9f}{sweeps\+::p}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a706981cd41aa229244d8f460cd18511a}{sweeps\+::e}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a6759efa52772ae73276da3701cafccc7}{sweeps\+::q}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a79c557f4e178e34085d0871a32853fe9}{sweeps\+::u}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a200cf2f4559f8385f3af5252923801f5}{sweeps\+::v}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a2b8433bc0babc2eaaf500c0515f166d2}{sweeps\+::w}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a1508fef9ce47fbda14e2b58bfe607b8f}{sweeps\+::g}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a245dc7e8ed3eafcd05c92ea210a15691}{sweeps\+::xa}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_ab2a5c7bb96e10909fdbd70cb854c2d66}{sweeps\+::xa0}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a9a44190e2cb7dfdd748dfd880374535d}{sweeps\+::dx}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_a986a8970d9d8efe1bf1c229e6bcd59ae}{sweeps\+::dx0}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_ae130dfcbaf8cd47b692af7a74f959ceb}{sweeps\+::dvol}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_ab2a67f33dec15f88288c42398485fc9a}{sweeps\+::f}}
+\item 
+real(kind=8), dimension(maxsweep) \mbox{\hyperlink{namespacesweeps_ae5459b1cc79dd096ba0704f4c1657b96}{sweeps\+::flat}}
+\item 
+real(kind=8), dimension(maxsweep, 5) \mbox{\hyperlink{namespacesweeps_a394b6e78a0f2c7873b5ce6983721c8dd}{sweeps\+::para}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespacesweeps_a352f15a38fe6dd49f1eb0397f04419c9}{sweeps\+::radius}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespacesweeps_ac32f3c7a072ecc481f46c77c25836cba}{sweeps\+::theta}}
+\item 
+real(kind=8) \mbox{\hyperlink{namespacesweeps_a237aff6ce8e06338a93880bfafc58459}{sweeps\+::stheta}}
+\end{DoxyCompactItemize}

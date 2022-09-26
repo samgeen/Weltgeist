@@ -1,0 +1,134 @@
+\hypertarget{classweltgeist_1_1graphics_1_1Line}{}\doxysection{weltgeist.\+graphics.\+Line Class Reference}
+\label{classweltgeist_1_1graphics_1_1Line}\index{weltgeist.graphics.Line@{weltgeist.graphics.Line}}
+
+
+Inheritance diagram for weltgeist.\+graphics.\+Line\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classweltgeist_1_1graphics_1_1Line__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for weltgeist.\+graphics.\+Line\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classweltgeist_1_1graphics_1_1Line__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1graphics_1_1Line_ad71689b2a761fdc1649414f8e0d5f2ee}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, colour, width=1.\+0)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1graphics_1_1Line_a416f3f26f8273f4c77f12117d42d2230}{Update}} (self, x, y)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1graphics_1_1Line_a95cb4c0fb032991fc23500946abbd5e8}{Append}} (self, x, y)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1graphics_1_1Line_ab65fe08d9f4cadcdecd651c674d735c8}{Min\+Max}} (self, yminin=None, ymaxin=None)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1graphics_1_1Line_af4a283a177b1c52db697d4d939747dfd}{Draw}} (self, xmin, xmax, ymin, ymax)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}A line object, used to draw the simulation state to screen in
+ real time
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1graphics_1_1Line_ad71689b2a761fdc1649414f8e0d5f2ee}\label{classweltgeist_1_1graphics_1_1Line_ad71689b2a761fdc1649414f8e0d5f2ee}} 
+\index{weltgeist.graphics.Line@{weltgeist.graphics.Line}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!weltgeist.graphics.Line@{weltgeist.graphics.Line}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def weltgeist.\+graphics.\+Line.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{colour,  }\item[{}]{width = {\ttfamily 1.0} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Constructor
+
+Parameters
+----------
+
+colour : list 
+    The colour - 4 elements - red, green, blue, alpha
+    e.g. [1.0, 0.0, 0.0, 0.5] = red, half transparent
+width : float
+    width of the line on-screen in pixels
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1graphics_1_1Line_a95cb4c0fb032991fc23500946abbd5e8}\label{classweltgeist_1_1graphics_1_1Line_a95cb4c0fb032991fc23500946abbd5e8}} 
+\index{weltgeist.graphics.Line@{weltgeist.graphics.Line}!Append@{Append}}
+\index{Append@{Append}!weltgeist.graphics.Line@{weltgeist.graphics.Line}}
+\doxysubsubsection{\texorpdfstring{Append()}{Append()}}
+{\footnotesize\ttfamily def weltgeist.\+graphics.\+Line.\+Append (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Add a single point
+
+Parameters
+----------
+
+x, y : float
+    points to add to the line
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1graphics_1_1Line_af4a283a177b1c52db697d4d939747dfd}\label{classweltgeist_1_1graphics_1_1Line_af4a283a177b1c52db697d4d939747dfd}} 
+\index{weltgeist.graphics.Line@{weltgeist.graphics.Line}!Draw@{Draw}}
+\index{Draw@{Draw}!weltgeist.graphics.Line@{weltgeist.graphics.Line}}
+\doxysubsubsection{\texorpdfstring{Draw()}{Draw()}}
+{\footnotesize\ttfamily def weltgeist.\+graphics.\+Line.\+Draw (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{xmin,  }\item[{}]{xmax,  }\item[{}]{ymin,  }\item[{}]{ymax }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Draw line to screen
+Called by the Lines object Draw function
+
+Parameters
+----------
+
+xmin, xmax, ymin, ymax : float
+    Gives limits of the screen in x and y
+    Lines scaled to these values
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1graphics_1_1Line_ab65fe08d9f4cadcdecd651c674d735c8}\label{classweltgeist_1_1graphics_1_1Line_ab65fe08d9f4cadcdecd651c674d735c8}} 
+\index{weltgeist.graphics.Line@{weltgeist.graphics.Line}!MinMax@{MinMax}}
+\index{MinMax@{MinMax}!weltgeist.graphics.Line@{weltgeist.graphics.Line}}
+\doxysubsubsection{\texorpdfstring{MinMax()}{MinMax()}}
+{\footnotesize\ttfamily def weltgeist.\+graphics.\+Line.\+Min\+Max (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{yminin = {\ttfamily None},  }\item[{}]{ymaxin = {\ttfamily None} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return min/max in arrays
+
+Parameters
+----------
+
+yminin, ymaxin : float
+    (optional) fixes y values for plotting
+    Useful if you want to stop the line moving up and down
+      over time
+
+Returns
+-------
+
+(xmin, xmax, ymin, ymax): tuple of floats
+    min/max values in x and y
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1graphics_1_1Line_a416f3f26f8273f4c77f12117d42d2230}\label{classweltgeist_1_1graphics_1_1Line_a416f3f26f8273f4c77f12117d42d2230}} 
+\index{weltgeist.graphics.Line@{weltgeist.graphics.Line}!Update@{Update}}
+\index{Update@{Update}!weltgeist.graphics.Line@{weltgeist.graphics.Line}}
+\doxysubsubsection{\texorpdfstring{Update()}{Update()}}
+{\footnotesize\ttfamily def weltgeist.\+graphics.\+Line.\+Update (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Replace arrays in the line completely
+
+Parameters
+----------
+
+x, y : numpy array
+    numpy arrays containing x and y data for the line
+    NOTE: x and y must be the same length
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+weltgeist/\mbox{\hyperlink{graphics_8py}{graphics.\+py}}\end{DoxyCompactItemize}

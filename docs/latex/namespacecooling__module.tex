@@ -1,0 +1,102 @@
+\hypertarget{namespacecooling__module}{}\doxysection{cooling\+\_\+module Module Reference}
+\label{namespacecooling__module}\index{cooling\_module@{cooling\_module}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_a667fb2e5fd717f6db9dc87a961fe9529}{solve\+\_\+cooling}} (nH, T2, x\+HII, zsolar, dt, delta\+T2, ncell)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_a7682781a282e815df028f556148b3551}{calc\+\_\+temp}} (NN, TT, XX, dt\+\_\+tot)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_af565e2422356d49015e51d4acf34f669}{calc\+\_\+cooling\+\_\+rates}} (T, n, xin, ref, drefdT)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_ae37326142025b3b599a739030b0ad4ff}{cool\+\_\+rate}} (T, n, xin, ref)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_aa113423de1dfafbe7119d9f7cf2b2bb7}{cool\+\_\+rate\+\_\+hight}} (T, n, ref)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_a71435ce504b06086e1058e3f8d31db73}{cool\+\_\+rate\+\_\+lowt}} (T, n, ref)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+integer, parameter \mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}} =kind(1.\+0\+D0)
+\item 
+real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}}) \mbox{\hyperlink{namespacecooling__module_ac9a27563e8d902cfbcd2814d13faf3f4}{gamma}} =1.\+4d0
+\item 
+real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}}) \mbox{\hyperlink{namespacecooling__module_a094f5e1a28158a1a12697ee00f374efb}{mu}} =1.\+4d0
+\item 
+logical, parameter \mbox{\hyperlink{namespacecooling__module_aa8104adc3871a14c32dd4bb8bac0b28c}{rt}} =.false.
+\item 
+real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}}), parameter \mbox{\hyperlink{namespacecooling__module_a4426480eb50c59452bdc27b2a75bd261}{smallr}} =1d-\/10
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacecooling__module_af565e2422356d49015e51d4acf34f669}\label{namespacecooling__module_af565e2422356d49015e51d4acf34f669}} 
+\index{cooling\_module@{cooling\_module}!calc\_cooling\_rates@{calc\_cooling\_rates}}
+\index{calc\_cooling\_rates@{calc\_cooling\_rates}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{calc\_cooling\_rates()}{calc\_cooling\_rates()}}
+{\footnotesize\ttfamily subroutine cooling\+\_\+module\+::calc\+\_\+cooling\+\_\+rates (\begin{DoxyParamCaption}\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{T,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{n,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{xin,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{ref,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{drefdT }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacecooling__module_a7682781a282e815df028f556148b3551}\label{namespacecooling__module_a7682781a282e815df028f556148b3551}} 
+\index{cooling\_module@{cooling\_module}!calc\_temp@{calc\_temp}}
+\index{calc\_temp@{calc\_temp}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{calc\_temp()}{calc\_temp()}}
+{\footnotesize\ttfamily subroutine cooling\+\_\+module\+::calc\+\_\+temp (\begin{DoxyParamCaption}\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{NN,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{TT,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{XX,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{dt\+\_\+tot }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacecooling__module_ae37326142025b3b599a739030b0ad4ff}\label{namespacecooling__module_ae37326142025b3b599a739030b0ad4ff}} 
+\index{cooling\_module@{cooling\_module}!cool\_rate@{cool\_rate}}
+\index{cool\_rate@{cool\_rate}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{cool\_rate()}{cool\_rate()}}
+{\footnotesize\ttfamily subroutine cooling\+\_\+module\+::cool\+\_\+rate (\begin{DoxyParamCaption}\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{T,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{n,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{xin,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{ref }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacecooling__module_aa113423de1dfafbe7119d9f7cf2b2bb7}\label{namespacecooling__module_aa113423de1dfafbe7119d9f7cf2b2bb7}} 
+\index{cooling\_module@{cooling\_module}!cool\_rate\_hight@{cool\_rate\_hight}}
+\index{cool\_rate\_hight@{cool\_rate\_hight}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{cool\_rate\_hight()}{cool\_rate\_hight()}}
+{\footnotesize\ttfamily subroutine cooling\+\_\+module\+::cool\+\_\+rate\+\_\+hight (\begin{DoxyParamCaption}\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{T,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{n,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{ref }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacecooling__module_a71435ce504b06086e1058e3f8d31db73}\label{namespacecooling__module_a71435ce504b06086e1058e3f8d31db73}} 
+\index{cooling\_module@{cooling\_module}!cool\_rate\_lowt@{cool\_rate\_lowt}}
+\index{cool\_rate\_lowt@{cool\_rate\_lowt}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{cool\_rate\_lowt()}{cool\_rate\_lowt()}}
+{\footnotesize\ttfamily subroutine cooling\+\_\+module\+::cool\+\_\+rate\+\_\+lowt (\begin{DoxyParamCaption}\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{T,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{n,  }\item[{real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}})}]{ref }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacecooling__module_a667fb2e5fd717f6db9dc87a961fe9529}\label{namespacecooling__module_a667fb2e5fd717f6db9dc87a961fe9529}} 
+\index{cooling\_module@{cooling\_module}!solve\_cooling@{solve\_cooling}}
+\index{solve\_cooling@{solve\_cooling}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{solve\_cooling()}{solve\_cooling()}}
+{\footnotesize\ttfamily subroutine cooling\+\_\+module\+::solve\+\_\+cooling (\begin{DoxyParamCaption}\item[{real(kind=8), dimension(1\+:ncell)}]{nH,  }\item[{real(kind=8), dimension(1\+:ncell)}]{T2,  }\item[{real(kind=8), dimension(1\+:ncell)}]{x\+HII,  }\item[{real(kind=8), dimension(1\+:ncell)}]{zsolar,  }\item[{real(kind=8)}]{dt,  }\item[{real(kind=8), dimension(1\+:ncell)}]{delta\+T2,  }\item[{integer}]{ncell }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}\label{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}} 
+\index{cooling\_module@{cooling\_module}!dp@{dp}}
+\index{dp@{dp}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{dp}{dp}}
+{\footnotesize\ttfamily integer, parameter cooling\+\_\+module\+::dp =kind(1.\+0\+D0)}
+
+\mbox{\Hypertarget{namespacecooling__module_ac9a27563e8d902cfbcd2814d13faf3f4}\label{namespacecooling__module_ac9a27563e8d902cfbcd2814d13faf3f4}} 
+\index{cooling\_module@{cooling\_module}!gamma@{gamma}}
+\index{gamma@{gamma}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{gamma}{gamma}}
+{\footnotesize\ttfamily real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}}) cooling\+\_\+module\+::gamma =1.\+4d0}
+
+\mbox{\Hypertarget{namespacecooling__module_a094f5e1a28158a1a12697ee00f374efb}\label{namespacecooling__module_a094f5e1a28158a1a12697ee00f374efb}} 
+\index{cooling\_module@{cooling\_module}!mu@{mu}}
+\index{mu@{mu}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{mu}{mu}}
+{\footnotesize\ttfamily real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}}) cooling\+\_\+module\+::mu =1.\+4d0}
+
+\mbox{\Hypertarget{namespacecooling__module_aa8104adc3871a14c32dd4bb8bac0b28c}\label{namespacecooling__module_aa8104adc3871a14c32dd4bb8bac0b28c}} 
+\index{cooling\_module@{cooling\_module}!rt@{rt}}
+\index{rt@{rt}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{rt}{rt}}
+{\footnotesize\ttfamily logical, parameter cooling\+\_\+module\+::rt =.false.}
+
+\mbox{\Hypertarget{namespacecooling__module_a4426480eb50c59452bdc27b2a75bd261}\label{namespacecooling__module_a4426480eb50c59452bdc27b2a75bd261}} 
+\index{cooling\_module@{cooling\_module}!smallr@{smallr}}
+\index{smallr@{smallr}!cooling\_module@{cooling\_module}}
+\doxysubsubsection{\texorpdfstring{smallr}{smallr}}
+{\footnotesize\ttfamily real(\mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{dp}}), parameter cooling\+\_\+module\+::smallr =1d-\/10}
+

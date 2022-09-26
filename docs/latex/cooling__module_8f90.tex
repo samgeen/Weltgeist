@@ -1,0 +1,35 @@
+\hypertarget{cooling__module_8f90}{}\doxysection{Cooling/cooling\+\_\+module.f90 File Reference}
+\label{cooling__module_8f90}\index{Cooling/cooling\_module.f90@{Cooling/cooling\_module.f90}}
+\doxysubsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \mbox{\hyperlink{namespacecooling__module}{cooling\+\_\+module}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_a667fb2e5fd717f6db9dc87a961fe9529}{cooling\+\_\+module\+::solve\+\_\+cooling}} (nH, T2, x\+HII, zsolar, dt, delta\+T2, ncell)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_a7682781a282e815df028f556148b3551}{cooling\+\_\+module\+::calc\+\_\+temp}} (NN, TT, XX, dt\+\_\+tot)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_af565e2422356d49015e51d4acf34f669}{cooling\+\_\+module\+::calc\+\_\+cooling\+\_\+rates}} (T, n, xin, ref, drefdT)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_ae37326142025b3b599a739030b0ad4ff}{cooling\+\_\+module\+::cool\+\_\+rate}} (T, n, xin, ref)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_aa113423de1dfafbe7119d9f7cf2b2bb7}{cooling\+\_\+module\+::cool\+\_\+rate\+\_\+hight}} (T, n, ref)
+\item 
+subroutine \mbox{\hyperlink{namespacecooling__module_a71435ce504b06086e1058e3f8d31db73}{cooling\+\_\+module\+::cool\+\_\+rate\+\_\+lowt}} (T, n, ref)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+integer, parameter \mbox{\hyperlink{namespacecooling__module_a408b492eab393c61ef2e7cf426b1bf5d}{cooling\+\_\+module\+::dp}} =kind(1.\+0\+D0)
+\item 
+real(dp) \mbox{\hyperlink{namespacecooling__module_ac9a27563e8d902cfbcd2814d13faf3f4}{cooling\+\_\+module\+::gamma}} =1.\+4d0
+\item 
+real(dp) \mbox{\hyperlink{namespacecooling__module_a094f5e1a28158a1a12697ee00f374efb}{cooling\+\_\+module\+::mu}} =1.\+4d0
+\item 
+logical, parameter \mbox{\hyperlink{namespacecooling__module_aa8104adc3871a14c32dd4bb8bac0b28c}{cooling\+\_\+module\+::rt}} =.false.
+\item 
+real(dp), parameter \mbox{\hyperlink{namespacecooling__module_a4426480eb50c59452bdc27b2a75bd261}{cooling\+\_\+module\+::smallr}} =1d-\/10
+\end{DoxyCompactItemize}

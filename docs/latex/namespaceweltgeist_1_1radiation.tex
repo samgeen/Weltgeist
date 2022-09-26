@@ -1,0 +1,88 @@
+\hypertarget{namespaceweltgeist_1_1radiation}{}\doxysection{weltgeist.\+radiation Namespace Reference}
+\label{namespaceweltgeist_1_1radiation}\index{weltgeist.radiation@{weltgeist.radiation}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1radiation_a64a8bf115081f7549dd46c50fc324dfd}{alpha\+\_\+\+B\+\_\+\+HII}} (temperature)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1radiation_a867eeb0ad4cf4c8f9ff5646889f90993}{Ionised\+Gas\+Temperature}} (Teff, metal)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1radiation_ae78becd237c378d3924885aaaa7be1c8}{trace\+\_\+radiation}} (Lionising, Lnonionising, Eionising, Tion, do\+Radiation\+Pressure, sigma\+Dust=1e-\/21)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Spread radiation from a central source through the grid
+Sam Geen, March 2018
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceweltgeist_1_1radiation_a64a8bf115081f7549dd46c50fc324dfd}\label{namespaceweltgeist_1_1radiation_a64a8bf115081f7549dd46c50fc324dfd}} 
+\index{weltgeist.radiation@{weltgeist.radiation}!alpha\_B\_HII@{alpha\_B\_HII}}
+\index{alpha\_B\_HII@{alpha\_B\_HII}!weltgeist.radiation@{weltgeist.radiation}}
+\doxysubsubsection{\texorpdfstring{alpha\_B\_HII()}{alpha\_B\_HII()}}
+{\footnotesize\ttfamily def weltgeist.\+radiation.\+alpha\+\_\+\+B\+\_\+\+HII (\begin{DoxyParamCaption}\item[{}]{temperature }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Calculate the HII recombination rate
+This is the rate at which ionised hydrogen recombines 
+  into neutral hydrogen
+Total recombinations per second per unit volume = alpha * ne * nH
+ne = electron number density
+nH = hydrogen number density
+
+Parameters
+----------
+
+temperature: float
+    Temperature in K
+
+Returns
+-------
+
+alpha_B_HII : float
+    The recombination rate
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1radiation_a867eeb0ad4cf4c8f9ff5646889f90993}\label{namespaceweltgeist_1_1radiation_a867eeb0ad4cf4c8f9ff5646889f90993}} 
+\index{weltgeist.radiation@{weltgeist.radiation}!IonisedGasTemperature@{IonisedGasTemperature}}
+\index{IonisedGasTemperature@{IonisedGasTemperature}!weltgeist.radiation@{weltgeist.radiation}}
+\doxysubsubsection{\texorpdfstring{IonisedGasTemperature()}{IonisedGasTemperature()}}
+{\footnotesize\ttfamily def weltgeist.\+radiation.\+Ionised\+Gas\+Temperature (\begin{DoxyParamCaption}\item[{}]{Teff,  }\item[{}]{metal }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Calculate the temperature of the ionised gas in 
+
+Teff : float
+    Effective tempertaure of the star in K
+
+metalin : float
+    Metallicity of the gas
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1radiation_ae78becd237c378d3924885aaaa7be1c8}\label{namespaceweltgeist_1_1radiation_ae78becd237c378d3924885aaaa7be1c8}} 
+\index{weltgeist.radiation@{weltgeist.radiation}!trace\_radiation@{trace\_radiation}}
+\index{trace\_radiation@{trace\_radiation}!weltgeist.radiation@{weltgeist.radiation}}
+\doxysubsubsection{\texorpdfstring{trace\_radiation()}{trace\_radiation()}}
+{\footnotesize\ttfamily def weltgeist.\+radiation.\+trace\+\_\+radiation (\begin{DoxyParamCaption}\item[{}]{Lionising,  }\item[{}]{Lnonionising,  }\item[{}]{Eionising,  }\item[{}]{Tion,  }\item[{}]{do\+Radiation\+Pressure,  }\item[{}]{sigma\+Dust = {\ttfamily 1e-\/21} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Trace a ray through the spherical grid and ionise everything in the way
+Use very simple instant ionisation/recombination model
+d(nphotons)/dt = integrate(4*pi*r^2*nH(r)^2*alpha_B*dr)
+
+Parameters
+----------
+Lionising, Lnonionising : float
+    Luminosity of (non-)ionising photons emitted (erg/s)
+
+Eionising : float
+    Average energy of the ionising photons (erg)
+
+Tion : float
+    Equilibrium temperature of photoionised gas in K
+    default: 8400 K, value used in Geen+ 2015b
+
+doRadiationPressure : bool
+    Do we use radiation pressure?
+
+sigmaDust : float
+    Dust cross section to use (Draine suggests 1e-21 cm^2 / H)
+\end{DoxyVerb}
+ 
