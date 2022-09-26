@@ -1,6 +1,4 @@
-import setuptools
 from skbuild import setup 
-#import setuptools 
 
 #from numpy.distutils.core import setup
 #from numpy.distutils.extension import Extension
@@ -16,11 +14,12 @@ from skbuild import setup
 #    config = Configuration('mypackage',parent_package,top_path)
 #    return config
 
+
 setup(
     name='weltgeist',
     version='0.9',
     description='1D hydrodynamic code for spherical astrophysics',
-    license=["MIT"],
+    license="MIT",
     packages=['weltgeist'],
-    ext_modules = [rayext],
+    cmake_args=['-DSKBUILD=ON']
 )
