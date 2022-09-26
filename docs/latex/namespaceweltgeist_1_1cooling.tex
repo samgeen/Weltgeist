@@ -1,0 +1,117 @@
+\hypertarget{namespaceweltgeist_1_1cooling}{}\doxysection{weltgeist.\+cooling Namespace Reference}
+\label{namespaceweltgeist_1_1cooling}\index{weltgeist.cooling@{weltgeist.cooling}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1cooling_ab6adbfd8b2ba077f17c4b1af8bf1fbd9}{Temperature\+Change}} (dt)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1cooling_ade9da53d73e8f7102e19b521e80e697a}{Mask\+Contact\+Discontinuity\+V1}} (d\+T2)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1cooling_a1539172e2cc805c659fac045841d72d9}{Mask\+Contact\+Discontinuity\+V2}} (d\+T2)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1cooling_a6758aaa7e0861f5f10d00ae23e6a17e0}{solve\+\_\+cooling}} (dt)
+\item 
+def \mbox{\hyperlink{namespaceweltgeist_1_1cooling_a7abcf2026ef73ddf4ca0dee24fca96f4}{Check\+Temperature}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespaceweltgeist_1_1cooling_ac684e0ca113aed0c2e6e733c19e5114b}{cooling\+\_\+on}} = False
+\item 
+bool \mbox{\hyperlink{namespaceweltgeist_1_1cooling_a1619ad137b415d627ca309a6418e44e0}{mask\+Contact\+Discontinuity}} = False
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Controls gas cooling
+Sam Geen, March 2018
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceweltgeist_1_1cooling_a7abcf2026ef73ddf4ca0dee24fca96f4}\label{namespaceweltgeist_1_1cooling_a7abcf2026ef73ddf4ca0dee24fca96f4}} 
+\index{weltgeist.cooling@{weltgeist.cooling}!CheckTemperature@{CheckTemperature}}
+\index{CheckTemperature@{CheckTemperature}!weltgeist.cooling@{weltgeist.cooling}}
+\doxysubsubsection{\texorpdfstring{CheckTemperature()}{CheckTemperature()}}
+{\footnotesize\ttfamily def weltgeist.\+cooling.\+Check\+Temperature (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Check for and fix super low tempertaures
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1cooling_ade9da53d73e8f7102e19b521e80e697a}\label{namespaceweltgeist_1_1cooling_ade9da53d73e8f7102e19b521e80e697a}} 
+\index{weltgeist.cooling@{weltgeist.cooling}!MaskContactDiscontinuityV1@{MaskContactDiscontinuityV1}}
+\index{MaskContactDiscontinuityV1@{MaskContactDiscontinuityV1}!weltgeist.cooling@{weltgeist.cooling}}
+\doxysubsubsection{\texorpdfstring{MaskContactDiscontinuityV1()}{MaskContactDiscontinuityV1()}}
+{\footnotesize\ttfamily def weltgeist.\+cooling.\+Mask\+Contact\+Discontinuity\+V1 (\begin{DoxyParamCaption}\item[{}]{d\+T2 }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Find the location of contact discontinuity to remove cooling from
+Prevents artificial mixing by numerical diffusion
+Version 1: just grabs the cells around the CD
+
+Parameters
+----------
+
+dT2 : array
+    temperature change to mask out
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1cooling_a1539172e2cc805c659fac045841d72d9}\label{namespaceweltgeist_1_1cooling_a1539172e2cc805c659fac045841d72d9}} 
+\index{weltgeist.cooling@{weltgeist.cooling}!MaskContactDiscontinuityV2@{MaskContactDiscontinuityV2}}
+\index{MaskContactDiscontinuityV2@{MaskContactDiscontinuityV2}!weltgeist.cooling@{weltgeist.cooling}}
+\doxysubsubsection{\texorpdfstring{MaskContactDiscontinuityV2()}{MaskContactDiscontinuityV2()}}
+{\footnotesize\ttfamily def weltgeist.\+cooling.\+Mask\+Contact\+Discontinuity\+V2 (\begin{DoxyParamCaption}\item[{}]{d\+T2 }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Find the location of contact discontinuity to remove cooling from
+Prevents artificial mixing by numerical diffusion
+
+Version 2: identifies whole numerically-smeared CD and tries to reconstruct it
+
+Parameters
+----------
+
+dT2 : array
+    temperature change to mask out
+Tion : float
+    ionised gas temperature
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1cooling_a6758aaa7e0861f5f10d00ae23e6a17e0}\label{namespaceweltgeist_1_1cooling_a6758aaa7e0861f5f10d00ae23e6a17e0}} 
+\index{weltgeist.cooling@{weltgeist.cooling}!solve\_cooling@{solve\_cooling}}
+\index{solve\_cooling@{solve\_cooling}!weltgeist.cooling@{weltgeist.cooling}}
+\doxysubsubsection{\texorpdfstring{solve\_cooling()}{solve\_cooling()}}
+{\footnotesize\ttfamily def weltgeist.\+cooling.\+solve\+\_\+cooling (\begin{DoxyParamCaption}\item[{}]{dt }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Solve the cooling step
+
+Parameters
+----------
+
+dt : float
+    timestep in seconds
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceweltgeist_1_1cooling_ab6adbfd8b2ba077f17c4b1af8bf1fbd9}\label{namespaceweltgeist_1_1cooling_ab6adbfd8b2ba077f17c4b1af8bf1fbd9}} 
+\index{weltgeist.cooling@{weltgeist.cooling}!TemperatureChange@{TemperatureChange}}
+\index{TemperatureChange@{TemperatureChange}!weltgeist.cooling@{weltgeist.cooling}}
+\doxysubsubsection{\texorpdfstring{TemperatureChange()}{TemperatureChange()}}
+{\footnotesize\ttfamily def weltgeist.\+cooling.\+Temperature\+Change (\begin{DoxyParamCaption}\item[{}]{dt }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Calculate the temperature change needed for each cell
+
+Parameters
+----------
+
+dt : float
+    timestep in seconds
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceweltgeist_1_1cooling_ac684e0ca113aed0c2e6e733c19e5114b}\label{namespaceweltgeist_1_1cooling_ac684e0ca113aed0c2e6e733c19e5114b}} 
+\index{weltgeist.cooling@{weltgeist.cooling}!cooling\_on@{cooling\_on}}
+\index{cooling\_on@{cooling\_on}!weltgeist.cooling@{weltgeist.cooling}}
+\doxysubsubsection{\texorpdfstring{cooling\_on}{cooling\_on}}
+{\footnotesize\ttfamily bool weltgeist.\+cooling.\+cooling\+\_\+on = False}
+
+\mbox{\Hypertarget{namespaceweltgeist_1_1cooling_a1619ad137b415d627ca309a6418e44e0}\label{namespaceweltgeist_1_1cooling_a1619ad137b415d627ca309a6418e44e0}} 
+\index{weltgeist.cooling@{weltgeist.cooling}!maskContactDiscontinuity@{maskContactDiscontinuity}}
+\index{maskContactDiscontinuity@{maskContactDiscontinuity}!weltgeist.cooling@{weltgeist.cooling}}
+\doxysubsubsection{\texorpdfstring{maskContactDiscontinuity}{maskContactDiscontinuity}}
+{\footnotesize\ttfamily bool weltgeist.\+cooling.\+mask\+Contact\+Discontinuity = False}
+

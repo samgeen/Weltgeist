@@ -1,0 +1,48 @@
+\hypertarget{cooling__module__ph_8f90}{}\doxysection{Cooling/cooling\+\_\+module\+\_\+ph.f90 File Reference}
+\label{cooling__module__ph_8f90}\index{Cooling/cooling\_module\_ph.f90@{Cooling/cooling\_module\_ph.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{cooling__module__ph_8f90_a82b15019a1640440b2abe80e9fd45e94}{solve\+\_\+cooling\+\_\+ph}} (nH, T2, x\+HII, zsolar, boost, dt, delta\+T2, ncell)
+\item 
+subroutine \mbox{\hyperlink{cooling__module__ph_8f90_a83cd3058b43bb2a9f0ec8997d1b4469b}{calc\+\_\+temp}} (NN, TT, XX, dt\+\_\+tot\+\_\+unicode)
+\item 
+subroutine \mbox{\hyperlink{cooling__module__ph_8f90_aeee87236bbc325465216b4b454bd6df7}{chaud\+\_\+froid\+\_\+2}} (T, n, ref, d\+Ref\+DT)
+\item 
+subroutine \mbox{\hyperlink{cooling__module__ph_8f90_a7afa8197f5c68b23b8f84a97e3aafeb4}{chaud\+\_\+froid\+\_\+1}} (T, n, xin, ref, d\+RefdT)
+\item 
+subroutine \mbox{\hyperlink{cooling__module__ph_8f90_ae37d6b424f2327adef6caad6e4873138}{calc\+\_\+cooling\+\_\+rate}} (T, n, xin, ref)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{cooling__module__ph_8f90_ae37d6b424f2327adef6caad6e4873138}\label{cooling__module__ph_8f90_ae37d6b424f2327adef6caad6e4873138}} 
+\index{cooling\_module\_ph.f90@{cooling\_module\_ph.f90}!calc\_cooling\_rate@{calc\_cooling\_rate}}
+\index{calc\_cooling\_rate@{calc\_cooling\_rate}!cooling\_module\_ph.f90@{cooling\_module\_ph.f90}}
+\doxysubsubsection{\texorpdfstring{calc\_cooling\_rate()}{calc\_cooling\_rate()}}
+{\footnotesize\ttfamily subroutine calc\+\_\+cooling\+\_\+rate (\begin{DoxyParamCaption}\item[{real(dp)}]{T,  }\item[{real(dp)}]{n,  }\item[{real(dp)}]{xin,  }\item[{real(dp)}]{ref }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{cooling__module__ph_8f90_a83cd3058b43bb2a9f0ec8997d1b4469b}\label{cooling__module__ph_8f90_a83cd3058b43bb2a9f0ec8997d1b4469b}} 
+\index{cooling\_module\_ph.f90@{cooling\_module\_ph.f90}!calc\_temp@{calc\_temp}}
+\index{calc\_temp@{calc\_temp}!cooling\_module\_ph.f90@{cooling\_module\_ph.f90}}
+\doxysubsubsection{\texorpdfstring{calc\_temp()}{calc\_temp()}}
+{\footnotesize\ttfamily subroutine calc\+\_\+temp (\begin{DoxyParamCaption}\item[{real(dp)}]{NN,  }\item[{real(dp)}]{TT,  }\item[{real(dp)}]{XX,  }\item[{real(dp)}]{dt\+\_\+tot\+\_\+unicode }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{cooling__module__ph_8f90_a7afa8197f5c68b23b8f84a97e3aafeb4}\label{cooling__module__ph_8f90_a7afa8197f5c68b23b8f84a97e3aafeb4}} 
+\index{cooling\_module\_ph.f90@{cooling\_module\_ph.f90}!chaud\_froid\_1@{chaud\_froid\_1}}
+\index{chaud\_froid\_1@{chaud\_froid\_1}!cooling\_module\_ph.f90@{cooling\_module\_ph.f90}}
+\doxysubsubsection{\texorpdfstring{chaud\_froid\_1()}{chaud\_froid\_1()}}
+{\footnotesize\ttfamily subroutine chaud\+\_\+froid\+\_\+1 (\begin{DoxyParamCaption}\item[{real(dp)}]{T,  }\item[{real(dp)}]{n,  }\item[{real(dp)}]{xin,  }\item[{real(dp)}]{ref,  }\item[{real(dp)}]{d\+RefdT }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{cooling__module__ph_8f90_aeee87236bbc325465216b4b454bd6df7}\label{cooling__module__ph_8f90_aeee87236bbc325465216b4b454bd6df7}} 
+\index{cooling\_module\_ph.f90@{cooling\_module\_ph.f90}!chaud\_froid\_2@{chaud\_froid\_2}}
+\index{chaud\_froid\_2@{chaud\_froid\_2}!cooling\_module\_ph.f90@{cooling\_module\_ph.f90}}
+\doxysubsubsection{\texorpdfstring{chaud\_froid\_2()}{chaud\_froid\_2()}}
+{\footnotesize\ttfamily subroutine chaud\+\_\+froid\+\_\+2 (\begin{DoxyParamCaption}\item[{real(dp)}]{T,  }\item[{real(dp)}]{n,  }\item[{real(dp)}]{ref,  }\item[{real(dp)}]{d\+Ref\+DT }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{cooling__module__ph_8f90_a82b15019a1640440b2abe80e9fd45e94}\label{cooling__module__ph_8f90_a82b15019a1640440b2abe80e9fd45e94}} 
+\index{cooling\_module\_ph.f90@{cooling\_module\_ph.f90}!solve\_cooling\_ph@{solve\_cooling\_ph}}
+\index{solve\_cooling\_ph@{solve\_cooling\_ph}!cooling\_module\_ph.f90@{cooling\_module\_ph.f90}}
+\doxysubsubsection{\texorpdfstring{solve\_cooling\_ph()}{solve\_cooling\_ph()}}
+{\footnotesize\ttfamily subroutine solve\+\_\+cooling\+\_\+ph (\begin{DoxyParamCaption}\item[{real(kind=8), dimension(1\+:ncell)}]{nH,  }\item[{real(kind=8), dimension(1\+:ncell)}]{T2,  }\item[{real(kind=8), dimension(1\+:ncell)}]{x\+HII,  }\item[{real(kind=8), dimension(1\+:ncell)}]{zsolar,  }\item[{real(kind=8), dimension(1\+:ncell)}]{boost,  }\item[{real(kind=8)}]{dt,  }\item[{real(kind=8), dimension(1\+:ncell)}]{delta\+T2,  }\item[{integer}]{ncell }\end{DoxyParamCaption})}
+

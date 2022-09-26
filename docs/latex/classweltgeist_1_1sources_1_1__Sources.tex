@@ -1,0 +1,158 @@
+\hypertarget{classweltgeist_1_1sources_1_1__Sources}{}\doxysection{weltgeist.\+sources.\+\_\+\+Sources Class Reference}
+\label{classweltgeist_1_1sources_1_1__Sources}\index{weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}}
+
+
+Inheritance diagram for weltgeist.\+sources.\+\_\+\+Sources\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{classweltgeist_1_1sources_1_1__Sources__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for weltgeist.\+sources.\+\_\+\+Sources\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{classweltgeist_1_1sources_1_1__Sources__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1__Sources_a19fb576f99e47c70878d6b06b9a900b0}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1__Sources_aefb99aca7b0b217fc0a5ded62e1e1764}{sources}} (self)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1__Sources_a2ac3dc98102407a6921df8b0eaed97e7}{Add\+Source}} (self, source)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1__Sources_a8d80a0705701f394e42624881d5c8c0a}{Remove\+Source}} (self, source)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1__Sources_aace5f7f8482e389123198d2f66a13aa4}{Make\+Supernova}} (self, energy, mass, time=0.\+0)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1__Sources_ad1cbed005f6805633a1b3c9e7148252e}{Make\+Wind}} (self, lum, massloss)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1__Sources_a3da13382d16c21423fd19051b6dd1f37}{Make\+Simple\+Radiation}} (self, QH)
+\item 
+def \mbox{\hyperlink{classweltgeist_1_1sources_1_1__Sources_a53e779a691439953f6eae22cc8ad3831}{Inject\+Sources}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Controls the injection of feedback from different sources
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1sources_1_1__Sources_a19fb576f99e47c70878d6b06b9a900b0}\label{classweltgeist_1_1sources_1_1__Sources_a19fb576f99e47c70878d6b06b9a900b0}} 
+\index{weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+\_\+\+Sources.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Constructor
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classweltgeist_1_1sources_1_1__Sources_a2ac3dc98102407a6921df8b0eaed97e7}\label{classweltgeist_1_1sources_1_1__Sources_a2ac3dc98102407a6921df8b0eaed97e7}} 
+\index{weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}!AddSource@{AddSource}}
+\index{AddSource@{AddSource}!weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}}
+\doxysubsubsection{\texorpdfstring{AddSource()}{AddSource()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+\_\+\+Sources.\+Add\+Source (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{source }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Add a source object to the list of sources
+
+Parameters
+----------
+source : Source
+    Source object to add to active sources
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1sources_1_1__Sources_a53e779a691439953f6eae22cc8ad3831}\label{classweltgeist_1_1sources_1_1__Sources_a53e779a691439953f6eae22cc8ad3831}} 
+\index{weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}!InjectSources@{InjectSources}}
+\index{InjectSources@{InjectSources}!weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}}
+\doxysubsubsection{\texorpdfstring{InjectSources()}{InjectSources()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+\_\+\+Sources.\+Inject\+Sources (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Gathers all of the sources and injects them onto the grid
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1sources_1_1__Sources_a3da13382d16c21423fd19051b6dd1f37}\label{classweltgeist_1_1sources_1_1__Sources_a3da13382d16c21423fd19051b6dd1f37}} 
+\index{weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}!MakeSimpleRadiation@{MakeSimpleRadiation}}
+\index{MakeSimpleRadiation@{MakeSimpleRadiation}!weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}}
+\doxysubsubsection{\texorpdfstring{MakeSimpleRadiation()}{MakeSimpleRadiation()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+\_\+\+Sources.\+Make\+Simple\+Radiation (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{QH }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Inject a radiation source
+
+Parameters
+----------
+
+QH : float
+    Emission rate of ionising photons in number / s
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1sources_1_1__Sources_aace5f7f8482e389123198d2f66a13aa4}\label{classweltgeist_1_1sources_1_1__Sources_aace5f7f8482e389123198d2f66a13aa4}} 
+\index{weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}!MakeSupernova@{MakeSupernova}}
+\index{MakeSupernova@{MakeSupernova}!weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}}
+\doxysubsubsection{\texorpdfstring{MakeSupernova()}{MakeSupernova()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+\_\+\+Sources.\+Make\+Supernova (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{energy,  }\item[{}]{mass,  }\item[{}]{time = {\ttfamily 0.0} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Inject a supernova
+
+Parameters
+----------
+
+energy : float
+    Energy to inject in erg
+mass : float
+    Mass to inject in g
+time : float
+    Time of supernova in s
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1sources_1_1__Sources_ad1cbed005f6805633a1b3c9e7148252e}\label{classweltgeist_1_1sources_1_1__Sources_ad1cbed005f6805633a1b3c9e7148252e}} 
+\index{weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}!MakeWind@{MakeWind}}
+\index{MakeWind@{MakeWind}!weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}}
+\doxysubsubsection{\texorpdfstring{MakeWind()}{MakeWind()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+\_\+\+Sources.\+Make\+Wind (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{lum,  }\item[{}]{massloss }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Inject a wind source
+
+Parameters
+----------
+
+lum : float
+    Luminosity (energy per unit time) to inject in erg / s
+massloss : float
+    Mass to inject per unit time in g/s
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1sources_1_1__Sources_a8d80a0705701f394e42624881d5c8c0a}\label{classweltgeist_1_1sources_1_1__Sources_a8d80a0705701f394e42624881d5c8c0a}} 
+\index{weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}!RemoveSource@{RemoveSource}}
+\index{RemoveSource@{RemoveSource}!weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}}
+\doxysubsubsection{\texorpdfstring{RemoveSource()}{RemoveSource()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+\_\+\+Sources.\+Remove\+Source (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{source }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Remove a source object
+
+Parameters
+----------
+source : Source
+    Source object to remove from active sources
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classweltgeist_1_1sources_1_1__Sources_aefb99aca7b0b217fc0a5ded62e1e1764}\label{classweltgeist_1_1sources_1_1__Sources_aefb99aca7b0b217fc0a5ded62e1e1764}} 
+\index{weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}!sources@{sources}}
+\index{sources@{sources}!weltgeist.sources.\_Sources@{weltgeist.sources.\_Sources}}
+\doxysubsubsection{\texorpdfstring{sources()}{sources()}}
+{\footnotesize\ttfamily def weltgeist.\+sources.\+\_\+\+Sources.\+sources (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}List of sources
+
+Returns
+-------
+sources : list
+    list of sources contained in this class
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+weltgeist/\mbox{\hyperlink{sources_8py}{sources.\+py}}\end{DoxyCompactItemize}

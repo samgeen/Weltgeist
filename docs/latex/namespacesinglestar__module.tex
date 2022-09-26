@@ -1,0 +1,86 @@
+\hypertarget{namespacesinglestar__module}{}\doxysection{singlestar\+\_\+module Module Reference}
+\label{namespacesinglestar__module}\index{singlestar\_module@{singlestar\_module}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \mbox{\hyperlink{namespacesinglestar__module_ac1b46960ce4929251c5301ea848c9a1e}{ssm\+\_\+setup}} (tableloc\+\_\+in)
+\item 
+subroutine, public \mbox{\hyperlink{namespacesinglestar__module_a44a307313d193194fb44ac0866dd775b}{ssm\+\_\+lifetime}} (mass\+\_\+ini, lifetime)
+\item 
+subroutine, public \mbox{\hyperlink{namespacesinglestar__module_a90c3f4ac50528247778b442fb035faf2}{ssm\+\_\+winds}} (mass\+\_\+ini, t, dt, energy, massloss)
+\item 
+subroutine, public \mbox{\hyperlink{namespacesinglestar__module_ad3aeab2bdc8cf8af5cc0db022fbac210}{ssm\+\_\+radiation}} (mass\+\_\+ini, t, dt, nphotons)
+\item 
+subroutine, public \mbox{\hyperlink{namespacesinglestar__module_a901bd4d9d260764760be07f53dc61e30}{ssm\+\_\+bandenergies}} (mass\+\_\+ini, t, dt, energies)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+logical \mbox{\hyperlink{namespacesinglestar__module_a61f9d5934077075df192a2cbf6d72b99}{ssm\+\_\+is\+\_\+setup}} =.false.
+\item 
+integer, parameter \mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}} =kind(1.\+0\+D0)
+\item 
+integer, parameter \mbox{\hyperlink{namespacesinglestar__module_abc1d51eefba1314c15c7505af96d19ef}{ngroups}} =5
+\item 
+integer, parameter \mbox{\hyperlink{namespacesinglestar__module_a08ee84dc1adae23d05c6c23160c7bd5e}{nbands}} =3
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacesinglestar__module_a901bd4d9d260764760be07f53dc61e30}\label{namespacesinglestar__module_a901bd4d9d260764760be07f53dc61e30}} 
+\index{singlestar\_module@{singlestar\_module}!ssm\_bandenergies@{ssm\_bandenergies}}
+\index{ssm\_bandenergies@{ssm\_bandenergies}!singlestar\_module@{singlestar\_module}}
+\doxysubsubsection{\texorpdfstring{ssm\_bandenergies()}{ssm\_bandenergies()}}
+{\footnotesize\ttfamily subroutine, public singlestar\+\_\+module\+::ssm\+\_\+bandenergies (\begin{DoxyParamCaption}\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{mass\+\_\+ini,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{t,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{dt,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), dimension(\mbox{\hyperlink{namespacesinglestar__module_a08ee84dc1adae23d05c6c23160c7bd5e}{nbands}}), intent(out)}]{energies }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacesinglestar__module_a44a307313d193194fb44ac0866dd775b}\label{namespacesinglestar__module_a44a307313d193194fb44ac0866dd775b}} 
+\index{singlestar\_module@{singlestar\_module}!ssm\_lifetime@{ssm\_lifetime}}
+\index{ssm\_lifetime@{ssm\_lifetime}!singlestar\_module@{singlestar\_module}}
+\doxysubsubsection{\texorpdfstring{ssm\_lifetime()}{ssm\_lifetime()}}
+{\footnotesize\ttfamily subroutine, public singlestar\+\_\+module\+::ssm\+\_\+lifetime (\begin{DoxyParamCaption}\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{mass\+\_\+ini,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(out)}]{lifetime }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacesinglestar__module_ad3aeab2bdc8cf8af5cc0db022fbac210}\label{namespacesinglestar__module_ad3aeab2bdc8cf8af5cc0db022fbac210}} 
+\index{singlestar\_module@{singlestar\_module}!ssm\_radiation@{ssm\_radiation}}
+\index{ssm\_radiation@{ssm\_radiation}!singlestar\_module@{singlestar\_module}}
+\doxysubsubsection{\texorpdfstring{ssm\_radiation()}{ssm\_radiation()}}
+{\footnotesize\ttfamily subroutine, public singlestar\+\_\+module\+::ssm\+\_\+radiation (\begin{DoxyParamCaption}\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{mass\+\_\+ini,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{t,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{dt,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), dimension(\mbox{\hyperlink{namespacesinglestar__module_abc1d51eefba1314c15c7505af96d19ef}{ngroups}}), intent(out)}]{nphotons }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacesinglestar__module_ac1b46960ce4929251c5301ea848c9a1e}\label{namespacesinglestar__module_ac1b46960ce4929251c5301ea848c9a1e}} 
+\index{singlestar\_module@{singlestar\_module}!ssm\_setup@{ssm\_setup}}
+\index{ssm\_setup@{ssm\_setup}!singlestar\_module@{singlestar\_module}}
+\doxysubsubsection{\texorpdfstring{ssm\_setup()}{ssm\_setup()}}
+{\footnotesize\ttfamily subroutine, public singlestar\+\_\+module\+::ssm\+\_\+setup (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{tableloc\+\_\+in }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacesinglestar__module_a90c3f4ac50528247778b442fb035faf2}\label{namespacesinglestar__module_a90c3f4ac50528247778b442fb035faf2}} 
+\index{singlestar\_module@{singlestar\_module}!ssm\_winds@{ssm\_winds}}
+\index{ssm\_winds@{ssm\_winds}!singlestar\_module@{singlestar\_module}}
+\doxysubsubsection{\texorpdfstring{ssm\_winds()}{ssm\_winds()}}
+{\footnotesize\ttfamily subroutine, public singlestar\+\_\+module\+::ssm\+\_\+winds (\begin{DoxyParamCaption}\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{mass\+\_\+ini,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{t,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(in)}]{dt,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(out)}]{energy,  }\item[{real(\mbox{\hyperlink{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}{dp}}), intent(out)}]{massloss }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}\label{namespacesinglestar__module_a4efb6d93cf117c80d6ed903f3f7f23cc}} 
+\index{singlestar\_module@{singlestar\_module}!dp@{dp}}
+\index{dp@{dp}!singlestar\_module@{singlestar\_module}}
+\doxysubsubsection{\texorpdfstring{dp}{dp}}
+{\footnotesize\ttfamily integer, parameter singlestar\+\_\+module\+::dp =kind(1.\+0\+D0)}
+
+\mbox{\Hypertarget{namespacesinglestar__module_a08ee84dc1adae23d05c6c23160c7bd5e}\label{namespacesinglestar__module_a08ee84dc1adae23d05c6c23160c7bd5e}} 
+\index{singlestar\_module@{singlestar\_module}!nbands@{nbands}}
+\index{nbands@{nbands}!singlestar\_module@{singlestar\_module}}
+\doxysubsubsection{\texorpdfstring{nbands}{nbands}}
+{\footnotesize\ttfamily integer, parameter singlestar\+\_\+module\+::nbands =3}
+
+\mbox{\Hypertarget{namespacesinglestar__module_abc1d51eefba1314c15c7505af96d19ef}\label{namespacesinglestar__module_abc1d51eefba1314c15c7505af96d19ef}} 
+\index{singlestar\_module@{singlestar\_module}!ngroups@{ngroups}}
+\index{ngroups@{ngroups}!singlestar\_module@{singlestar\_module}}
+\doxysubsubsection{\texorpdfstring{ngroups}{ngroups}}
+{\footnotesize\ttfamily integer, parameter singlestar\+\_\+module\+::ngroups =5}
+
+\mbox{\Hypertarget{namespacesinglestar__module_a61f9d5934077075df192a2cbf6d72b99}\label{namespacesinglestar__module_a61f9d5934077075df192a2cbf6d72b99}} 
+\index{singlestar\_module@{singlestar\_module}!ssm\_is\_setup@{ssm\_is\_setup}}
+\index{ssm\_is\_setup@{ssm\_is\_setup}!singlestar\_module@{singlestar\_module}}
+\doxysubsubsection{\texorpdfstring{ssm\_is\_setup}{ssm\_is\_setup}}
+{\footnotesize\ttfamily logical singlestar\+\_\+module\+::ssm\+\_\+is\+\_\+setup =.false.}
+

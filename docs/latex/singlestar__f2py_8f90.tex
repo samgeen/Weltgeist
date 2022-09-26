@@ -1,0 +1,48 @@
+\hypertarget{singlestar__f2py_8f90}{}\doxysection{Stellar\+Sources/\+Fortran/singlestar\+\_\+f2py.f90 File Reference}
+\label{singlestar__f2py_8f90}\index{StellarSources/Fortran/singlestar\_f2py.f90@{StellarSources/Fortran/singlestar\_f2py.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{singlestar__f2py_8f90_a3f9ce48e1c8fe4e1e8817fdcc3156173}{star\+\_\+setup}} (tableloc)
+\item 
+subroutine \mbox{\hyperlink{singlestar__f2py_8f90_a3b92f4a591ce81895dad6045d9434815}{star\+\_\+lifetime}} (mass\+\_\+ini, lifetime)
+\item 
+subroutine \mbox{\hyperlink{singlestar__f2py_8f90_aa47a043632acee51d60067e5b2ac4bd4}{star\+\_\+winds}} (mass\+\_\+ini, t, dt, energy, massloss)
+\item 
+subroutine \mbox{\hyperlink{singlestar__f2py_8f90_aa42678a8064f6092e9e45fbdd80782e1}{star\+\_\+radiation}} (mass\+\_\+ini, t, dt, nphotons)
+\item 
+subroutine \mbox{\hyperlink{singlestar__f2py_8f90_a787140ec01d606ecaf01ba051265d84e}{star\+\_\+bandenergies}} (mass\+\_\+ini, t, dt, energies)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{singlestar__f2py_8f90_a787140ec01d606ecaf01ba051265d84e}\label{singlestar__f2py_8f90_a787140ec01d606ecaf01ba051265d84e}} 
+\index{singlestar\_f2py.f90@{singlestar\_f2py.f90}!star\_bandenergies@{star\_bandenergies}}
+\index{star\_bandenergies@{star\_bandenergies}!singlestar\_f2py.f90@{singlestar\_f2py.f90}}
+\doxysubsubsection{\texorpdfstring{star\_bandenergies()}{star\_bandenergies()}}
+{\footnotesize\ttfamily subroutine star\+\_\+bandenergies (\begin{DoxyParamCaption}\item[{real(dp), intent(in)}]{mass\+\_\+ini,  }\item[{real(dp), intent(in)}]{t,  }\item[{real(dp), intent(in)}]{dt,  }\item[{real(dp), dimension(nluminosities), intent(out)}]{energies }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{singlestar__f2py_8f90_a3b92f4a591ce81895dad6045d9434815}\label{singlestar__f2py_8f90_a3b92f4a591ce81895dad6045d9434815}} 
+\index{singlestar\_f2py.f90@{singlestar\_f2py.f90}!star\_lifetime@{star\_lifetime}}
+\index{star\_lifetime@{star\_lifetime}!singlestar\_f2py.f90@{singlestar\_f2py.f90}}
+\doxysubsubsection{\texorpdfstring{star\_lifetime()}{star\_lifetime()}}
+{\footnotesize\ttfamily subroutine star\+\_\+lifetime (\begin{DoxyParamCaption}\item[{real(dp), intent(in)}]{mass\+\_\+ini,  }\item[{real(dp), intent(out)}]{lifetime }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{singlestar__f2py_8f90_aa42678a8064f6092e9e45fbdd80782e1}\label{singlestar__f2py_8f90_aa42678a8064f6092e9e45fbdd80782e1}} 
+\index{singlestar\_f2py.f90@{singlestar\_f2py.f90}!star\_radiation@{star\_radiation}}
+\index{star\_radiation@{star\_radiation}!singlestar\_f2py.f90@{singlestar\_f2py.f90}}
+\doxysubsubsection{\texorpdfstring{star\_radiation()}{star\_radiation()}}
+{\footnotesize\ttfamily subroutine star\+\_\+radiation (\begin{DoxyParamCaption}\item[{real(dp), intent(in)}]{mass\+\_\+ini,  }\item[{real(dp), intent(in)}]{t,  }\item[{real(dp), intent(in)}]{dt,  }\item[{real(dp), dimension(ngroups), intent(out)}]{nphotons }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{singlestar__f2py_8f90_a3f9ce48e1c8fe4e1e8817fdcc3156173}\label{singlestar__f2py_8f90_a3f9ce48e1c8fe4e1e8817fdcc3156173}} 
+\index{singlestar\_f2py.f90@{singlestar\_f2py.f90}!star\_setup@{star\_setup}}
+\index{star\_setup@{star\_setup}!singlestar\_f2py.f90@{singlestar\_f2py.f90}}
+\doxysubsubsection{\texorpdfstring{star\_setup()}{star\_setup()}}
+{\footnotesize\ttfamily subroutine star\+\_\+setup (\begin{DoxyParamCaption}\item[{character(len=200), intent(in)}]{tableloc }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{singlestar__f2py_8f90_aa47a043632acee51d60067e5b2ac4bd4}\label{singlestar__f2py_8f90_aa47a043632acee51d60067e5b2ac4bd4}} 
+\index{singlestar\_f2py.f90@{singlestar\_f2py.f90}!star\_winds@{star\_winds}}
+\index{star\_winds@{star\_winds}!singlestar\_f2py.f90@{singlestar\_f2py.f90}}
+\doxysubsubsection{\texorpdfstring{star\_winds()}{star\_winds()}}
+{\footnotesize\ttfamily subroutine star\+\_\+winds (\begin{DoxyParamCaption}\item[{real(dp), intent(in)}]{mass\+\_\+ini,  }\item[{real(dp), intent(in)}]{t,  }\item[{real(dp), intent(in)}]{dt,  }\item[{real(dp), intent(out)}]{energy,  }\item[{real(dp), intent(out)}]{massloss }\end{DoxyParamCaption})}
+

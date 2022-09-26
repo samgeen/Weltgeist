@@ -1,5 +1,5 @@
 # Weltgeist
-"Wind and emission of light with time-dependent gas evolution for interstellar structures and targets"
+## "Wind and emission of light with time-dependent gas evolution for interstellar structures and targets"
 
 Spherical hydrodynamics for feedback from massive stars
 
