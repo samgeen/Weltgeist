@@ -5,11 +5,6 @@ Save the state of the simulation
 @author: samgeen
 """
 
-# This piece of code basically adds the parent directory to PYTHONPATH
-import os, sys
-parent = os.path.dirname(os.getcwd())
-sys.path.append(parent)
-
 # Import numpy, matplotlib and weltgeist
 import numpy as np
 import matplotlib.pyplot as plt

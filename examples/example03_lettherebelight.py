@@ -5,11 +5,6 @@ Explore radiation sources and visualisation
 @author: samgeen
 """
 
-# This piece of code basically adds the parent directory to PYTHONPATH
-import os, sys
-parent = os.path.dirname(os.getcwd())
-sys.path.append(parent)
-
 # Import numpy and weltgeist
 import numpy as np
 import weltgeist

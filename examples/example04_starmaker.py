@@ -5,11 +5,6 @@ Explore stellar sources and initial conditions
 @author: samgeen
 """
 
-# This piece of code basically adds the parent directory to PYTHONPATH
-import os, sys
-parent = os.path.dirname(os.getcwd())
-sys.path.append(parent)
-
 # Import numpy and weltgeist
 import numpy as np
 import weltgeist
@@ -54,7 +49,7 @@ def run_example():
     # There are also tables for sub-Solar (Z = 0.002)
     # Depends if you want to model our Galaxy or the LMC/SMC
     weltgeist.sources.singlestarLocation = \
-        "..\\..\\StellarSources\\Compressed\\singlestar_z0.014"
+        "../StellarSources/data/singlestar_z0.014"
 
     # Second, make a star using these tables
     # This is a 30 solar mass star 
