@@ -1,4 +1,4 @@
-project(cooling_module C Fortran)
+project(weltgeist C Fortran)
 
 message(STATUS "Making Cooling...")
 
@@ -20,4 +20,4 @@ COMMAND ${F2PY_EXECUTABLE}
 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-install(FILES ${generated_module_file} DESTINATION cooling)
+install(FILES ${generated_module_file} DESTINATION weltgeist)

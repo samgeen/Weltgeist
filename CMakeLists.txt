@@ -22,6 +22,6 @@ message(STATUS "F2PY included from: ${F2PY_INCLUDE_DIR}")
 
 
 add_subdirectory(StellarSources)
-#add_subdirectory(VH1)
-#add_subdirectory(Radiation)
-#add_subdirectory(Cooling)
+add_subdirectory(VH1)
+add_subdirectory(Radiation)
+add_subdirectory(Cooling)
