@@ -1,4 +1,4 @@
-project(VH1 C Fortran)
+project(weltgeist C Fortran)
 
 message(STATUS "Making VH1...")
 
@@ -109,7 +109,7 @@ if (UNIX)
 endif()
 
 if (SKBUILD)
-  install(TARGETS ${generated_module_file} DESTINATION vhone)
+  install(TARGETS ${generated_module_file} DESTINATION weltgeist)
 else()
-  install(TARGETS ${generated_module_file} DESTINATION ${CMAKE_SOURCE_DIR}/vhone)
+  install(TARGETS ${generated_module_file} DESTINATION ${CMAKE_SOURCE_DIR}/weltgeist)
 endif()
