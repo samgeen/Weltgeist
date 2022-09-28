@@ -1,6 +1,6 @@
-project(VH1 C Fortran)
+project(singlestar C Fortran)
 
-message(STATUS "Making VH1...")
+message(STATUS "Making Stellar Sources...")
 
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
