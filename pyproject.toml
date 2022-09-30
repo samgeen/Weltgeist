@@ -2,4 +2,4 @@
 requires-python = ">=3.7"
 
 [build-system]
-requires = ["setuptools>=42","wheel","scikit-build","cmake<3.18","ninja", "numpy>=1.21"]
+requires = ["setuptools>=42", "wheel", "scikit-build", "cmake<3.18", "ninja", "numpy>=1.21","h5py"]

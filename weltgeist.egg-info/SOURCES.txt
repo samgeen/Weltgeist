@@ -2,6 +2,7 @@ LICENSE
 README.md
 pyproject.toml
 setup.py
+_skbuild/linux-x86_64-3.10/cmake-install/weltgeist/Tgas.csv
 _skbuild/linux-x86_64-3.10/cmake-install/weltgeist/__init__.py
 _skbuild/linux-x86_64-3.10/cmake-install/weltgeist/analyticsolutions.py
 _skbuild/linux-x86_64-3.10/cmake-install/weltgeist/cooling.py
