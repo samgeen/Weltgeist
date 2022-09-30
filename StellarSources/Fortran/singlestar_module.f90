@@ -66,6 +66,7 @@ SUBROUTINE ssm_setup(tableloc_in)
   allocate(ssm_energies(ssm_numtables))
   allocate(ssm_masslosses(ssm_numtables))
   allocate(ssm_rads(ssm_numtables,ngroups))
+  allocate(ssm_bands(ssm_numtables,ngroups))
   ! Run through tables and set them up
   do it=1,ssm_numtables
      ! Winds
@@ -176,12 +177,12 @@ SUBROUTINE ssm_bandenergies(mass_ini,t,dt,energies)
   real(dp),intent(in)::dt
   real(dp),dimension(nbands),intent(out)::energies
   real(dp)::v1,v2
-  integer::ig
+  integer::ib
 
-  do ig=1,ngroups
-     call ssm_interpolate(ssm_bands(:,ig),mass_ini,t,v1)
-     call ssm_interpolate(ssm_bands(:,ig),mass_ini,t+dt,v2)
-     energies(ig) = v2 - v1
+  do ib=1,nbands
+     call ssm_interpolate(ssm_bands(:,ib),mass_ini,t,v1)
+     call ssm_interpolate(ssm_bands(:,ib),mass_ini,t+dt,v2)
+     energies(ib) = v2 - v1
   enddo
 
 END SUBROUTINE ssm_bandenergies

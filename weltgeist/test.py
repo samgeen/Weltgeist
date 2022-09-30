@@ -159,7 +159,7 @@ class Tester(object):
                 #self._anline1.Append(t,rsedov)
                 #self._anline2.Append(t,rcooled)
                 if self._itick == 1:
-                    print "t, Rsim, rhomax/rho0", t/units.Myr, rs/units.pc, rhomax / rhoout
+                    print("t, Rsim, rhomax/rho0", t/units.Myr, rs/units.pc, rhomax / rhoout)
                     #print "t, Rsim, Rsedov, ratio, Tmin/max, evir", t/units.Myr, rs/units.pc, rsedov/units.pc, \
                     #                     rs / rsedov, allkte-0.5*allge
                     #print "t, tgrav, t/grav, n, n0", t/units.time, tgrav/units.time, t/tgrav, rs, init.n0
