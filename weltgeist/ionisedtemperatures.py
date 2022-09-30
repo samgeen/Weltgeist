@@ -10,16 +10,26 @@ import scipy.interpolate
 
 import weltgeist
 
+import os
+from pathlib import Path
+
 # Empty objects to fill in _readtempertaures
 _temperatureFunc = None
 _Teffs = None
 _nHs = None
 _Zs = None
 
+# Get the current source location to read 
+source_path = Path(__file__).resolve()
+source_dir = source_path.parent
+
+# Get the default gas temperature table location (will be copied in setup.py with the code)
+defaulttableloc = str(source_dir)+os.sep+"Tgas.csv"
+
 # What Zsolar does Cloudy assume? TODO: CHECK!!!
 Zsolar = 0.014
 
-def _readtemperatures(filename="Tgas.csv"):
+def _readtemperatures(filename=defaulttableloc):
     global _temperatureFunc, _Teffs, _nHs, _Zs
     # NOTE: we're assuming an ionisation parameter U=-2
     if _temperatureFunc is None:
