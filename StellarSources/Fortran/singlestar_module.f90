@@ -93,7 +93,7 @@ SUBROUTINE ssm_setup(tableloc_in)
      ! Radiation energy bands
      call ssm_filename(it,"EKband",filename)
      call setup_table(ssm_bands(it,1),filename)
-     call ssm_filename(it,"EVBand",filename)
+     call ssm_filename(it,"EVband",filename)
      call setup_table(ssm_bands(it,2),filename)
      call ssm_filename(it,"Lbol",filename)
      call setup_table(ssm_bands(it,3),filename)
