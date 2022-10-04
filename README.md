@@ -16,11 +16,13 @@ This is a Python/Numpy module based on the code Virginia Hydrodynamics 1 designe
 
 3. Clone the repository to your computer and go to the Weltgeist folder where the setup.py file is
 
-4. Run python3 setup.py build to build the code.
+4. Get the big stellar evolution files by calling "git lfs pull" in the Weltgeist folder
 
-5. Run python3 setup.py install to install it to your python environment
+5. Run python3 setup.py build to build the code.
 
-6. If you change your mind and want it gone, call "pip uninstall weltgeist" (you might need to do this ouside the Weltgeist folder)
+6. Run python3 setup.py install to install it to your python environment
+
+7. If you change your mind and want it gone, call "pip uninstall weltgeist" (you might need to do this ouside the Weltgeist folder)
 
 If this all works, great! Otherwise get in touch with the problem and I'll take a look.
 
