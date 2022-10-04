@@ -7,24 +7,38 @@ Spherical hydrodynamics for feedback from massive stars
 
 This is a Python/Numpy module based on the code Virginia Hydrodynamics 1 designed to simulate 1D spherically symmetric flows around massive stars.
 
+## Pre-requisites
 
-## Install
+1. Install the Unix packages:
+sudo apt get build-essential gfortran git git-lfs python3 python-dev python3-pip cmake ninja-build
 
-1. Set up a virtual python3 environment to put the code in and activate it
+2. Set up a virtual python3 environment to put the code in and activate it
+e.g. https://docs.python.org/3/library/venv.html
 
-2. Make sure you have and gfortran installed (e.g. sudo apt install gfortran)
+3. Install the required Python packages:
+pip install numpy scipy h5py scikit-build h5py
 
-3. Clone the repository to your computer and go to the Weltgeist folder where the setup.py file is
+Optional: if you also want the real-time visualiser (used in some of the examples):
+pip install pyglet
 
-4. Get the big stellar evolution files by calling "git lfs pull" in the Weltgeist folder
+## Install Weltgeist
 
-5. Run python3 setup.py build to build the code.
+Make sure you activate your python3 environment (see above)
 
-6. Run python3 setup.py install to install it to your python environment
+1. Clone the repository to your computer and go to the Weltgeist folder where the setup.py file is:
+git clone git@github.com:samgeen/Weltgeist.git
 
-7. If you change your mind and want it gone, call "pip uninstall weltgeist" (you might need to do this ouside the Weltgeist folder)
+2. Get the big stellar evolution files by calling "git lfs pull" in the Weltgeist folder
+
+3. Run "python3 setup.py build" to build the code.
+
+4. Run "python3 setup.py install" to install it to your python environment
 
 If this all works, great! Otherwise get in touch with the problem and I'll take a look.
+
+## Uninstall Weltgeist
+
+If you change your mind and want it gone, call "pip uninstall weltgeist" (you might need to do this ouside the Weltgeist folder)
 
 ## Quickstart
 
