@@ -2,7 +2,7 @@ from skbuild import setup
 
 setup(
     name='weltgeist',
-    version='0.91',
+    version='0.911',
     description='A 1D hydrodynamic code for spherical astrophysics',
     license="MIT",
     packages=['weltgeist'],

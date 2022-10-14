@@ -114,12 +114,12 @@ SUBROUTINE star_bandenergies(mass_ini,t,dt,energies)
 
 END SUBROUTINE star_bandenergies
 
-SUBROUTINE star_Tionising(mass_ini,t,Tion)
-  ! Ionised gas temperature
+SUBROUTINE star_effectivetemperature(mass_ini,t,Teff)
+  ! Stellar effective temperature
   ! mass_ini - initial stellar mass in Msun
   ! t - age of star in seconds
   ! RETURNS
-  ! Tion - temperature of photoinised gas in Kelvin at time t
+  ! Teff - effective temperature of star in Kelvin at time t
   use singlestar_module
   implicit none
 
@@ -127,12 +127,12 @@ SUBROUTINE star_Tionising(mass_ini,t,Tion)
 
   real(dp),intent(in)::mass_ini
   real(dp),intent(in)::t
-  real(dp),intent(out)::ssm_Tion
+  real(dp),intent(out)::Teff
   ! f2py real(dp),intent(in)::mass_ini
   ! f2py real(dp),intent(in)::t
-  ! f2py real(dp),intent(out)::Tion
+  ! f2py real(dp),intent(out)::Teff
   
-  call ssm_Tionising(mass_ini,t,Tion)
+  call ssm_Teffective(mass_ini,t,Teff)
 
-END SUBROUTINE star_Tionising
+END SUBROUTINE star_effectivetemperature
 
