@@ -24,7 +24,7 @@ MODULE singlestar_module
   ! ssm_lifetime(mass_ini,lifetime)
   ! ssm_winds(mass_ini,t,dt,energy,massloss)
   ! ssm_radiation(mass_ini,t,dt,nphotons)
-  public::ssm_setup, ssm_lifetime, ssm_winds, ssm_radiation, ssm_bandenergies
+  public::ssm_setup, ssm_lifetime, ssm_winds, ssm_radiation, ssm_bandenergies, ssm_Tionising
 
   ! Private functions (used only inside the module) are:
   private::ssm_mtoi, ssm_itom, ssm_filename, ssm_interpolate, ssm_title
@@ -41,6 +41,7 @@ MODULE singlestar_module
   ! Radiation
   type(lookup_table),dimension(:,:), allocatable::ssm_rads
   type(lookup_table),dimension(:,:), allocatable::ssm_bands
+  type(lookup_table),dimension(:), allocatable::ssm_Tion
 CONTAINS
   
 ! PUBLIC / INTERFACE FUNCTIONS
@@ -66,7 +67,8 @@ SUBROUTINE ssm_setup(tableloc_in)
   allocate(ssm_energies(ssm_numtables))
   allocate(ssm_masslosses(ssm_numtables))
   allocate(ssm_rads(ssm_numtables,ngroups))
-  allocate(ssm_bands(ssm_numtables,ngroups))
+  allocate(ssm_bands(ssm_numtables,nbands))
+  allocate(ssm_Tion(ssm_numtables))
   ! Run through tables and set them up
   do it=1,ssm_numtables
      ! Winds
@@ -99,6 +101,9 @@ SUBROUTINE ssm_setup(tableloc_in)
      call setup_table(ssm_bands(it,3),filename)
      call ssm_filename(it,"Eion",filename)
      call setup_table(ssm_bands(it,4),filename)
+     ! Radiation ionised gas temperature
+     call ssm_filename(it,"Tion",filename)
+     call setup_table(ssm_Tion(it),filename)
   enddo
   ssm_is_setup=.true.
   ! TODO: Should I also deallocate later???
@@ -188,6 +193,23 @@ SUBROUTINE ssm_bandenergies(mass_ini,t,dt,energies)
   enddo
 
 END SUBROUTINE ssm_bandenergies
+
+SUBROUTINE ssm_Tionising(mass_ini,t,Tion)
+  ! Ionised gas temperature
+  ! mass_ini - initial stellar mass in Msun
+  ! t - age of star in seconds
+  ! RETURNS
+  ! Tion - temperature of photoinised gas in Kelvin at time t
+
+  real(dp),intent(in)::mass_ini
+  real(dp),intent(in)::t
+  real(dp),intent(out)::Tion
+  real(dp)::v1
+  ! Get energies and mass losses for t and dt
+  call ssm_interpolate(ssm_energies, mass_ini, t, v1)
+  Tion = v1
+
+END SUBROUTINE ssm_Tionising
 
 ! PRIVATE FUNCTIONS
 ! CANNOT BE CALLED OUTSIDE THE MODULE

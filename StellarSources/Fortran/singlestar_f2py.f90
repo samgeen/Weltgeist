@@ -99,19 +99,40 @@ SUBROUTINE star_bandenergies(mass_ini,t,dt,energies)
   implicit none
 
   integer,parameter::dp=kind(1.0D0) ! real*8  
-  integer,parameter::nluminosities=3
+  integer,parameter::nbands=4
 
   real(dp),intent(in)::mass_ini
   real(dp),intent(in)::t
   real(dp),intent(in)::dt
-  real(dp),dimension(nluminosities),intent(out)::energies
+  real(dp),dimension(nbands),intent(out)::energies
   ! f2py real(dp),intent(in)::mass_ini
   ! f2py real(dp),intent(in)::t
   ! f2py real(dp),intent(in)::dt
-  ! f2py real(dp),dimension(ngroups),intent(out)::nphotons
+  ! f2py real(dp),dimension(nbands),intent(out)::energies
 
   call ssm_bandenergies(mass_ini,t,dt,energies)
 
 END SUBROUTINE star_bandenergies
 
+SUBROUTINE star_Tionising(mass_ini,t,Tion)
+  ! Ionised gas temperature
+  ! mass_ini - initial stellar mass in Msun
+  ! t - age of star in seconds
+  ! RETURNS
+  ! Tion - temperature of photoinised gas in Kelvin at time t
+  use singlestar_module
+  implicit none
+
+  integer,parameter::dp=kind(1.0D0) ! real*8  
+
+  real(dp),intent(in)::mass_ini
+  real(dp),intent(in)::t
+  real(dp),intent(out)::ssm_Tion
+  ! f2py real(dp),intent(in)::mass_ini
+  ! f2py real(dp),intent(in)::t
+  ! f2py real(dp),intent(out)::Tion
+  
+  call ssm_Tionising(mass_ini,t,Tion)
+
+END SUBROUTINE star_Tionising
 
