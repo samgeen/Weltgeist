@@ -395,12 +395,22 @@ class TableSource(AbstractSource):
                 integrator.Integrator().CourantLimiter(vwind)
             if self._radiation:
                 #DO RAD
-                nphotons = singlestar.star_radiation(self._mass,age,dt)
-                # NOTE !!! ASSUMES 5 RADIATION BINS!!!
+                Qphotons = singlestar.star_radiation(self._mass,age,1.0)
+                photonbands = singlestar.star_bandenergies(self._mass,age,1.0)
+                # Get the ionising photon band
+                # Assumes Lbolometric (erg/s) in position 2 and 
+                #  Lionising (erg/s) in position 3
+                Lionising = photonbands[3]
+                # Get the non-ionising photon band
+                Lbol = photonbands[2]
+                Lnonionising = Lbol - Lionising
+                # Assumes:
                 # 1 = IR, 2 = optical+FUV, 3 = H-ionising, 
                 # 4 = HeI->HeII, 5 = HeII->HeIII and up
-                nuv = np.sum(nphotons[2:5])
-                injector.AddPhotons(nuv)
+                QH = np.sum(Qphotons[2:5])
+                # Get energy of an ionising photon
+                Eionising = Lionising / QH
+                injector.AddPhotons(Lionising, Lnonionising, Eionising, Tion)
 
     def _TableSetup(self):
         """
