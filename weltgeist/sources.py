@@ -377,6 +377,7 @@ class TableSource(AbstractSource):
         dt = integrator.Integrator().dt
         age = t-self._tbirth
         if age > 0.0:
+            # Do stellar winds
             if self._wind:
                 # Get energy and mass to inject
                 energy, massloss = singlestar.star_winds(self._mass,age,dt)
@@ -393,10 +394,15 @@ class TableSource(AbstractSource):
                 ecourant, mcourant = singlestar.star_winds(self._mass,age,1.0)
                 vwind = np.sqrt(2.0*ecourant/mcourant)
                 integrator.Integrator().CourantLimiter(vwind)
+            # Do stellar radiation
             if self._radiation:
-                #DO RAD
+                # Read single star tables:
+                # 1. Number of photons emitted per s
                 Qphotons = singlestar.star_radiation(self._mass,age,1.0)
+                # 2. Photon luminosities
                 photonbands = singlestar.star_bandenergies(self._mass,age,1.0)
+                # 3. Ionised gas temperature
+                Tion = singlestar.star_Tionising(self._mass,age)
                 # Get the ionising photon band
                 # Assumes Lbolometric (erg/s) in position 2 and 
                 #  Lionising (erg/s) in position 3
