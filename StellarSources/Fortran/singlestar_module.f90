@@ -15,7 +15,7 @@ MODULE singlestar_module
   ! HACK TO MAKE THIS WORK WITHOUT RADIATION MODULE
   integer,parameter::ngroups=5
   ! Additional bands tracking photon luminosities
-  integer,parameter::nbands=3
+  integer,parameter::nbands=4
   
   private
   
@@ -97,6 +97,8 @@ SUBROUTINE ssm_setup(tableloc_in)
      call setup_table(ssm_bands(it,2),filename)
      call ssm_filename(it,"Lbol",filename)
      call setup_table(ssm_bands(it,3),filename)
+     call ssm_filename(it,"Eion",filename)
+     call setup_table(ssm_bands(it,4),filename)
   enddo
   ssm_is_setup=.true.
   ! TODO: Should I also deallocate later???
