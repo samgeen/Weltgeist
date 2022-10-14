@@ -367,6 +367,7 @@ class TableSource(AbstractSource):
         injector : _Injector object
             object that accepts values to inject to grid
         """
+        global starmetal
 
         # Check that the table is set up
         # NOTE: Make sure singlestarLocation is set before you get here
@@ -376,6 +377,7 @@ class TableSource(AbstractSource):
         t = integrator.Integrator().time
         dt = integrator.Integrator().dt
         age = t-self._tbirth
+        Teff = None
         if age > 0.0:
             # Do stellar winds
             if self._wind:
@@ -386,9 +388,8 @@ class TableSource(AbstractSource):
                 # Add energy to grid as kinetic energy
                 injector.AddKE(energy)
                 # Add some thermal energy to account for star's temperature
-                # TODO: Add star's actual temperature
-                Tstar = 40000.0 # K
-                TE = 1.5 * units.kB * massloss/(units.mH/units.X)*Tstar
+                Teff = singlestar.star_effectivetemperature(self._mass,age) # Kelvin
+                TE = 1.5 * units.kB * massloss/(units.mH/units.X)*Teff
                 injector.AddTE(TE)
                 # Set the Courant condition
                 ecourant, mcourant = singlestar.star_winds(self._mass,age,1.0)
@@ -402,7 +403,9 @@ class TableSource(AbstractSource):
                 # 2. Photon luminosities
                 photonbands = singlestar.star_bandenergies(self._mass,age,1.0)
                 # 3. Ionised gas temperature
-                Tion = singlestar.star_Tionising(self._mass,age)
+                if Teff is None:
+                    Teff = singlestar.star_effectivetemperature(self._mass,age)
+                Tion = radiation.IonisedGasTemperature(Teff, starmetal)
                 # Get the ionising photon band
                 # Assumes Lbolometric (erg/s) in position 2 and 
                 #  Lionising (erg/s) in position 3
@@ -432,6 +435,7 @@ class TableSource(AbstractSource):
 
 # Location of single star tables
 # NOTE: this needs to be set correctly before the single star module is used
-singlestarLocation = "/home/samgeen/Programming/Astro/StellarSources/Compressed/singlestar_z0.014"
+starmetal = 0.014
+singlestarLocation = "/home/samgeen/Programming/Astro/StellarSources/Compressed/singlestar_"+str(starmetal)
 # Are the tables set up?
 _tablesetup = False

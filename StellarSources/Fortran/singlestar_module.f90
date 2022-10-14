@@ -24,7 +24,7 @@ MODULE singlestar_module
   ! ssm_lifetime(mass_ini,lifetime)
   ! ssm_winds(mass_ini,t,dt,energy,massloss)
   ! ssm_radiation(mass_ini,t,dt,nphotons)
-  public::ssm_setup, ssm_lifetime, ssm_winds, ssm_radiation, ssm_bandenergies, ssm_Tionising
+  public::ssm_setup, ssm_lifetime, ssm_winds, ssm_radiation, ssm_bandenergies, ssm_Teffective
 
   ! Private functions (used only inside the module) are:
   private::ssm_mtoi, ssm_itom, ssm_filename, ssm_interpolate, ssm_title
@@ -41,7 +41,7 @@ MODULE singlestar_module
   ! Radiation
   type(lookup_table),dimension(:,:), allocatable::ssm_rads
   type(lookup_table),dimension(:,:), allocatable::ssm_bands
-  type(lookup_table),dimension(:), allocatable::ssm_Tion
+  type(lookup_table),dimension(:), allocatable::ssm_Teff
 CONTAINS
   
 ! PUBLIC / INTERFACE FUNCTIONS
@@ -68,42 +68,42 @@ SUBROUTINE ssm_setup(tableloc_in)
   allocate(ssm_masslosses(ssm_numtables))
   allocate(ssm_rads(ssm_numtables,ngroups))
   allocate(ssm_bands(ssm_numtables,nbands))
-  allocate(ssm_Tion(ssm_numtables))
+  allocate(ssm_Teff(ssm_numtables))
   ! Run through tables and set them up
   do it=1,ssm_numtables
      ! Winds
-     call ssm_filename(it,"energy",filename)
+     call ssm_filename(it,"cumulenergy",filename)
      call setup_table(ssm_energies(it),filename)
-     call ssm_filename(it,"massloss",filename)
+     call ssm_filename(it,"cumulmassloss",filename)
      call setup_table(ssm_masslosses(it),filename)
      ! Radiation spectrum
      ! TODO: Make more generic for, e.g., 5 groups?
      ip = 0
      if (ngroups.gt.3) then
         ip = 2
-        call ssm_filename(it,"IR",filename)
+        call ssm_filename(it,"cumulIR",filename)
         call setup_table(ssm_rads(it,1),filename)
-        call ssm_filename(it,"Opt",filename)
+        call ssm_filename(it,"cumulOpt",filename)
         call setup_table(ssm_rads(it,2),filename)
      endif
-     call ssm_filename(it,"HII",filename)
+     call ssm_filename(it,"cumulHII",filename)
      call setup_table(ssm_rads(it,1+ip),filename)
-     call ssm_filename(it,"HeII",filename)
+     call ssm_filename(it,"cumulHeII",filename)
      call setup_table(ssm_rads(it,2+ip),filename)
-     call ssm_filename(it,"HeIII",filename)
+     call ssm_filename(it,"cumulHeIII",filename)
      call setup_table(ssm_rads(it,3+ip),filename)
      ! Radiation energy bands
-     call ssm_filename(it,"EKband",filename)
+     call ssm_filename(it,"cumulEKband",filename)
      call setup_table(ssm_bands(it,1),filename)
-     call ssm_filename(it,"EVband",filename)
+     call ssm_filename(it,"cumulEVband",filename)
      call setup_table(ssm_bands(it,2),filename)
-     call ssm_filename(it,"Lbol",filename)
+     call ssm_filename(it,"cumulLbol",filename)
      call setup_table(ssm_bands(it,3),filename)
-     call ssm_filename(it,"Eion",filename)
+     call ssm_filename(it,"cumulEion",filename)
      call setup_table(ssm_bands(it,4),filename)
-     ! Radiation ionised gas temperature
-     call ssm_filename(it,"Tion",filename)
-     call setup_table(ssm_Tion(it),filename)
+     ! Stellar surface temperature
+     call ssm_filename(it,"Teff",filename)
+     call setup_table(ssm_Teff(it),filename)
   enddo
   ssm_is_setup=.true.
   ! TODO: Should I also deallocate later???
@@ -194,22 +194,22 @@ SUBROUTINE ssm_bandenergies(mass_ini,t,dt,energies)
 
 END SUBROUTINE ssm_bandenergies
 
-SUBROUTINE ssm_Tionising(mass_ini,t,Tion)
+SUBROUTINE ssm_Teffective(mass_ini,t,Teff)
   ! Ionised gas temperature
   ! mass_ini - initial stellar mass in Msun
   ! t - age of star in seconds
   ! RETURNS
-  ! Tion - temperature of photoinised gas in Kelvin at time t
+  ! Teff - effective temperature of star in Kelvin at time t
 
   real(dp),intent(in)::mass_ini
   real(dp),intent(in)::t
-  real(dp),intent(out)::Tion
+  real(dp),intent(out)::Teff
   real(dp)::v1
   ! Get energies and mass losses for t and dt
-  call ssm_interpolate(ssm_energies, mass_ini, t, v1)
-  Tion = v1
+  call ssm_interpolate(ssm_Teff, mass_ini, t, v1)
+  Teff = v1
 
-END SUBROUTINE ssm_Tionising
+END SUBROUTINE ssm_Teffective
 
 ! PRIVATE FUNCTIONS
 ! CANNOT BE CALLED OUTSIDE THE MODULE
@@ -245,7 +245,7 @@ SUBROUTINE ssm_filename(index,prop,filename)
   call ssm_title(index*5,nmass)
   ! Put together filename
   filename = TRIM(ssm_tableloc)//"_m"//TRIM(nmass)// &
-       & "cumul"//prop//".dat"
+       & prop//".dat"
   ! TODO: Add error checking for file existence
 END SUBROUTINE ssm_filename
 
