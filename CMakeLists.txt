@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.16.0)
+# Need version 3.17 as it includes Ninja, which we use to build Weltgeist
+cmake_minimum_required(VERSION 3.17.0)
 
 project(weltgeist)
 
