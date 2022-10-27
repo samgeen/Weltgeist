@@ -85,7 +85,7 @@ class _Hydro(object):
             # TODO: perhaps explore if this is indeed possible?
             #vhone.data.x[slicer,0,0] = val/units.distance
         def _xarr():
-            return vhone.data.zxa[0:self.ncells,0,0]*units.density
+            return vhone.data.zxa[0:self.ncells,0,0]*units.distance
         self.x = _Field(_xget,_xset,_xarr)
         x = self.x[0:self.ncells]
         # Assume that cells are evenly spaced in radius
