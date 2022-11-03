@@ -1,10 +1,8 @@
 *.o
 *.mod
 *.pyc
-<<<<<<< HEAD
 *.pyd
-=======
->>>>>>> 3c20549a34a5688e3990f28f90ac1dc4c7501cc4
+StellarSources/data/
 *.hdf5
 *~
 *.so
