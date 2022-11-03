@@ -336,7 +336,11 @@ class TableSource(AbstractSource):
     """
     Source of energy & photons based on a lookup table
     """
+<<<<<<< HEAD
     def __init__(self,mass,tbirth=0.0,radiation=True,wind=True,supernova=False):
+=======
+    def __init__(self,mass,tbirth=0.0,radiation=True,wind=True):
+>>>>>>> 3c20549a34a5688e3990f28f90ac1dc4c7501cc4
         """
         Constructor
     
@@ -354,10 +358,15 @@ class TableSource(AbstractSource):
         """
         self._tbirth = tbirth
         self._mass = mass
+<<<<<<< HEAD
         self._exploded = False
         self._radiation = radiation
         self._wind = wind
         self._supernova = supernova
+=======
+        self._radiation = radiation
+        self._wind = wind
+>>>>>>> 3c20549a34a5688e3990f28f90ac1dc4c7501cc4
 
     def Inject(self,injector):
         """
@@ -380,7 +389,11 @@ class TableSource(AbstractSource):
         dt = integrator.Integrator().dt
         age = t-self._tbirth
         Teff = None
+<<<<<<< HEAD
         if age > 0.0 and not self._exploded:
+=======
+        if age > 0.0:
+>>>>>>> 3c20549a34a5688e3990f28f90ac1dc4c7501cc4
             # Do stellar winds
             if self._wind:
                 # Get energy and mass to inject
@@ -422,6 +435,7 @@ class TableSource(AbstractSource):
                 # Get energy of an ionising photon
                 Eionising = Lionising / QH
                 injector.AddPhotons(Lionising, Lnonionising, Eionising, Tion)
+<<<<<<< HEAD
             # Do supernova
             if self._supernova:
                 supernovaTime = singlestar.star_lifetime(self._mass)
@@ -430,6 +444,8 @@ class TableSource(AbstractSource):
                     #injector.AddMass(0.5*self._mass)
                     injector.AddTE(1e51)
 
+=======
+>>>>>>> 3c20549a34a5688e3990f28f90ac1dc4c7501cc4
 
     def _TableSetup(self):
         """
