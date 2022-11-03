@@ -1,6 +1,7 @@
 *.o
 *.mod
 *.pyc
+*.pyd
 *.hdf5
 *~
 *.so
