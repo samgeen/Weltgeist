@@ -32,6 +32,33 @@ SUBROUTINE star_lifetime(mass_ini,lifetime)
   
 END SUBROUTINE star_lifetime
 
+SUBROUTINE star_supernovae(mass_ini,energy,massloss,yield)
+  ! Return the lifetime of a star in seconds
+  ! mass_ini - initial stellar mass in Msun
+  ! RETURNS
+  ! energy - energy from the supernovae in ergs
+  ! massloss - mass lost by the star in grams
+  ! yield - absolute metallicity of ejecta (solar = 0.014)
+  use singlestar_module
+  implicit none
+
+  integer,parameter::dp=kind(1.0D0) ! real*8  
+
+  real(dp),intent(in)::mass_ini
+  real(dp),intent(out)::energy
+  real(dp),intent(out)::massloss
+  real(dp),intent(out)::yield
+  ! f2py real(dp),intent(in)::mass_ini
+  ! f2py real(dp),intent(out)::energy
+  ! f2py real(dp),intent(out)::massloss
+  ! f2py real(dp),intent(out)::yield
+
+  ! Interpolate over table to find lifetime for this mass
+  call ssm_supernovae(mass_ini,energy,massloss,yield)
+  
+END SUBROUTINE star_supernovae
+
+
 
 SUBROUTINE star_winds(mass_ini,t,dt,energy,massloss)
   ! Wind energy, mass loss between t and dt (from birth of star)

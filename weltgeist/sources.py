@@ -357,6 +357,7 @@ class TableSource(AbstractSource):
         self._radiation = radiation
         self._wind = wind
         self._supernova = supernova
+        self._supernovaTime = -1.0 # To be read in _TableSetup
         self._exploded = False
 
     def Inject(self,injector):
@@ -424,12 +425,14 @@ class TableSource(AbstractSource):
                 injector.AddPhotons(Lionising, Lnonionising, Eionising, Tion)
             # Do supernova
             if self._supernova:
-                supernovaTime = singlestar.star_lifetime(self._mass)
-                if t >= supernovaTime:
+                # TODO: Fix timestep to make SN at exact time of supernova
+                if age >= self._supernovaTime:
                     self._exploded = True
+                    snEnergy, snMassLoss, snYield = singlestar.star_supernovae(self._mass)
                     # Inject 80% of the star's initial mass and 1e51 ergs kinetic energy
-                    injector.AddMass(0.8*self._mass)
-                    injector.AddKE(1e51)
+                    print("TableSource: Injecting supernova with energy, mass", snEnergy, snMassLoss)
+                    injector.AddMass(snMassLoss)
+                    injector.AddKE(snEnergy)
 
     def _TableSetup(self):
         """
@@ -441,6 +444,7 @@ class TableSource(AbstractSource):
         global singlestarLocation
         if not _tablesetup:
             singlestar.star_setup(singlestarLocation)
+            self._supernovaTime = singlestar.star_lifetime(self._mass)
             _tablesetup = True
 
 # Location of single star tables

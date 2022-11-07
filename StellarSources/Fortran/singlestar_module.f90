@@ -24,7 +24,7 @@ MODULE singlestar_module
   ! ssm_lifetime(mass_ini,lifetime)
   ! ssm_winds(mass_ini,t,dt,energy,massloss)
   ! ssm_radiation(mass_ini,t,dt,nphotons)
-  public::ssm_setup, ssm_lifetime, ssm_winds, ssm_radiation, ssm_bandenergies, ssm_Teffective
+  public::ssm_setup, ssm_lifetime, ssm_winds, ssm_radiation, ssm_bandenergies, ssm_Teffective, ssm_supernovae
 
   ! Private functions (used only inside the module) are:
   private::ssm_mtoi, ssm_itom, ssm_filename, ssm_interpolate, ssm_title
@@ -35,6 +35,10 @@ MODULE singlestar_module
   character(len=200)::ssm_tableloc
   ! Lifetimes of sources by mass
   type(lookup_table)::ssm_lifetimes
+  ! Supernovae (by mass)
+  type(lookup_table)::ssm_sn_masslosses
+  type(lookup_table)::ssm_sn_energies
+  type(lookup_table)::ssm_sn_yields
   ! Winds
   type(lookup_table),dimension(:), allocatable::ssm_energies
   type(lookup_table),dimension(:), allocatable::ssm_masslosses
@@ -63,6 +67,15 @@ SUBROUTINE ssm_setup(tableloc_in)
   filename = TRIM(ssm_tableloc)//"lifetimes.dat"
   call setup_table(ssm_lifetimes,filename)
   ssm_numtables = ssm_lifetimes%size
+
+  ! Read the supernovae tables
+  filename = TRIM(ssm_tableloc)//"sn_masslosses.dat"
+  call setup_table(ssm_sn_masslosses,filename)
+  filename = TRIM(ssm_tableloc)//"sn_energies.dat"
+  call setup_table(ssm_sn_energies,filename)
+  filename = TRIM(ssm_tableloc)//"sn_yields.dat"
+  call setup_table(ssm_sn_yields,filename)
+
   ! Allocate wind and radiation tables
   allocate(ssm_energies(ssm_numtables))
   allocate(ssm_masslosses(ssm_numtables))
@@ -92,6 +105,7 @@ SUBROUTINE ssm_setup(tableloc_in)
      call setup_table(ssm_rads(it,2+ip),filename)
      call ssm_filename(it,"cumulHeIII",filename)
      call setup_table(ssm_rads(it,3+ip),filename)
+
      ! Radiation energy bands
      call ssm_filename(it,"cumulEKband",filename)
      call setup_table(ssm_bands(it,1),filename)
@@ -122,6 +136,25 @@ SUBROUTINE ssm_lifetime(mass_ini,lifetime)
   call find_value(ssm_lifetimes,mass_ini,lifetime)
   
 END SUBROUTINE ssm_lifetime
+
+SUBROUTINE ssm_supernovae(mass_ini,energy,massloss,yield)
+  ! Return the lifetime of a star in seconds
+  ! mass_ini - initial stellar mass in Msun
+  ! RETURNS
+  ! energy - energy of the supernova in ergs
+  ! massloss - mass injected by the supernova in g
+  ! yield - absolute metallicity of ejecta (solar = 0.014)
+
+  real(dp),intent(in)::mass_ini
+  real(dp),intent(out)::energy
+  real(dp),intent(out)::massloss
+  real(dp),intent(out)::yield
+  ! Interpolate over table to find energy, mass loss and yield for this mass
+  call find_value(ssm_sn_energies,mass_ini,energy)
+  call find_value(ssm_sn_masslosses,mass_ini,massloss)
+  call find_value(ssm_sn_yields,mass_ini,yield)
+  
+END SUBROUTINE ssm_supernovae
 
 SUBROUTINE ssm_winds(mass_ini,t,dt,energy,massloss)
   ! Wind energy, mass loss between t and dt (from birth of star)
