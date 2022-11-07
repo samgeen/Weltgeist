@@ -69,6 +69,9 @@ def run_example():
     # And make a rendering object again as in Exercise 3
     renderer = weltgeist.graphics.Renderer([temperatureLine,densityLine])
 
+    # Set up a courant limiter to prevent a big jump at t=0
+    integrator.CourantLimiter(1e7)
+
     # Because of the way the rendering module pyglet works, it has to
     #  control the stepping. So let's make a function to give it
     def MyStep(dtRender):
