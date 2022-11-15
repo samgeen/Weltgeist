@@ -390,6 +390,24 @@ class _Integrator(object):
         vnew = vin / units.velocity / (self.hydro.dx / units.distance)
         vhone.data.vdtext = max(vhone.data.vdtext,vnew)
 
+    def ForceTimeTarget(self,targetTime):
+        """
+        Forces the timestep to hit a specific time, e.g. for supernova explosions etc
+
+        Parameters
+        ----------
+        targetTime: float
+            time to hit in seconds
+        """
+        # Check if target time is in the "future"
+        if targetTime > self.time:
+            targetdt = targetTime - self.time
+            # Check whether the current timestep will overshoot the target
+            if self.dt > targetdt:
+                # Set the target (inverse) dt in the hydro solver
+                # Use a number slightly < 1 to ensure anything triggers at the correct time
+                vhone.data.vdtext = units.time / targetdt * 0.999999999
+
     def _UpdateTime(self):
         """
         Update the time values

@@ -21,7 +21,7 @@ def run_example():
     n0 = 100.0 # cm^-3
     T0 = 10.0 # K
     integrator.Setup(ncells = ncells, # 256 cells
-            rmax = 200.0*wunits.pc, # 20 pc box
+            rmax = 500.0*wunits.pc, # 20 pc box
             n0 = n0, # atoms / cm^-3
             T0 = T0, # K
             gamma = 5.0/3.0) # monatomic gas (close enough...)

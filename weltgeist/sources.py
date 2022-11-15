@@ -265,6 +265,7 @@ class SupernovaSource(AbstractSource):
         """
         # Should the SN happen?
         # TODO: Shorten dt so that the SN happens exactly on time
+        integrator.Integrator().ForceTimeTarget(self._time)
         if integrator.Integrator().time >= self._time and not self._exploded:
             self._exploded = True
             injector.AddMass(self._mass)
@@ -428,7 +429,8 @@ class TableSource(AbstractSource):
             # Do supernova
             if self._supernova:
                 # TODO: Fix timestep to make SN at exact time of supernova
-                if age >= self._supernovaTime:
+                integrator.Integrator().ForceTimeTarget(self._supernovaTime)
+                if t >= self._supernovaTime:
                     self._exploded = True
                     snEnergy, snMassLoss, snYield = singlestar.star_supernovae(self._mass)
                     # Inject 80% of the star's initial mass and 1e51 ergs kinetic energy
@@ -446,7 +448,8 @@ class TableSource(AbstractSource):
         global singlestarLocation
         if not _tablesetup:
             singlestar.star_setup(singlestarLocation)
-            self._supernovaTime = singlestar.star_lifetime(self._mass)
+            # Set time the supernova should go off in the simulation
+            self._supernovaTime = self._tbirth + singlestar.star_lifetime(self._mass)
             _tablesetup = True
 
 # Location of single star tables
