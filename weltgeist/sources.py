@@ -382,55 +382,10 @@ class TableSource(AbstractSource):
         dt = integrator.Integrator().dt
         age = t-self._tbirth
         Teff = None
+        # Check whether the star is "alive" or not
         if age > 0.0 and not self._exploded:
-            # Do stellar winds
-            if self._wind:
-                # Get energy and mass to inject
-                energy, massloss = singlestar.star_winds(self._mass,age,dt)
-                # Add mass FIRST since KE needs to be added elastically
-                injector.AddMass(massloss)
-                # Add energy to grid as kinetic energy
-                injector.AddKE(energy)
-                # Add some thermal energy to account for star's temperature
-                Teff = singlestar.star_effectivetemperature(self._mass,age) # Kelvin
-                TE = 1.5 * units.kB * massloss/(units.mH/units.X)*Teff
-                injector.AddTE(TE)
-                # Set the Courant condition
-                ecourant, mcourant = singlestar.star_winds(self._mass,age,1.0)
-                # Check whether the courant limiter is trying to put in zero mass
-                try:
-                    vwind = np.sqrt(2.0*ecourant/mcourant)
-                except:
-                    print("Incorrect value of either ecourant, mcourant, ignoring courant limiter:",ecourant,mcourant)
-                else:
-                    integrator.Integrator().CourantLimiter(vwind)
-                    
-            # Do stellar radiation
-            if self._radiation:
-                # Read single star tables:
-                # 1. Number of photons emitted per s
-                Qphotons = singlestar.star_radiation(self._mass,age,1.0)
-                # 2. Photon luminosities
-                photonbands = singlestar.star_bandenergies(self._mass,age,1.0)
-                # 3. Ionised gas temperature
-                if Teff is None:
-                    Teff = singlestar.star_effectivetemperature(self._mass,age)
-                Tion = radiation.IonisedGasTemperature(Teff, starmetal)
-                # Get the ionising photon band
-                # Assumes Lbolometric (erg/s) in position 2 and 
-                #  Lionising (erg/s) in position 3
-                Lionising = photonbands[3]
-                # Get the non-ionising photon band
-                Lbol = photonbands[2]
-                Lnonionising = Lbol - Lionising
-                # Assumes:
-                # 1 = IR, 2 = optical+FUV, 3 = H-ionising, 
-                # 4 = HeI->HeII, 5 = HeII->HeIII and up
-                QH = np.sum(Qphotons[2:5])
-                # Get energy of an ionising photon
-                Eionising = Lionising / QH
-                injector.AddPhotons(Lionising, Lnonionising, Eionising, Tion)
             # Do supernova
+            # Check first whether the star should explode before putting in pre-supernova feedback
             if self._supernova:
                 # TODO: Fix timestep to make SN at exact time of supernova
                 integrator.Integrator().ForceTimeTarget(self._supernovaTime)
@@ -441,6 +396,54 @@ class TableSource(AbstractSource):
                     print("TableSource: Injecting supernova with energy, mass", snEnergy, snMassLoss)
                     injector.AddMass(snMassLoss)
                     injector.AddKE(snEnergy)
+            if not self._exploded:
+                # Do stellar winds
+                if self._wind:
+                    # Get energy and mass to inject
+                    energy, massloss = singlestar.star_winds(self._mass,age,dt)
+                    # Add mass FIRST since KE needs to be added elastically
+                    injector.AddMass(massloss)
+                    # Add energy to grid as kinetic energy
+                    injector.AddKE(energy)
+                    # Add some thermal energy to account for star's temperature
+                    Teff = singlestar.star_effectivetemperature(self._mass,age) # Kelvin
+                    TE = 1.5 * units.kB * massloss/(units.mH/units.X)*Teff
+                    injector.AddTE(TE)
+                    # Set the Courant condition
+                    ecourant, mcourant = singlestar.star_winds(self._mass,age,1.0)
+                    # Check whether the courant limiter is trying to put in zero mass
+                    try:
+                        vwind = np.sqrt(2.0*ecourant/mcourant)
+                    except:
+                        print("Incorrect value of either ecourant, mcourant, ignoring courant limiter:",ecourant,mcourant)
+                    else:
+                        integrator.Integrator().CourantLimiter(vwind)
+                        
+                # Do stellar radiation
+                if self._radiation:
+                    # Read single star tables:
+                    # 1. Number of photons emitted per s
+                    Qphotons = singlestar.star_radiation(self._mass,age,1.0)
+                    # 2. Photon luminosities
+                    photonbands = singlestar.star_bandenergies(self._mass,age,1.0)
+                    # 3. Ionised gas temperature
+                    if Teff is None:
+                        Teff = singlestar.star_effectivetemperature(self._mass,age)
+                    Tion = radiation.IonisedGasTemperature(Teff, starmetal)
+                    # Get the ionising photon band
+                    # Assumes Lbolometric (erg/s) in position 2 and 
+                    #  Lionising (erg/s) in position 3
+                    Lionising = photonbands[3]
+                    # Get the non-ionising photon band
+                    Lbol = photonbands[2]
+                    Lnonionising = Lbol - Lionising
+                    # Assumes:
+                    # 1 = IR, 2 = optical+FUV, 3 = H-ionising, 
+                    # 4 = HeI->HeII, 5 = HeII->HeIII and up
+                    QH = np.sum(Qphotons[2:5])
+                    # Get energy of an ionising photon
+                    Eionising = Lionising / QH
+                    injector.AddPhotons(Lionising, Lnonionising, Eionising, Tion)
 
     def _TableSetup(self):
         """
