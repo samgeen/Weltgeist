@@ -332,9 +332,13 @@ class _Integrator(object):
         This allows Setup to be called again with a new gridsize
         If ncells and rmax is the same, you don't need to change anything
         """
-        vhone.data.reset()
-        self._initialised = False
-        self._hydro = None
+        if self._initialised:
+            vhone.data.reset()
+            self._initialised = False
+            self._hydro = None
+            # Internal time values
+            self._time_code = 0.0
+            self._dt_code = 0.0
 
     def Step(self):
         """

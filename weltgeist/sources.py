@@ -455,6 +455,6 @@ class TableSource(AbstractSource):
 # Location of single star tables
 # NOTE: this needs to be set correctly before the single star module is used
 starmetal = 0.014
-singlestarLocation = "/home/samgeen/Programming/Astro/StellarSources/Compressed/singlestar_"+str(starmetal)
+singlestarLocation = "/home/samgeen/Programming/Astro/StellarSources/Compressed/singlestar_z"+str(starmetal)
 # Are the tables set up?
 _tablesetup = False
