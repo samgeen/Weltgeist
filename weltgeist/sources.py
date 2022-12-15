@@ -398,7 +398,7 @@ class TableSource(AbstractSource):
                 # Set the Courant condition
                 ecourant, mcourant = singlestar.star_winds(self._mass,age,1.0)
                 # Check whether the courant limiter is trying to put in zero mass
-                if mcourant > 0.0:
+                if mcourant > 0.0 and ecourant >= 0.0:
                     vwind = np.sqrt(2.0*ecourant/mcourant)
                     integrator.Integrator().CourantLimiter(vwind)
             # Do stellar radiation
