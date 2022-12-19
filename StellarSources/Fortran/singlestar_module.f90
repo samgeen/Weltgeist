@@ -223,6 +223,8 @@ SUBROUTINE ssm_bandenergies(mass_ini,t,dt,energies)
      call ssm_interpolate(ssm_bands(:,ib),mass_ini,t,v1)
      call ssm_interpolate(ssm_bands(:,ib),mass_ini,t+dt,v2)
      energies(ib) = v2 - v1
+     ! Check for negative energy and correct (likely a bad interpolation)
+     if(energies(ib).lt.0.0) energies(ib) = 0.0
   enddo
 
 END SUBROUTINE ssm_bandenergies
