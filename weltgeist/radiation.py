@@ -104,7 +104,7 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
     recombinations = np.cumsum(drecombinationsdr) * dx
 
     # Calculate new Qion along ray (function will modify hydro.Qion)
-    raytracing.trace_radiation(dx,hydro.Qion,hydro.sigmaDust[0:nx],hydro.nH[0:nx],drecombinationsdr,nx)
+    raytracing.trace_radiation(dx,hydro.Qion[0:nx],hydro.sigmaDust[0:nx],hydro.nH[0:nx],drecombinationsdr,nx)
 
     # Calculate optical depth for non-ionising radiation
     opticalDepth = np.cumsum(hydro.nH[0:nx] * hydro.sigmaDust[0:nx]) * dx
@@ -113,7 +113,7 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
     numatomspercell = hydro.nH*hydro.vol
     numionspercell = numatomspercell * hydro.xhii
     numionspercell -= recombinations*dt
-    numionspercell[numionspercell < 0] = 0.0
+    numionspercell[np.where(numionspercell < 0)] = 0.0
     hydro.xhii[0:nx] = numionspercell / numatomspercell
 
     # Calculate which gas should be ionised
