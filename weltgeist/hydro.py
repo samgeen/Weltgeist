@@ -433,7 +433,6 @@ class _Hydro(object):
     def _rhoget(slicer):
         return vhone.data.zro[slicer,0,0]*units.density
     def _rhoset(slicer,val):
-        print("SETDENS",val)
         vhone.data.zro[slicer,0,0] = val/units.density
     _rhostring = "Mass density of the gas in g/cm^3"
     _rho = _Field(_rhostring,_rhoget,_rhoset)
