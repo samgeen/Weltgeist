@@ -19,7 +19,6 @@ centralmass = 0.0
 def calculate_gravity():
     """
     Inject gravitational *acceleration* onto the grid
-    NOTE: This is not fully tested yet, so be careful
     """
     hydro = integrator.Integrator().hydro
     # g = G*M/r^2
