@@ -40,6 +40,7 @@ def SedovTaylorSolution(time,energy,density):
 def AdiabaticWind(lum,ml,rho,time,model="Castor"):
     """
     Adiabatic solution for a constant wind
+    Includes various models for how the wind energy behaves
     
     Parameters
     ----------
@@ -99,6 +100,7 @@ def AdiabaticWind(lum,ml,rho,time,model="Castor"):
 def SpitzerSolution(QH,n0,time, Tion = 8400.0):
     """
     Spitzer solution for a photoionisation front
+    From the Spitzer 1978 book on the interstellar medium
 
     Parameters
     ----------
@@ -128,6 +130,7 @@ def SpitzerSolution(QH,n0,time, Tion = 8400.0):
 def SpitzerDensity(QH,n0,time,Tion = 8400.0):
     """
     Spitzer solution for the ionised gas density
+    Derived from the solution above
 
     Parameters
     ----------
@@ -169,6 +172,8 @@ def CollapseSolutionPosition(x,x0):
     Calculate a free-fall collapse solution
     x - position to calculate time at in cm
     x0 - initial position in cm
+    Taken from the ultra-scientific source:
+    https://en.wikipedia.org/wiki/Equations_for_a_falling_body
     Sam Geen, March 2018
     """
     X = x/x0

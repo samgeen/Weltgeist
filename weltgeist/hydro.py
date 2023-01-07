@@ -154,6 +154,9 @@ class _Field(object):
     # Allow numpy to process the data in here
     def __array__(self) -> np.ndarray:
         return self[:]
+    # Allow len(field)
+    def __len__(self):
+        return len(self[:])
     # In-place operations are handled already by the getter and setter in hydro
 
     
@@ -234,8 +237,6 @@ class _Hydro(object):
         def _PThset(slicer,val):
             val2 = val + self.PMagnetic[slicer]
             self.P[slicer] = val2
-        def _PTharr():
-            return self.P[0:self.ncells] - self.PMagnetic[0:self.ncells]
         _PThermalstring = "Gas thermal pressure in erg/cm^3 (note: does not include magnetic or kinetic energy)"
         self._PThermal._assigngetset(_PThermalstring,_PThget,_PThset)
 

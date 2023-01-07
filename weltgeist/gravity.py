@@ -33,6 +33,7 @@ def calculate_gravity():
     grav = mass*0.0 # initialising to zero
     mask = radius > 0.0
     grav[mask] = -units.G * mass[mask] / (radius[mask])**2
+    grav[0] = 0.0
     #grav[hydro.nH[0:ncells]<1e-6] = 0.0 # Prevent small timesteps
     if not wholevol:
         # Do this
