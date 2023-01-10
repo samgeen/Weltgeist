@@ -356,7 +356,7 @@ class _Hydro(object):
             Pmag = val**2 / EIGHTPI
             self.PMagnetic[slicer] = Pmag
         _Bstring = "Gas magnetic field in Gauss - note: this is calculated semi-analytically per cell"
-        self._B._assigngetset(_Bstring,_Bget,_Bset)
+        self._Bfield._assigngetset(_Bstring,_Bget,_Bset)
 
 
     # Views to hydro variables in VH-1
@@ -544,8 +544,8 @@ class _Hydro(object):
     MAGNETIC FIELD
     Magnetic field
     """
-    _B = _Field()
-    B = property(*propertyargs(_B))
+    _Bfield = _Field()
+    Bfield = property(*propertyargs(_Bfield))
     """ 
     PYTHON-ONLY VARIABLES---------------------------------------
     These variables do not affect the underlying simulation code

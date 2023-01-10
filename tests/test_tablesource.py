@@ -16,7 +16,7 @@ def run_example():
     #  We need the integrator again
     integrator = weltgeist.integrator.Integrator()
     # And the setup
-    ncells = 128
+    ncells = 512
     nanalytic = np.zeros((ncells))
     n0 = 100.0 # cm^-3
     T0 = 10.0 # K
@@ -35,6 +35,7 @@ def run_example():
     hydro.nH[0:ncells] = n0 * (hydro.x[0:ncells] / r0)**(-2.0)
     # Get rid of the singularity at r=0
     hydro.nH[0] = hydro.nH[1]
+    hydro.nH = n0
     # We also have to set the temperature correctly again
     hydro.T[0:ncells] = T0
     # Note that this setup is a bit unstable - as long as feedback 
@@ -56,7 +57,7 @@ def run_example():
     # By default it has all the feedback modes turnes on
     # You can turn them off in the function below
     # e.g. star = TableSource(30.0,radiation=False,wind=True)
-    star = weltgeist.sources.TableSource(119.0,radiation=True,wind=True,supernova=True)
+    star = weltgeist.sources.TableSource(119.0,radiation=True,wind=False,supernova=True)
     weltgeist.sources.Sources().AddSource(star)
 
     # Turn cooling on
@@ -93,7 +94,7 @@ def run_example():
         densityLine.Update(x,np.log10(nH))
         temperatureLine.Update(x,np.log10(T))
         # Show the time on-screen
-        renderer.Text("{:.2f}".format(integrator.Time()/wunits.year/1000)+" kyr")
+        renderer.Text("{:.2f}".format(integrator.Time()/wunits.year/1e6)+" Myr")
         # Step the integrator
         integrator.Step()
     
