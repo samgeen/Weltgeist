@@ -294,11 +294,11 @@ class _Integrator(object):
             vhone.data.ngeomz = 5
             
             vhone.data.nleftx = 0
-            vhone.data.nrightx= 0
+            vhone.data.nrightx= 1
             vhone.data.nlefty = 0
-            vhone.data.nrighty= 0
+            vhone.data.nrighty= 1
             vhone.data.nleftz = 0
-            vhone.data.nrightz= 0
+            vhone.data.nrightz= 1
             
             vhone.data.xmin   = 0.0
             vhone.data.xmax   = rmax/units.distance
