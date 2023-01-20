@@ -263,10 +263,10 @@ class _Hydro(object):
         Changing it will alter the pressure & keep density the same
         """
         def _Tget(slicer):
-            return self.PThermal[slicer]/self.nH[slicer]/units.kB
+            return self.PThermal[slicer]/self.nH[slicer]/units.kB/(1.0+self.xhii[slicer])
         def _Tset(slicer,val):
             # Set the pressure from the ideal gas equation
-            newP = val*self.nH[slicer]*units.kB
+            newP = val*self.nH[slicer]*units.kB*(1.0+self.xhii[slicer])
             self.PThermal[slicer] = newP
         _Tstring = "Gas temperature in K"
         self._T._assigngetset(_Tstring,_Tget,_Tset)

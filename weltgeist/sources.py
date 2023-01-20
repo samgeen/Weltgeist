@@ -39,8 +39,8 @@ class _Injector(object):
         """
         Runs through all of the sources and injects them onto the grid
         """
-        hydro = integrator.Integrator().hydro
         global doRadiationPressure
+        hydro = integrator.Integrator().hydro
         # Clear values first
         self._totalte = 0.0
         self._totalke = 0.0
@@ -63,7 +63,8 @@ class _Injector(object):
             hydro.KE[0] += self._totalke
         if self._totalLionising > 0 or self._totalLnonionising > 0:
             #radiation.trace_radiation(self._totalphotons)
-            radiation.trace_radiation(self._totalLionising, self._totalLnonionising, self._Eionising, self._Tion, doRadiationPressure)
+            radiation.trace_radiation(self._totalLionising, self._totalLnonionising, 
+                                        self._Eionising, self._Tion, doRadiationPressure)
         self._sources = None
 
     def RemoveSource(self,source):
@@ -110,7 +111,7 @@ class _Injector(object):
         """
         self._totalmass += mass
 
-    def AddPhotons(self, Lionising, Lnonionising, Eionising, Tion):
+    def AddPhotons(self, Lionising, Lnonionising, Eionising, Tion, sigmaDust=None):
         """
         Add photons to grid
 
@@ -124,6 +125,8 @@ class _Injector(object):
             Energy of ionising photons (ergs)
         Tion : float
             Temperature of photoionised gas (K)
+        sigmaDust : float
+            If not None, set the sigmaDust of the gas
         """
         self._totalLionising += Lionising
         self._totalLnonionising += Lnonionising
@@ -210,7 +213,7 @@ class _Sources(object):
         source = WindSource(lum,massloss)
         self.AddSource(source)
 
-    def MakeSimpleRadiation(self, QH):
+    def MakeSimpleRadiation(self, QH, Tion=1e4):
         """
         Inject a radiation source
 
@@ -219,8 +222,11 @@ class _Sources(object):
 
         QH : float
             Emission rate of ionising photons in number / s
+
+        Tion : float
+            Temperature of the photoionised gas in K (Default: 1e4 K)
         """
-        source = SimpleRadiationSource(QH)
+        source = SimpleRadiationSource(QH,Tion=Tion)
         self.AddSource(source)
 
     def InjectSources(self):
@@ -304,7 +310,7 @@ class SimpleRadiationSource(AbstractSource):
     """
     A simple source of ionising radiation
     """
-    def __init__(self,QH):
+    def __init__(self,QH,Tion=1e4):
         """
         Constructor
 
@@ -312,10 +318,10 @@ class SimpleRadiationSource(AbstractSource):
             ionising photon emission rate (in s^-1)
         """
         self._QH = QH
-         # Set average photon energy to 15 eV 
-        self._ephoton = 15.0 * units.eV
+         # Set average photon energy to 13.6 eV 
+        self._ephoton = 13.6 * units.eV
         # Set average temperature of photoionised gas to 10000 K
-        self._Tion = 1e4
+        self._Tion = Tion
 
     def Inject(self,injector):
         """
@@ -331,7 +337,8 @@ class SimpleRadiationSource(AbstractSource):
         injector.AddPhotons(self._QH*self._ephoton,
                             0.0,
                             self._ephoton,
-                            self._Tion)
+                            self._Tion,
+                            0.0)
 
 class TableSource(AbstractSource):
     """

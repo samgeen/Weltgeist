@@ -97,7 +97,7 @@ def AdiabaticWind(lum,ml,rho,time,model="Castor"):
     # Equation 6, Castor et al 1975 (see also Avedisova 1972, Weaver 1977)
     return wconst*(lum * time ** 3 / rho)**0.2
 
-def SpitzerSolution(QH,n0,time, Tion = 8400.0):
+def SpitzerSolution(QH,n0,time, Tion = 1e4):
     """
     Spitzer solution for a photoionisation front
     From the Spitzer 1978 book on the interstellar medium
@@ -118,12 +118,9 @@ def SpitzerSolution(QH,n0,time, Tion = 8400.0):
     radius : float or numpy array
         radius in cm (same length as time)
     """
-    gamma = integrator.Integrator().hydro.gamma
-    ci = np.sqrt(Tion * gamma * units.kB / mp)
+    ci = np.sqrt(2.0 * Tion * units.kB / mp)
     alpha_B = radiation.alpha_B_HII(Tion)
     rs = (QH / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
-    # Hosokawa & Inutsuka 2004 approx
-    #rspitzer = rs  * (1.0 + 7.0/4.0 * np.sqrt(4.0/3.0) * ci / rs * time)**(4.0/7.0)
     rspitzer = rs  * (1.0 + 7.0/4.0 * ci / rs * time)**(4.0/7.0)
     return rspitzer
 
@@ -153,6 +150,34 @@ def SpitzerDensity(QH,n0,time,Tion = 8400.0):
     ni = np.sqrt(3.0 * QH / (4.0 * np.pi * alpha_B * ri**3.0))
     return ni
 
+def HosokawaInutsuka(QH,n0,time, Tion = 1e4):
+    """
+    Hosokawa & Inutsuka solution for a photoionisation front
+    From the Hosokawa & Inutsuka (2006)
+    Used by the Starbench paper (Bisbas et al. 2015)
+
+    Parameters
+    ----------
+    QH : float
+        photon emission rate in photons/second
+    n0 : float
+        hydrogen number density in cm^-3
+    time : float or numpy array
+        time in s
+    Tion : float
+        ionised gas temperature in K
+
+    Returns
+    -------
+    radius : float or numpy array
+        radius in cm (same length as time)
+    """
+    ci = np.sqrt(2.0 * Tion * units.kB / mp)
+    alpha_B = radiation.alpha_B_HII(Tion)
+    rs = (QH / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
+    # Hosokawa & Inutsuka 2006 approx
+    rhi = rs  * (1.0 + 7.0/4.0 * np.sqrt(4.0/3.0) * ci / rs * time)**(4.0/7.0)
+    return rhi
 
 def CollapseSolution(rho,rho0):
     """

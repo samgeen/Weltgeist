@@ -72,6 +72,8 @@ def run_example():
         # NOTE: this won't predict the shell density
         # Exercise: using the Rankine-Hugoniont conditions, include this
         analyticLine.Update(x,nanalytic)
+        # Show the time on-screen
+        renderer.Text("{:.2f}".format(time/wunits.Myr)+" Myr")
         # Step the integrator
         integrator.Step()
     

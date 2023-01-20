@@ -7,6 +7,12 @@ import numpy as np
 from . import sources, integrator, units, ionisedtemperatures
 from . import raytracing
 
+# Dust cross section to use (Draine suggests 1e-21 cm^2 / H)
+sigmaDust = 1e-21 
+
+# Force photoionised temperature to Tion? WARNING: do not turn on if you have winds, useful for simple tests
+forceTion = False
+
 def alpha_B_HII(temperature):
     """
     Calculate the HII recombination rate
@@ -48,7 +54,7 @@ def IonisedGasTemperature(Teff, metal):
     Tion = ionisedtemperatures.FindTemperature(Teff, metal)
     return Tion
 
-def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressure, sigmaDust = 1e-21):
+def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressure):
     """
     Trace a ray through the spherical grid and ionise everything in the way
     Use very simple instant ionisation/recombination model
@@ -64,14 +70,12 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
 
     Tion : float
         Equilibrium temperature of photoionised gas in K
-        default: 8400 K, value used in Geen+ 2015b
 
     doRadiationPressure : bool
         Do we use radiation pressure?
-
-    sigmaDust : float
-        Dust cross section to use (Draine suggests 1e-21 cm^2 / H)
     """
+
+    global sigmaDust, forceTion
 
     # No photons? Don't bother
     if Lionising == 0 and Lnonionising == 0:
@@ -85,6 +89,7 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
     # Find total recombinations from the centre outwards
     gracefact = 1.001 # Cool everything below gracefact*Tion to Tion to limit wiggles
     alpha_B = alpha_B_HII(Tion) 
+    alpha_B = 2.7e-13
     nx = hydro.ncells
     T = hydro.T[0:nx]
     x = hydro.x[0:nx]
@@ -93,7 +98,8 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
 
     # Set up radiation tracing
     hydro.Qion[0] = QH
-    hydro.sigmaDust[0:nx] = sigmaDust # cm^2 / H based on Draine+ 2011
+    if sigmaDust is not None:
+        hydro.sigmaDust[0:nx] = sigmaDust # cm^2 / H based on Draine+ 2011
     hydro.sigmaDust[T > 1e5] = 0.0 # simplicity hack - remove dust from hot gas
 
     # Rate of recombinations per radial element
@@ -122,10 +128,16 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
     # Reset the ionisation fraction in case the bubble has collapsed
     #hydro.xhii[0:nx] = 0.0
 
+    # Note: Set xhii BEFORE T as this affects the final gas pressure (which takes into account free electron density)
+
     # Ionise all fully-ionised cells
     edge = 0
     if len(ionised) > 0:
-        toionise = (recombinations < QH)*(hydro.T[0:nx]<gracefact*Tion)
+        if not forceTion:
+            toionise = (recombinations < QH)*(hydro.T[0:nx]<gracefact*Tion)
+        else:
+            # Force Tion to be set even if temperature is elevated
+            toionise = (recombinations < QH)
         #print(len(hydro.xhii[ionised]) / len(hydro.xhii[toionise]))
         hydro.xhii[ionised] = 1.0
         hydro.T[toionise] = Tion
