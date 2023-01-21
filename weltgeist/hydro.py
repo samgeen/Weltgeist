@@ -282,7 +282,7 @@ class _Hydro(object):
             # Set the pressure from the ideal gas equation
             newP = val**2.0 * self.rho[slicer] / self.gamma
             self.PThermal[slicer] = newP
-        _csstring = "Gas temperature in K"
+        _csstring = "Sound speed in cm/s"
         self._cs._assigngetset(_csstring,_Csget,_Csset)
 
         """ 
