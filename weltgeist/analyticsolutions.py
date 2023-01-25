@@ -4,6 +4,7 @@ Sam Geen, September 2016
 """
 
 import numpy as np
+import scipy.interpolate
 
 from . import gravity, radiation, units, integrator
 
@@ -179,10 +180,10 @@ def HosokawaInutsuka(QH,n0,time, Tion = 1e4):
     rhi = rs  * (1.0 + 7.0/4.0 * np.sqrt(4.0/3.0) * ci / rs * time)**(4.0/7.0)
     return rhi
 
-def Starbench(QH,n0,time, Tion = 1e4):
+def StarbenchExtracted(QH,n0,time, Tion = 1e4):
     """
     The "Starbench" semi-analytic solution for late phase evolution in their test
-    From Bisbas et al. (2015), equation 28
+    From Bisbas et al. (2015), equation 28, Figure 5
 
     Parameters
     ----------
@@ -200,6 +201,8 @@ def Starbench(QH,n0,time, Tion = 1e4):
     radius : float or numpy array
         radius in cm (same length as time)
     """
+    # Solving this was too hard so instead I'm just reading scraped data from the figure
+    '''
     ci = np.sqrt(2.0 * Tion * units.kB / units.mp)
     alpha_B = radiation.alpha_B_HII(Tion)
     rs = (QH / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
@@ -208,6 +211,15 @@ def Starbench(QH,n0,time, Tion = 1e4):
     fSB = 1.0 - 0.733 * np.exp(-time / wunits.Myr)
     # Starbench equation
     rSB = RII + fSB * (RI - RII)
+    '''
+    # Even values are x coordinates
+    traw = np.array(starbench_late_raw[0::2]) * units.Myr
+    rraw = np.array(starbench_late_raw[1::2]) * units.pc
+    # Make an interpolation function to remap to the requested times
+    rfunc = scipy.interpolate.interp1d(traw,rraw,fill_value="extrapolate")
+    # Do that thing I said
+    rSB = rfunc(time)
+    # And return it
     return rSB
 
 def CollapseSolution(rho,rho0):
@@ -235,3 +247,52 @@ def CollapseSolutionPosition(x,x0):
     X = x/x0
     t = (np.arccos(np.sqrt(X)) + np.sqrt(X * (1.0-X))) * x0**1.5 / np.sqrt(2.0*units.G*gravity.centralmass)
     return t
+
+
+'''
+Starbench "Late" solution data dump
+Extracted by drawing over Bisbas+ (2015) Figure 5
+I could have solved the equations the long way or asked Thomas, but oh well
+'''
+
+starbench_late_raw = \
+[0.0, 0.3195719952461076,
+0.044776119402984926, 0.7391030884872443,
+0.12686567164179097, 1.1873196067233636,
+0.1865671641791044, 1.4185316951951705,
+0.2499999999999999, 1.606283474046518,
+0.3171641791044775, 1.77953047585238,
+0.38432835820895517, 1.923821945083267,
+0.4626865671641791, 2.0535546157526703,
+0.5373134328358209, 2.1688365308925857,
+0.6119402985074627, 2.2406851471700397,
+0.6902985074626866, 2.3125067526894956,
+0.7686567164179104, 2.3698505919214634,
+0.8470149253731344, 2.4271944311534313,
+0.9328358208955226, 2.4555287162944284,
+1.0074626865671643, 2.4839440337094203,
+1.0932835820895526, 2.4978005525629294,
+1.1716417910447765, 2.511711092932437,
+1.25, 2.5256216333019443,
+1.3358208955223883, 2.5250003858679664,
+1.4141791044776122, 2.524433159949986,
+1.4962686567164178, 2.523838923274007,
+1.5746268656716418, 2.5232716973560274,
+1.6567164179104479, 2.5081996943925615,
+1.7350746268656718, 2.507632468474581,
+1.8134328358208958, 2.4925874762691143,
+1.8955223880597019, 2.4919932395931355,
+1.977611940298508, 2.4841601197734136,
+2.057835820895523, 2.47634050533269,
+2.139925373134329, 2.468507385512968,
+2.2164179104477615, 2.4607147818302435,
+2.300373134328358, 2.4456292734877785,
+2.378731343283582, 2.437823164426055,
+2.457089552238806, 2.430017055364331,
+2.5410447761194033, 2.414931547021866,
+2.6212686567164187, 2.4071119325811416,
+2.701492537313433, 2.3992923181404198,
+2.7817164179104488, 2.391472703699697,
+2.8619402985074642, 2.3908919724027164,
+2.942164179104478, 2.3758334748182515,
+2.992537313432836, 2.375468829585264]

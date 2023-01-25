@@ -51,7 +51,7 @@ def run_test(early=True):
     if early:
         rmax = 1.5*wunits.pc
     else:
-        rmax = 20.0*wunits.pc # Starbench recommends 5 pc, but we get savage shell spreading
+        rmax = 15.0*wunits.pc # Starbench suggests 5pc but this is too small to include the super wide shell
 
     integrator.Setup(ncells = ncells, # 256 cells
             rmax = rmax, # 20 pc box
@@ -157,6 +157,9 @@ def run_test(early=True):
         plt.plot(times/wunits.Myr,rsp/wunits.pc,"k:", label="Spitzer (1978)")
         plotname = "starbench_early.pdf"
     else:
+        # Note - this solution is simply extracted from the Starbench paper for comparison
+        rSB = weltgeist.analyticsolutions.StarbenchExtracted(QH,nback,times, Tion = Tion)
+        plt.plot(times/wunits.Myr,rSB/wunits.pc,"k--",label="Starbench Solution (Bisbas, 2015)")
         plotname = "starbench_late.pdf"
     plt.plot(times/wunits.year/1e6,radii/wunits.pc,"k-",label="Weltgeist")
     plt.xlabel("Time / Myr")
@@ -169,6 +172,6 @@ def run_test(early=True):
 
 # This piece of code runs if you start this module versus importing it
 if __name__=="__main__":
-    run_test(early=True)
     run_test(early=False)
+    run_test(early=True)
     
