@@ -11,7 +11,6 @@ Myr = 3.1557e13 # seconds
 yr = 1e-6 * Myr
 pc = 3.0857e18 # cm
 mH  = 1.66e-24 # g
-mp = mH / units.X # g (mH / X)
 
 def SedovTaylorSolution(time,energy,density):
     """
@@ -52,7 +51,7 @@ def AdiabaticWind(lum,ml,rho,time,model="Castor"):
     model = which model to use ("Castor","Avedisova")
     """
     # Convert units
-    rho = rho * mp
+    rho = rho * units.mp
     #time = time * Myr
     lum = lum # should be ok
     mom = np.sqrt(2.0*lum*ml)
@@ -118,7 +117,7 @@ def SpitzerSolution(QH,n0,time, Tion = 1e4):
     radius : float or numpy array
         radius in cm (same length as time)
     """
-    ci = np.sqrt(2.0 * Tion * units.kB / mp)
+    ci = np.sqrt(2.0 * Tion * units.kB / units.mp)
     alpha_B = radiation.alpha_B_HII(Tion)
     rs = (QH / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
     rspitzer = rs  * (1.0 + 7.0/4.0 * ci / rs * time)**(4.0/7.0)
@@ -153,7 +152,7 @@ def SpitzerDensity(QH,n0,time,Tion = 8400.0):
 def HosokawaInutsuka(QH,n0,time, Tion = 1e4):
     """
     Hosokawa & Inutsuka solution for a photoionisation front
-    From the Hosokawa & Inutsuka (2006)
+    From Hosokawa & Inutsuka (2006)
     Used by the Starbench paper (Bisbas et al. 2015)
 
     Parameters
@@ -172,12 +171,44 @@ def HosokawaInutsuka(QH,n0,time, Tion = 1e4):
     radius : float or numpy array
         radius in cm (same length as time)
     """
-    ci = np.sqrt(2.0 * Tion * units.kB / mp)
+    ci = np.sqrt(2.0 * Tion * units.kB / units.mp)
     alpha_B = radiation.alpha_B_HII(Tion)
     rs = (QH / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
+    print("HI ANALYTIC TERMS", ci, rs, alpha_B, Tion, units.kB, units.mp)
     # Hosokawa & Inutsuka 2006 approx
     rhi = rs  * (1.0 + 7.0/4.0 * np.sqrt(4.0/3.0) * ci / rs * time)**(4.0/7.0)
     return rhi
+
+def Starbench(QH,n0,time, Tion = 1e4):
+    """
+    The "Starbench" semi-analytic solution for late phase evolution in their test
+    From Bisbas et al. (2015), equation 28
+
+    Parameters
+    ----------
+    QH : float
+        photon emission rate in photons/second
+    n0 : float
+        hydrogen number density in cm^-3
+    time : float or numpy array
+        time in s
+    Tion : float
+        ionised gas temperature in K
+
+    Returns
+    -------
+    radius : float or numpy array
+        radius in cm (same length as time)
+    """
+    ci = np.sqrt(2.0 * Tion * units.kB / units.mp)
+    alpha_B = radiation.alpha_B_HII(Tion)
+    rs = (QH / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
+    RI = 0
+    RII = 0
+    fSB = 1.0 - 0.733 * np.exp(-time / wunits.Myr)
+    # Starbench equation
+    rSB = RII + fSB * (RI - RII)
+    return rSB
 
 def CollapseSolution(rho,rho0):
     """

@@ -400,7 +400,7 @@ class TableSource(AbstractSource):
                     self._exploded = True
                     snEnergy, snMassLoss, snYield = singlestar.star_supernovae(self._mass)
                     # Inject 80% of the star's initial mass and 1e51 ergs kinetic energy
-                    print("TableSource: Injecting supernova with energy, mass", snEnergy, snMassLoss)
+                    print("TableSource: Injecting supernova with energy, mass, at time", snEnergy, snMassLoss, self._supernovaTime)
                     injector.AddMass(snMassLoss)
                     injector.AddKE(snEnergy)
             if not self._exploded:

@@ -18,6 +18,7 @@ import weltgeist.graphics
 wunits.X = 1.0
 wunits.mp = wunits.mH
 
+# Fix alphaB to be the value used in Starbench
 def alphaB(Tion):
     # Value from Starbench
     return 2.7e-13
@@ -29,6 +30,7 @@ def run_test(early=True):
     # Set up the background for both tests
     rhoback = 5.21e-21 # g cm^-3
     nback = rhoback / (wunits.mH / wunits.X)
+    print(wunits.X)
 
     # Set the temperature depending on the test
     if early:
@@ -39,10 +41,11 @@ def run_test(early=True):
     #  We need the integrator again
     integrator = weltgeist.integrator.Integrator()
     # And the setup
-    ncells = 10240
+    ncells = 1000
     nanalytic = np.zeros((ncells))
     n0 = nback # cm^-3
     T0 = Tbackground # Kelvin (will be reset later)
+    gamma = 1.0001 # Weird Starbench gamma
 
     # What radius to set?
     if early:
@@ -54,7 +57,7 @@ def run_test(early=True):
             rmax = rmax, # 20 pc box
             n0 = n0, # atoms / cm^-3
             T0 = T0, # Kelvin
-            gamma = 5.0/3.0) # monatomic gas (close enough...)
+            gamma = gamma) # weird Starbench isothermal gamma
     hydro = integrator.hydro
 
     # Set up the source for both tests
@@ -150,8 +153,8 @@ def run_test(early=True):
     if early:
         rhi = weltgeist.analyticsolutions.HosokawaInutsuka(QH,nback,times, Tion = Tion)
         rsp = weltgeist.analyticsolutions.SpitzerSolution(QH,nback,times, Tion = Tion)
-        plt.plot(times/wunits.year/1e6,rhi/wunits.pc,"k--",label="Hosokawa-Inutsuka (2006)")
-        plt.plot(times/wunits.year/1e6,rsp/wunits.pc,"k:", label="Spitzer (1978)")
+        plt.plot(times/wunits.Myr,rhi/wunits.pc,"k--",label="Hosokawa-Inutsuka (2006)")
+        plt.plot(times/wunits.Myr,rsp/wunits.pc,"k:", label="Spitzer (1978)")
         plotname = "starbench_early.pdf"
     else:
         plotname = "starbench_late.pdf"
