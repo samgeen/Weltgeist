@@ -33,7 +33,6 @@ class _Injector(object):
         self._totalLnonionising = 0.0
         self._Eionising = 0.0
         self._Tion = 0.0
-        self._sources = None
 
     def InjectSources(self, sources):       
         """
@@ -50,7 +49,6 @@ class _Injector(object):
         self._totalLnonionising = 0.0
         self._Eionising = 0.0
         self._Tion = 0.0
-        self._sources = sources
         # Add to the input arrays
         for source in sources.sources:
             source.Inject(self)
@@ -65,19 +63,6 @@ class _Injector(object):
             #radiation.trace_radiation(self._totalphotons)
             radiation.trace_radiation(self._totalLionising, self._totalLnonionising, 
                                         self._Eionising, self._Tion, doRadiationPressure)
-        self._sources = None
-
-    def RemoveSource(self,source):
-        """
-        Remove a source object
-        
-        Parameters
-        ----------
-        source : Source
-            Source object to remove from active sources
-        """
-        self._sources.RemoveSource(source)
-
     def AddTE(self, te):
         """
         Add thermal energy to grid
@@ -146,6 +131,12 @@ class _Sources(object):
         self._sources = []
         # Injector object that handles injecting values onto grid
         self._injector = _Injector()
+
+    def Reset(self):
+        """
+        Reset the sources object by removing all of the sources
+        """
+        self._sources = []
 
     @property
     def sources(self):

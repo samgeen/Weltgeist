@@ -339,6 +339,8 @@ class _Integrator(object):
             # Internal time values
             self._time_code = 0.0
             self._dt_code = 0.0
+            # Reset the sources
+            sources.Sources().Reset()
 
     def Step(self):
         """

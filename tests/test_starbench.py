@@ -41,7 +41,7 @@ def run_test(early=True):
     #  We need the integrator again
     integrator = weltgeist.integrator.Integrator()
     # And the setup
-    ncells = 1000
+    ncells = 10000
     nanalytic = np.zeros((ncells))
     n0 = nback # cm^-3
     T0 = Tbackground # Kelvin (will be reset later)

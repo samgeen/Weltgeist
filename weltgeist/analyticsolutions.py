@@ -175,7 +175,6 @@ def HosokawaInutsuka(QH,n0,time, Tion = 1e4):
     ci = np.sqrt(2.0 * Tion * units.kB / units.mp)
     alpha_B = radiation.alpha_B_HII(Tion)
     rs = (QH / (4.0/3.0 * np.pi * alpha_B * n0**2))**(1.0/3.0)
-    print("HI ANALYTIC TERMS", ci, rs, alpha_B, Tion, units.kB, units.mp)
     # Hosokawa & Inutsuka 2006 approx
     rhi = rs  * (1.0 + 7.0/4.0 * np.sqrt(4.0/3.0) * ci / rs * time)**(4.0/7.0)
     return rhi
