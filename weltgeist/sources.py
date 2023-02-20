@@ -356,8 +356,12 @@ class TableSource(AbstractSource):
         self._radiation = radiation
         self._wind = wind
         self._supernova = supernova
-        self._supernovaTime = -1.0 # To be read in _TableSetup
         self._exploded = False
+        # Check that the table is set up
+        # NOTE: Make sure singlestarLocation is set before you get here
+        self._TableSetup()
+        # Set time the supernova should go off in the simulation
+        self._supernovaTime = self._tbirth + singlestar.star_lifetime(self._mass)
 
     def Inject(self,injector):
         """
@@ -370,10 +374,6 @@ class TableSource(AbstractSource):
             object that accepts values to inject to grid
         """
         global starmetal
-
-        # Check that the table is set up
-        # NOTE: Make sure singlestarLocation is set before you get here
-        self._TableSetup()
 
         # Calculate the star's current age
         t = integrator.Integrator().time
@@ -453,8 +453,6 @@ class TableSource(AbstractSource):
         global singlestarLocation
         if not _tablesetup:
             singlestar.star_setup(singlestarLocation)
-            # Set time the supernova should go off in the simulation
-            self._supernovaTime = self._tbirth + singlestar.star_lifetime(self._mass)
             _tablesetup = True
 
 # Location of single star tables
