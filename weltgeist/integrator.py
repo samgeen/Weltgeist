@@ -71,6 +71,7 @@ class Saver(object):
         """
         Check if we need to save, and do it if so
         """
+        integrator = Integrator()
         timesToSave = []
         if self._dtout is None and self._timesToSave is None:
                 # No instructions for when to save, just return
@@ -98,23 +99,6 @@ class Saver(object):
         # 2. the integrator's current time is past the time to save
         if atTargetTime or Integrator().time >= timeToSave:
             self.Save()
-
-    def _FindPositionInTimesToSave(self,time):
-        """
-        Returns the position in the array of times to save
-        Returns the value before the time given
-
-        Parameters
-        ----------
-
-        time: float
-            Target time to locate
-        """
-        try:
-            return np.where(self._timesToSave < time)
-        except:
-            # Default value if failed to find values
-            return 0
 
 class _Integrator(object):
     """
