@@ -50,6 +50,7 @@ class Saver(object):
         self._iout = startingOutputNumber
         self._forceExactTimes = forceExactTimes
         self._timesToSave = timesToSave
+        self._savedTimes = []
         integrator = Integrator()
         self._tlast = integrator.time
         # Check whether we haven't given it any way to tell when to save
@@ -100,7 +101,9 @@ class Saver(object):
         # 1. the integrator reports hitting its target time, or
         # 2. the integrator's current time is past the time to save
         if atTargetTime or integrator.time >= timeToSave:
-            self.Save()
+            if not timeToSave in self._savedTimes:
+                self.Save()
+                self._savedTimes.append(timeToSave)
 
 class _Integrator(object):
     """
