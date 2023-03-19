@@ -93,7 +93,9 @@ class Saver(object):
             return
         # Find the first time to save (if more than one method of saving is implemented)
         timeToSave = min(timesToSave)
-        atTargetTime = integrator.ForceTimeTarget(timeToSave)
+        atTimeTarget = False
+        if self._forceExactTimes:
+            atTargetTime = integrator.ForceTimeTarget(timeToSave)
         # Add a paranoid check where either:
         # 1. the integrator reports hitting its target time, or
         # 2. the integrator's current time is past the time to save
