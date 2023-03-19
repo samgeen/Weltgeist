@@ -53,6 +53,7 @@ class Saver(object):
         self._savedTimes = []
         integrator = Integrator()
         self._tlast = integrator.time
+        self._firstSave = True # First time we've saved?
         # Check whether we haven't given it any way to tell when to save
         if self._dtout is None and self._timesToSave is None:
             print("Warning: no dtout or timesToSave set in Saver; saver will do nothing")
@@ -81,7 +82,7 @@ class Saver(object):
         if self._timesToSave is not None:
             try:
                 # Find the next time to save, but catch errors where we're looking for a time outside the range
-                timeToSave = self._timesToSave[np.where(self._timesToSave < integrator.time)[0][-1]+1]
+                timeToSave = self._timesToSave[np.where(self._timesToSave < self._tlast)[0][-1]+1]
                 timesToSave.append(timeToSave)
             except IndexError:
                 # Current time outside time bounds, ignore
