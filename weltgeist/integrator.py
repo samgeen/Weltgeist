@@ -71,19 +71,27 @@ class Saver(object):
         """
         Check if we need to save, and do it if so
         """
-        if self._dtout is None:
-            if self._timesToSave is None:
+        timesToSave = []
+        if self._dtout is None and self._timesToSave is None:
                 # No instructions for when to save, just return
                 return
+        # Use the list of times to save
+        if self._timesToSave is not None:
             try:
                 # Find the next time to save, but catch errors where we're looking for a time outside the range
                 timeToSave = self._timesToSave[np.where(self._timesToSave < integrator.time)[0][-1]+1]
+                timesToSave.append(timeToSave)
             except IndexError:
                 # Current time outside time bounds, ignore
                 return
-        else:
+        if self._dtout is not None:
             # Find the next time to save by incrementing from the last time we saved
             timeToSave = self._tlast + self._dtout
+            timesToSave.append(timeToSave)
+        if len(timesToSave) == 0:
+            return
+        # Find the first time to save (if more than one method of saving is implemented)
+        timeToSave = min(timesToSave)
         atTargetTime = integrator.ForceTimeTarget(timeToSave)
         # Add a paranoid check where either:
         # 1. the integrator reports hitting its target time, or
