@@ -25,7 +25,7 @@ class Saver(object):
     """
     This class monitors when to save, controlled by either Integrator or user
     """
-    def __init__(self,folder,dtout):
+    def __init__(self,folder,dtout=None,timesToSave=None,forceExactTimes=False,startingOutputNumber=0):
         """
         Constructor
         
@@ -35,13 +35,26 @@ class Saver(object):
         folder: string
             Where to save the outputs?
         dtout: float
-            How frequently to output?
+            How frequently to output? (Optional)
+            NOTE: This option will count from the (re)start of the simulation
+                  If you need exact times from a list of times, use timeToSave
+        timesToSave: list of floats
+            Output to a fixed list of times? (Optional)
+        forceExactTimes: boolean (Optional)
+            Force the exact times to save (Default: false)
+        startingOutputNumber: integer
+            What input number to start from? (Useful for restarts) (Default: 0)
         """
         self._folder = folder
         self._dtout = dtout
-        self._iout = 0
+        self._iout = startingOutputNumber
+        self._forceExactTimes = forceExactTimes
+        self._timesToSave = timesToSave
         integrator = Integrator()
         self._tlast = integrator.time
+        # Check whether we haven't given it any way to tell when to save
+        if self._dtout is None and self._timesToSave is None:
+            print("Warning: no dtout or timesToSave set in Saver; saver will do nothing")
 
     def Save(self):
         """
@@ -50,6 +63,7 @@ class Saver(object):
         integrator = Integrator()
         self._iout += 1
         self._tlast = integrator.time
+        # TODO: Create a Saver controller class that assigns filenames to prevent multiple savers overwriting each other
         filename = self._folder+"/snapshot_"+str(self._iout).zfill(5)
         integrator.Save(filename)
 
@@ -57,8 +71,42 @@ class Saver(object):
         """
         Check if we need to save, and do it if so
         """
-        if Integrator().time >= self._tlast + self._dtout:
+        if self._dtout is None:
+            if self._timesToSave is None:
+                # No instructions for when to save, just return
+                return
+            try:
+                # Find the next time to save, but catch errors where we're looking for a time outside the range
+                timeToSave = self._timesToSave[np.where(self._timesToSave < integrator.time)[0][-1]+1]
+            except IndexError:
+                # Current time outside time bounds, ignore
+                return
+        else:
+            # Find the next time to save by incrementing from the last time we saved
+            timeToSave = self._tlast + self._dtout
+        atTargetTime = integrator.ForceTimeTarget(timeToSave)
+        # Add a paranoid check where either:
+        # 1. the integrator reports hitting its target time, or
+        # 2. the integrator's current time is past the time to save
+        if atTargetTime or Integrator().time >= timeToSave:
             self.Save()
+
+    def _FindPositionInTimesToSave(self,time):
+        """
+        Returns the position in the array of times to save
+        Returns the value before the time given
+
+        Parameters
+        ----------
+
+        time: float
+            Target time to locate
+        """
+        try:
+            return np.where(self._timesToSave < time)
+        except:
+            # Default value if failed to find values
+            return 0
 
 class _Integrator(object):
     """
@@ -404,8 +452,15 @@ class _Integrator(object):
         ----------
         targetTime: float
             time to hit in seconds
+
+        Returns
+        -------
+
+        targetHit: boolean
+            True
         """
         # Check if target time is in the "future"
+        targetHit = False
         if targetTime > self.time:
             targetdt = targetTime - self.time
             # Check whether the current timestep will overshoot the target
@@ -413,6 +468,8 @@ class _Integrator(object):
                 # Set the target (inverse) dt in the hydro solver
                 # Use a number slightly < 1 to ensure anything triggers at the correct time
                 vhone.data.vdtext = units.time / targetdt * 0.999999999
+                targetHit = True
+        return targetHit
 
     def _UpdateTime(self):
         """
