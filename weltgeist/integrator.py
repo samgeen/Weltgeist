@@ -135,7 +135,7 @@ class _Integrator(object):
         # Save a file format version
         # v1.0.0 - Original format
         # v1.01 - Added B field
-        file.attrs['version']="1.01"
+        file.attrs['version']="1.02"
         # Save setup parameters
         hydro = self.hydro
         ncells = hydro.ncells
@@ -158,6 +158,8 @@ class _Integrator(object):
         file.create_dataset("Zsolar",data=hydro.Zsolar[0:ncells],dtype=np.float64)
         file.create_dataset("grav",data=hydro.grav[0:ncells],dtype=np.float64)
         file.create_dataset("Bfield",data=hydro.Bfield[0:ncells],dtype=np.float64)
+        # Added in Version 1.02 of the save file
+        file.create_dataset("Qion",data=hydro.Qion[0:ncells],dtype=np.float64)
         # Save switches in the modules
         file.create_dataset("switches",data=(cooling.cooling_on,gravity.gravity_on),dtype=np.float64)
         # TODO: Save sources (this is the hard one...)
@@ -234,6 +236,9 @@ class _Integrator(object):
         # Available above version 1.01:
         if "Bfield" in file.keys():
             hydro.Bfield[0:ncells] = loaditem("Bfield")
+        if float(version) >= 1.02:
+            # Note: this is instantaneous so we only load it here for self-consistency
+            hydro.Qion[0:ncells] = loaditem("Qion")
         # Save switches in the modules
         switches = loaditem("switches")
         cooling.cooling_on = bool(switches[0])
