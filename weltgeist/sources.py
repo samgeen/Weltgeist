@@ -12,6 +12,9 @@ from . import singlestar, units, radiation, integrator
 
 doRadiationPressure = True
 
+# Always calculate radiation, useful for recombination in HII regions around dead stars
+alwaysCalculateRadiation = False 
+
 def Sources():
     """
     Returns the sources object; should only be one of them
@@ -39,6 +42,7 @@ class _Injector(object):
         Runs through all of the sources and injects them onto the grid
         """
         global doRadiationPressure
+        global alwaysCalculateRadiation
         hydro = integrator.Integrator().hydro
         # Clear values first
         self._totalte = 0.0
@@ -59,7 +63,7 @@ class _Injector(object):
             hydro.TE[0] += self._totalte
         if self._totalke > 0:
             hydro.KE[0] += self._totalke
-        if self._totalLionising > 0 or self._totalLnonionising > 0:
+        if self._totalLionising > 0 or self._totalLnonionising > 0 or alwaysCalculateRadiation:
             #radiation.trace_radiation(self._totalphotons)
             radiation.trace_radiation(self._totalLionising, self._totalLnonionising, 
                                         self._Eionising, self._Tion, doRadiationPressure)
