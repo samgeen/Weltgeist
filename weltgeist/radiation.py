@@ -13,6 +13,9 @@ sigmaDust = 1e-21
 # Force photoionised temperature to Tion? WARNING: do not turn on if you have winds, useful for simple tests
 forceTion = False
 
+# Turn on radiation tracing?
+radiation_on = True
+
 def alpha_B_HII(temperature):
     """
     Calculate the HII recombination rate
@@ -77,18 +80,24 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
 
     global sigmaDust, forceTion
 
-    # No photons? Don't bother
-    if Lionising == 0 and Lnonionising == 0:
-        return
+    # Note: we need to trace radiation even if there are no photons to calculate recombination
 
     hydro = integrator.Integrator().hydro
     dt = integrator.Integrator().dt
     # Photon emission rate
-    QH = Lionising / Eionising
+    QH = 0.0
+    if Eionising > 0.0:
+        QH = Lionising / Eionising
 
     # Find total recombinations from the centre outwards
-    gracefact = 1.001 # Cool everything below gracefact*Tion to Tion to limit wiggles
-    alpha_B = alpha_B_HII(Tion) 
+    # Cool everything below gracefact*Tion to Tion to limit wiggles
+    #gracefact = 1.001 
+    gracefact = 2.0 # Use a larger gracefact to damp wiggles in temperature
+    if Tion > 0.0:
+        alpha_B = alpha_B_HII(Tion) 
+    else:
+        # Fallback to just using the gas temperature for recombining gas
+        alpha_B = alpha_B_HII(hydro.T[:]) 
     alpha_B = 2.7e-13
     nx = hydro.ncells
     T = hydro.T[0:nx]
@@ -124,9 +133,6 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
 
     # Calculate which gas should be ionised
     ionised = np.where(recombinations < QH)[0]
-
-    # Reset the ionisation fraction in case the bubble has collapsed
-    #hydro.xhii[0:nx] = 0.0
 
     # Note: Set xhii BEFORE T as this affects the final gas pressure (which takes into account free electron density)
 
@@ -172,8 +178,6 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
 
         dFdr = dFdrDust + dFdrDirect
 
-        #print(dFdrDust,dPdrDirect,dPdr)
-
         # Convert to outward acceleration from gravity
         # Note: we're using grav = acceleration here
         # P = F/A = ma / A
@@ -185,11 +189,6 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
 
         # Convert pressure to acceleration
         hydro.grav[0:nx] = dFdr / hydro.mass[0:nx]
-        #hydro.grav[np.isnan(hydro.grav[0:nx])] = 0.0
-
-
-        #print("EDGE CELL, CONTRIBUTION FROM RADIATION PRESSURE", edge, dFdr[edge-1] / (4 * np.pi * x[edge-1]) / hydro.P[edge-1])
-        #print (QH, hydro.Qion[10])
 
         # Thermal pressure handled by hydro solver
     # So we're done!

@@ -12,9 +12,6 @@ from . import singlestar, units, radiation, integrator
 
 doRadiationPressure = True
 
-# Always calculate radiation, useful for recombination in HII regions around dead stars
-alwaysCalculateRadiation = False 
-
 def Sources():
     """
     Returns the sources object; should only be one of them
@@ -53,9 +50,11 @@ class _Injector(object):
         self._totalLnonionising = 0.0
         self._Eionising = 0.0
         self._Tion = 0.0
+
         # Add to the input arrays
         for source in sources.sources:
             source.Inject(self)
+
         # Dump input values onto the grid
         if self._totalmass > 0:
             hydro.mass[0] += self._totalmass
@@ -63,10 +62,17 @@ class _Injector(object):
             hydro.TE[0] += self._totalte
         if self._totalke > 0:
             hydro.KE[0] += self._totalke
-        if self._totalLionising > 0 or self._totalLnonionising > 0 or alwaysCalculateRadiation:
-            #radiation.trace_radiation(self._totalphotons)
+
+        # Turn radiation on if trying to inject sources
+        if self._totalLionising > 0 or self._totalLnonionising > 0:
+            radiation.radiation_on = True
+        
+        # If radiation turned on, inject photons
+        if radiation.radiation_on:
             radiation.trace_radiation(self._totalLionising, self._totalLnonionising, 
-                                        self._Eionising, self._Tion, doRadiationPressure)
+                                               self._Eionising, self._Tion, doRadiationPressure)
+
+
     def AddTE(self, te):
         """
         Add thermal energy to grid
@@ -117,6 +123,7 @@ class _Injector(object):
         sigmaDust : float
             If not None, set the sigmaDust of the gas
         """
+        # Set photons to inject
         self._totalLionising += Lionising
         self._totalLnonionising += Lnonionising
         self._Eionising = max(self._Eionising,Eionising)

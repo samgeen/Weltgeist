@@ -6,7 +6,7 @@ Sam Geen, February 2018
 import h5py
 import numpy as np
 
-from . import cooling, hydro, gravity, sources, units, vhone
+from . import cooling, hydro, gravity, sources, units, radiation, vhone
 
 # Instance the integrator, using singleton pattern
 _integrator = None
@@ -135,7 +135,7 @@ class _Integrator(object):
         # Save a file format version
         # v1.0.0 - Original format
         # v1.01 - Added B field
-        file.attrs['version']="1.02"
+        file.attrs['version']="1.03"
         # Save setup parameters
         hydro = self.hydro
         ncells = hydro.ncells
@@ -161,7 +161,7 @@ class _Integrator(object):
         # Added in Version 1.02 of the save file
         file.create_dataset("Qion",data=hydro.Qion[0:ncells],dtype=np.float64)
         # Save switches in the modules
-        file.create_dataset("switches",data=(cooling.cooling_on,gravity.gravity_on),dtype=np.float64)
+        file.create_dataset("switches",data=(cooling.cooling_on,gravity.gravity_on,radiation.radiation_on),dtype=np.float64)
         # TODO: Save sources (this is the hard one...)
         # We probably have to have serialisation options inside sources
         # ...
@@ -243,6 +243,8 @@ class _Integrator(object):
         switches = loaditem("switches")
         cooling.cooling_on = bool(switches[0])
         gravity.gravity_on = bool(switches[1])
+        if float(version) >= 1.03:
+            radiation.radiation_on = bool(switches[2])
         # TODO: Load sources (this is the hard one...)
         # We probably have to have serialisation options inside sources
         # ...
@@ -413,7 +415,7 @@ class _Integrator(object):
         # Cooling step
         if cooling.cooling_on:
             cooling.solve_cooling(self.dt)
-        # Inject sources (includes radiation step!)
+        # Inject sources and handle radiation transport
         sources.Sources().InjectSources()
         # Hydro step
         vhone.data.step()
