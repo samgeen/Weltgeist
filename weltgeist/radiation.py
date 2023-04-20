@@ -163,7 +163,8 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
             hydro.T[edge] = hydro.T[edge]*(1.0-fracion) + fracion*Tion
     
     # Now do radiation pressure
-    if doRadiationPressure:
+    # Also check if we have photons to exert pressure
+    if doRadiationPressure and (Lnonionising > 0 or Lionising > 0):
         # See Draine (2011) equation 1 to give dP / dR
         mp = units.mH / units.X
         vol = hydro.vol[0:nx]
