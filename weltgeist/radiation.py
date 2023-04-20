@@ -150,7 +150,8 @@ def trace_radiation(Lionising, Lnonionising, Eionising, Tion, doRadiationPressur
         edge = ionised[-1]+1
 
     # Ionise the partially ionised frontier cell provided it's not outside the box
-    if edge < nx:
+    # Also check for case where there are no photons and the edge should not exist
+    if edge < nx and QH > 0.0:
         Qextra = recombinations[edge] - QH
         if edge > 0:
             fracion = Qextra / (recombinations[edge]-recombinations[edge-1])
