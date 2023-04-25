@@ -69,8 +69,11 @@ class _Injector(object):
         
         # If radiation turned on, inject photons
         if radiation.radiation_on:
+            timer = integrator.Integrator().ProcessTimer()
+            timer.Begin("radiation")
             radiation.trace_radiation(self._totalLionising, self._totalLnonionising, 
                                                self._Eionising, self._Tion, doRadiationPressure)
+            timer.End("radiation")
 
 
     def AddTE(self, te):
