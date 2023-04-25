@@ -6,7 +6,7 @@ Sam Geen, February 2018
 import h5py
 import numpy as np
 
-from . import cooling, hydro, gravity, sources, units, radiation, vhone
+from . import cooling, hydro, gravity, sources, units, radiation, processtimer, vhone
 
 # Instance the integrator, using singleton pattern
 _integrator = None
@@ -123,6 +123,8 @@ class _Integrator(object):
         # Saver objects
         # Question: do we really need multiple ones? Unclear. Up to the user to sort out properly
         self._savers = []
+        # Make an empty process timer object
+        self._processTimer = processtimer.ProcessTimer() 
 
     def Save(self,filename):
         '''
@@ -400,6 +402,8 @@ class _Integrator(object):
         Run a single hydrodynamic step
         """
         hydro = self._hydro
+        timer = self._processTimer
+        timer.Begin("step")
         # Check if the grid has been initialised
         if not self._initialised:
             print("Error: grid not initialised! Run integrator.Init()")
@@ -408,23 +412,34 @@ class _Integrator(object):
         #self._UpdateTime()
         # Gravity step
         # NOTE: gravity is currently in-testing, use with caution
+        timer.Begin("gravity")
         if gravity.gravity_on:
             gravity.calculate_gravity()
         else:
             hydro.grav[0:hydro.ncells] = 0.0
+        timer.End("gravity")
         # Cooling step
+        timer.Begin("cooling")
         if cooling.cooling_on:
             cooling.solve_cooling(self.dt)
+        timer.End("cooling")
         # Inject sources and handle radiation transport
+        timer.Begin("sources")
         sources.Sources().InjectSources()
+        timer.End("sources")
         # Hydro step
+        timer.Begin("hydro")
         vhone.data.step()
+        timer.End("hydro")
         # Update time to make sure the code sees the correct time
+        timer.Begin("cleanup")
         self._UpdateTime()
         # Final sanity check
         if cooling.cooling_on:
             cooling.CheckTemperature()
-        # Save if necessary
+        timer.End("cleanup")
+        timer.End("step")
+        # Save if necessary (don't time this as it can affect timing)
         for saver in self._savers:
             saver.CheckSave()
 
@@ -505,6 +520,16 @@ class _Integrator(object):
         Convenience function if you want to just call time as a function
         """
         return self.time
+    
+    def ProcessTimer(self):
+        """
+        Return the process timer object that allows users to log how long processes take
+
+        Returns
+        -------
+
+        """
+        return self._processTimer
     
     @property
     def dt(self):

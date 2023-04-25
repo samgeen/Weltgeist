@@ -64,6 +64,7 @@ def run_example():
         # Get the hydrogen number density and radius and update the line
         # Note that you can also add points to the line over time
         # This is useful for plotting time-dependent functions like example 2
+        time = integrator.Time()
         x = hydro.x[0:ncells]
         nH = hydro.nH[0:ncells]
         T = hydro.T[0:ncells]
@@ -71,37 +72,36 @@ def run_example():
         densityLine.Update(x,np.log10(nH))
         temperatureLine.Update(x,np.log10(T))
         ionLine.Update(x,xhii)
+        stopSourceTime = 1e6*wunits.year
+        stopSimulationTime = 2*stopSourceTime
         # Set up a courant limiter to prevent a big jump at t=0
         integrator.CourantLimiter(1e6)
         # Show the time on-screen
-        renderText = "{:.2f}".format(integrator.Time()/wunits.year/1e6)+" Myr"
+        renderText = "{:.2f}".format(time/wunits.year/1e6)+" Myr"
         if not sourceOn:
             renderText = "SOURCE OFF "+renderText
         renderer.Text(renderText)
         # Turn off source after 1 Myr
-        if integrator.Time() > 1e6*wunits.year and sourceOn:
+        if time > stopSourceTime and sourceOn:
             weltgeist.sources.Sources().RemoveSource(source)
             sourceOn = False
         # Step the integrator
         integrator.Step()
+        # End if we've reached the finish point
+        if time > stopSimulationTime:
+            raise StopIteration
     
-    # Now run the renderer and the simulation will evolve!
-    # Press Escape or click the cross to exit
-    # Note that this doesn't have axis labels, it's super simple so far
-    renderer.Start(MyStep)
+    # Now run the renderer and the simulation will evolve
+    # Press Escape or click the cross to exit, or wait until the end time
+    try:
+        renderer.Start(MyStep)
+    except StopIteration:
+        # Stopped iterating here
+        pass
 
-    # A few things to notice
-    # 1) Winds are a giant pain. They're super fast (up to a few 
-    #  1000 km/s) and they make super hot gas (up to 10^8-10^9 K) 
-    # This is an issue for the Courant condition. A 3D simulation that 
-    # takes 2 days without winds takes weeks with winds included
-    # 2) What structures do you see evolving? How do they compare with
-    #  https://ui.adsabs.harvard.edu/abs/1977ApJ...218..377W/abstract
-    # Try turning radiation on to see what happens. Why?
-    # Try plotting xHII instead of log(T) (or add a new line for it)
-    # Now try setting the medium to uniform and see what happens
+    # Output log file for times
+    integrator.ProcessTimer().OutputLog("timerlog_test_recombination.txt")
 
-    # In the next example we explore saving the simulation state to file
 
 # This piece of code runs if you start this module versus importing it
 if __name__=="__main__":

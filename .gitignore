@@ -13,3 +13,4 @@ _skbuild/
 Docker/
 1dhydro.code-workspace
 weltgeist.egg-info*
+timerlog*.txt
