@@ -11,6 +11,7 @@ import numpy as np
 from . import singlestar, units, radiation, integrator
 
 doRadiationPressure = True
+courantWarningMade = False
 
 def Sources():
     """
@@ -388,6 +389,7 @@ class TableSource(AbstractSource):
             object that accepts values to inject to grid
         """
         global starmetal
+        global courantWarningMade
 
         # Calculate the star's current age
         t = integrator.Integrator().time
@@ -427,7 +429,10 @@ class TableSource(AbstractSource):
                     try:
                         vwind = np.sqrt(2.0*ecourant/mcourant)
                     except:
-                        print("Incorrect value of either ecourant, mcourant, ignoring courant limiter:",ecourant,mcourant)
+                        if not courantWarningMade:
+                            print("Incorrect value of either ecourant, mcourant, ignoring courant limiter:",ecourant,mcourant)
+                            print("(This warning only made once to prevent warning spam)")
+                            courantWarningMade = True
                     else:
                         integrator.Integrator().CourantLimiter(vwind)
                         
