@@ -371,7 +371,7 @@ class TableSource(AbstractSource):
         self._radiation = radiation
         self._wind = wind
         self._supernova = supernova
-        self._exploded = False
+        self._expired = False
         # Check that the table is set up
         # NOTE: Make sure singlestarLocation is set before you get here
         self._TableSetup()
@@ -397,22 +397,24 @@ class TableSource(AbstractSource):
         age = t-self._tbirth
         Teff = None
         # Check whether the star is "alive" or not
-        if age > 0.0 and not self._exploded:
-            # Do supernova
-            # Check first whether the star should explode before putting in pre-supernova feedback
+        if age > 0.0 and not self._expired:
+            # Fix timestep to make SN at exact time of supernova
             if self._supernova:
-                # TODO: Fix timestep to make SN at exact time of supernova
                 integrator.Integrator().ForceTimeTarget(self._supernovaTime)
-                if t >= self._supernovaTime:
-                    self._exploded = True
+            # Check first whether the star should explode before putting in supernova feedback
+            if t >= self._supernovaTime:
+                self._expired = True
+                # Do supernova
+                if self._supernova:
                     snEnergy, snMassLoss, snYield = singlestar.star_supernovae(self._mass)
                     # Inject 80% of the star's initial mass and 1e51 ergs kinetic energy
                     print("TableSource: Injecting supernova with energy, mass, at time", snEnergy, snMassLoss, self._supernovaTime)
                     injector.AddMass(snMassLoss)
                     injector.AddKE(snEnergy)
-            if not self._exploded:
+            # Is the star dead?
+            if not self._expired:
                 # Do stellar winds
-                if self._wind and t < self._supernovaTime:
+                if self._wind:
                     # Get energy and mass to inject
                     energy, massloss = singlestar.star_winds(self._mass,age,dt)
                     # Add mass FIRST since KE needs to be added elastically
@@ -437,7 +439,7 @@ class TableSource(AbstractSource):
                         integrator.Integrator().CourantLimiter(vwind)
                         
                 # Do stellar radiation
-                if self._radiation and t < self._supernovaTime:
+                if self._radiation:
                     # Read single star tables:
                     # 1. Number of photons emitted per s
                     Qphotons = singlestar.star_radiation(self._mass,age,1.0)
