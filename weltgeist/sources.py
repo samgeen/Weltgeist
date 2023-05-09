@@ -350,7 +350,7 @@ class TableSource(AbstractSource):
     """
     Source of energy & photons based on a lookup table
     """
-    def __init__(self,mass,tbirth=0.0,radiation=True,wind=True,supernova=False):
+    def __init__(self,mass,tbirth=0.0,radiation=True,wind=True,supernova=False,thermalsupernova=False):
         """
         Constructor
     
@@ -365,12 +365,17 @@ class TableSource(AbstractSource):
             Turn radiation on?
         wind : bool
             Turn winds on?
+        supernova: bool
+            Turn supernova on?
+        thermalsupernova : bool
+            Input supernova as a pure blast of thermal energy?
         """
         self._tbirth = tbirth
         self._mass = mass
         self._radiation = radiation
         self._wind = wind
         self._supernova = supernova
+        self._thermalsupernova = thermalsupernova
         self._expired = False
         # Check that the table is set up
         # NOTE: Make sure singlestarLocation is set before you get here
@@ -409,8 +414,11 @@ class TableSource(AbstractSource):
                     snEnergy, snMassLoss, snYield = singlestar.star_supernovae(self._mass)
                     # Inject 80% of the star's initial mass and 1e51 ergs kinetic energy
                     print("TableSource: Injecting supernova with energy, mass, at time", snEnergy, snMassLoss, self._supernovaTime)
-                    injector.AddMass(snMassLoss)
-                    injector.AddKE(snEnergy)
+                    if self._thermalsupernova:
+                        injector.AddTE(snEnergy)
+                    else:
+                        injector.AddMass(snMassLoss)
+                        injector.AddKE(snEnergy)
             # Is the star dead?
             if not self._expired:
                 # Do stellar winds

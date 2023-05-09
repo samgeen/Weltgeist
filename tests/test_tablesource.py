@@ -16,12 +16,12 @@ def run_example():
     #  We need the integrator again
     integrator = weltgeist.integrator.Integrator()
     # And the setup
-    ncells = 512
+    ncells = 128
     nanalytic = np.zeros((ncells))
-    n0 = 100.0 # cm^-3
+    n0 = 1000.0 # cm^-3
     T0 = 10.0 # K
     integrator.Setup(ncells = ncells, # 256 cells
-            rmax = 500.0*wunits.pc, # 20 pc box
+            rmax = 50.0*wunits.pc, # 20 pc box
             n0 = n0, # atoms / cm^-3
             T0 = T0, # K
             gamma = 5.0/3.0) # monatomic gas (close enough...)
@@ -57,7 +57,7 @@ def run_example():
     # By default it has all the feedback modes turnes on
     # You can turn them off in the function below
     # e.g. star = TableSource(30.0,radiation=False,wind=True)
-    star = weltgeist.sources.TableSource(119.0,radiation=True,wind=False,supernova=True)
+    star = weltgeist.sources.TableSource(30.0,radiation=False,wind=True,supernova=True,thermalsupernova=True)
     weltgeist.sources.Sources().AddSource(star)
 
     # Turn cooling on
