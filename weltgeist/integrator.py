@@ -6,7 +6,7 @@ Sam Geen, February 2018
 import h5py
 import numpy as np
 
-from . import cooling, hydro, gravity, sources, units, radiation, processtimer, vhone
+from . import cooling, hydro, gravity, sources, units, radiation, processtimer, outflowtracker, vhone
 
 # Instance the integrator, using singleton pattern
 _integrator = None
@@ -125,6 +125,7 @@ class _Integrator(object):
         self._savers = []
         # Make an empty process timer object
         self._processTimer = processtimer.ProcessTimer() 
+        self._outflowTracker = None
 
     def Save(self,filename):
         '''
@@ -137,7 +138,8 @@ class _Integrator(object):
         # Save a file format version
         # v1.0.0 - Original format
         # v1.01 - Added B field
-        file.attrs['version']="1.03"
+        version = 1.04
+        file.attrs['version'] = str(version)
         # Save setup parameters
         hydro = self.hydro
         ncells = hydro.ncells
@@ -164,6 +166,8 @@ class _Integrator(object):
         file.create_dataset("Qion",data=hydro.Qion[0:ncells],dtype=np.float64)
         # Save switches in the modules
         file.create_dataset("switches",data=(cooling.cooling_on,gravity.gravity_on,radiation.radiation_on),dtype=np.float64)
+        # Outflow tracker
+        self._outflowTracker.Save(file,version)
         # TODO: Save sources (this is the hard one...)
         # We probably have to have serialisation options inside sources
         # ...
@@ -182,7 +186,7 @@ class _Integrator(object):
         if not ".hdf5" in filename[-5:]:
             filename += ".hdf5"
         file = h5py.File(filename, "r")
-        version = file.attrs["version"]
+        version = float(file.attrs["version"])
         # Save a file format version 
         #file.attrs['version']="1.0.0"
         # Save setup parameters
@@ -238,15 +242,17 @@ class _Integrator(object):
         # Available above version 1.01:
         if "Bfield" in file.keys():
             hydro.Bfield[0:ncells] = loaditem("Bfield")
-        if float(version) >= 1.02:
+        if version >= 1.02:
             # Note: this is instantaneous so we only load it here for self-consistency
             hydro.Qion[0:ncells] = loaditem("Qion")
         # Save switches in the modules
         switches = loaditem("switches")
         cooling.cooling_on = bool(switches[0])
         gravity.gravity_on = bool(switches[1])
-        if float(version) >= 1.03:
+        if version >= 1.03:
             radiation.radiation_on = bool(switches[2])
+        # Load the outflow tracker
+        self._outflowTracker.Load(file,version)
         # TODO: Load sources (this is the hard one...)
         # We probably have to have serialisation options inside sources
         # ...
@@ -376,6 +382,9 @@ class _Integrator(object):
             # Initialise hydro object for accessing variables
             self._hydro = hydro._Hydro()
 
+            # Set up an outflow tracker
+            self._outflowTracker = outflowtracker.OutflowTracker(self._hydro)
+
             # Set initialised to true, to prevent this running again
             # TODO: check whether this actually results in an error? 
             #       might be useful...
@@ -389,13 +398,14 @@ class _Integrator(object):
         """
         if self._initialised:
             vhone.data.reset()
-            self._initialised = False
-            self._hydro = None
-            # Internal time values
-            self._time_code = 0.0
-            self._dt_code = 0.0
             # Reset the sources
             sources.Sources().Reset()
+        self._initialised = False
+        self._hydro = None
+        self._outflowTracker = None
+        # Internal time values
+        self._time_code = 0.0
+        self._dt_code = 0.0
 
     def Step(self):
         """
@@ -439,10 +449,18 @@ class _Integrator(object):
             cooling.CheckTemperature()
         timer.End("cleanup")
         timer.End("step")
+        # Run outflow tracker for this step
+        self._outflowTracker.TrackForStep(self.dt)
         # Save if necessary (don't time this as it can affect timing)
         for saver in self._savers:
             saver.CheckSave()
 
+    @property
+    def outflowTracker(self):
+        '''
+        Return the outflow tracker for reporting
+        '''
+        return self._outflowTracker
 
     # ---------------
     # HYDRO FUNCTIONS

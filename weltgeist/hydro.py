@@ -208,6 +208,10 @@ class _Hydro(object):
         global _fieldvariables
         self.ncells = vhone.data.imax
 
+        # Reset any old values in memory
+        _internalvariables = {}
+        _fieldvariables = {}
+
         # Set up variables that need to be made once the data is initialised
         # Cells should be evenly spaced in radius, where self.x[0] is 0.0, if not throw value error
         # Grid spacing

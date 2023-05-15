@@ -53,11 +53,11 @@ def run_example():
         "../StellarSources/data/singlestar_z0.014"
 
     # Second, make a star using these tables
-    # This is a 30 solar mass star 
+    # This is a 119 solar mass star 
     # By default it has all the feedback modes turnes on
     # You can turn them off in the function below
-    # e.g. star = TableSource(30.0,radiation=False,wind=True)
-    star = weltgeist.sources.TableSource(30.0,radiation=False,wind=True,supernova=True,thermalsupernova=True)
+    # e.g. star = TableSource(119.0,radiation=False,wind=True)
+    star = weltgeist.sources.TableSource(119.0,radiation=True,wind=False,supernova=True,thermalsupernova=True)
     weltgeist.sources.Sources().AddSource(star)
 
     # Turn cooling on
@@ -72,6 +72,10 @@ def run_example():
 
     # Set up a courant limiter to prevent a big jump at t=0
     integrator.CourantLimiter(1e7)
+
+    
+    # Set up a time to stop the simulation
+    stopSimulationTime = 1e7*wunits.year
 
     # Because of the way the rendering module pyglet works, it has to
     #  control the stepping. So let's make a function to give it
@@ -97,11 +101,18 @@ def run_example():
         renderer.Text("{:.2f}".format(integrator.Time()/wunits.year/1e6)+" Myr")
         # Step the integrator
         integrator.Step()
+        # End if we've reached the finish point
+        if integrator.time > stopSimulationTime:
+            raise StopIteration
     
     # Now run the renderer and the simulation will evolve!
-    # Press Escape or click the cross to exit
-    # Note that this doesn't have axis labels, it's super simple so far
-    renderer.Start(MyStep)
+    # Press Escape or click the cross to exit, or wait until the end time
+    try:
+        renderer.Start(MyStep)
+    except StopIteration:
+        # Stopped iterating here
+        pass
+
 
     # A few things to notice
     # 1) Winds are a giant pain. They're super fast (up to a few 
@@ -113,8 +124,6 @@ def run_example():
     # Try turning radiation on to see what happens. Why?
     # Try plotting xHII instead of log(T) (or add a new line for it)
     # Now try setting the medium to uniform and see what happens
-
-    # In the next example we explore saving the simulation state to file
 
 # This piece of code runs if you start this module versus importing it
 if __name__=="__main__":
