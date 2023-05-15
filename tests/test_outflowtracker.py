@@ -14,7 +14,7 @@ import weltgeist.graphics # Separate in case we don't want to import it
 # Is our source turned on?
 sourceOn = True
 
-def run_example(radiation=False,winds=False):
+def run_example(radiation=False,winds=False,testLoading=False):
     global sourceOn
     #  We need the integrator again
     integrator = weltgeist.integrator.Integrator()
@@ -64,7 +64,7 @@ def run_example(radiation=False,winds=False):
 
     # Pick a time to stop the source and simulation
     stopSourceTime = 1e11
-    stopSimulationTime = 2*stopSourceTime
+    stopSimulationTime = 10*stopSourceTime
 
     # Because of the way the rendering module pyglet works, it has to
     #  control the stepping. So let's make a function to give it
@@ -85,9 +85,7 @@ def run_example(radiation=False,winds=False):
         time = integrator.Time()
         x = hydro.x[:]
         nH = hydro.nH[:]
-        #if winds:
-            # Get rid of excess temperature to make our lives easier
-        #    hydro.T[0] = 1e4
+        # Note - We add no thermal energy so this will be a stupidly low value, that's okay
         T = hydro.T[:]
         hydro.nH[hydro.nH < 1e-10] = 1e-10
         xhii = hydro.xhii[0:ncells]*4
@@ -133,8 +131,15 @@ def run_example(radiation=False,winds=False):
 
     # Print reporting from the outflow tracker to see how much
     #  mass, momentum, energy and photons were lost from the grid
+    print ("Flows lost to the grid - there will be some things lost to absorption in the gas...")
     print(integrator.outflowTracker)
-    print ("There will be some things lost to absorption in the gas...")
+
+    if testLoading:
+        filename = "savefile_outflowtest"
+        integrator.Save(filename)
+        integrator.Load(filename)
+        print ("Testing saving and loading - should be the same as printed above:")
+        print(integrator.outflowTracker)
 
     # Reset integrator
     integrator.Reset()
@@ -142,6 +147,6 @@ def run_example(radiation=False,winds=False):
 
 # This piece of code runs if you start this module versus importing it
 if __name__=="__main__":
-    run_example(winds=True)
-    run_example(radiation=True)
+    run_example(winds=True, testLoading=True)
+    run_example(radiation=True, testLoading=True)
     

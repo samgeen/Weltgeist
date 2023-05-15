@@ -166,6 +166,19 @@ class _Field(object):
 _internalvariables = {}
 _fieldvariables = {}
 
+def MakeNewHydro():
+    '''
+    Reset hydro variables and make a new object
+    '''
+
+    global _internalvariables
+    global _fieldvariables
+    for key in _internalvariables.keys():
+        _internalvariables[key] = 0.0
+    for key in _fieldvariables.keys():
+        _fieldvariables[key] = 0.0
+    return _Hydro()
+
 class _Hydro(object):
     """
     Stores and manages the hydrodynamic variables for use by python
@@ -207,10 +220,6 @@ class _Hydro(object):
         global _internalvariables
         global _fieldvariables
         self.ncells = vhone.data.imax
-
-        # Reset any old values in memory
-        _internalvariables = {}
-        _fieldvariables = {}
 
         # Set up variables that need to be made once the data is initialised
         # Cells should be evenly spaced in radius, where self.x[0] is 0.0, if not throw value error

@@ -55,7 +55,7 @@ class OutflowTracker():
         version: version number in case format changes
         '''
         def loaditem(varname):
-            data = np.array(file.get(varname))
+            data = np.array(fileh5py.get(varname))
             if len(data) == 1:
                 data = data[0]
             return data

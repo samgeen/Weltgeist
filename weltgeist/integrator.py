@@ -380,7 +380,7 @@ class _Integrator(object):
             vhone.data.zpr[0:nx,0,0] = P0/units.pressure
 
             # Initialise hydro object for accessing variables
-            self._hydro = hydro._Hydro()
+            self._hydro = hydro.MakeNewHydro()
 
             # Set up an outflow tracker
             self._outflowTracker = outflowtracker.OutflowTracker(self._hydro)
