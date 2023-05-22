@@ -86,7 +86,7 @@ class _Injector(object):
         te : float
             thermal energy to add in erg
         """
-        self._totalte += te
+        self._totalte += max(0.0,te)
 
     def AddKE(self, ke):
         """
@@ -97,7 +97,7 @@ class _Injector(object):
         ke : float
             kinetic energy to add in erg
         """
-        self._totalke += ke
+        self._totalke += max(0.0,ke)
     
     def AddMass(self, mass):
         """
@@ -108,7 +108,7 @@ class _Injector(object):
         mass : float
             mass to add in g
         """
-        self._totalmass += mass
+        self._totalmass += max(0.0,mass)
 
     def AddPhotons(self, Lionising, Lnonionising, Eionising, Tion, sigmaDust=None):
         """
@@ -128,10 +128,10 @@ class _Injector(object):
             If not None, set the sigmaDust of the gas
         """
         # Set photons to inject
-        self._totalLionising += Lionising
-        self._totalLnonionising += Lnonionising
-        self._Eionising = max(self._Eionising,Eionising)
-        self._Tion = max(self._Tion,Tion)
+        self._totalLionising += max(0.0,Lionising)
+        self._totalLnonionising += max(0.0,Lnonionising)
+        self._Eionising = max(1e-10,self._Eionising,Eionising)
+        self._Tion = max(self._Tion,Tion,0.0)
 
 
 class _Sources(object):
@@ -380,8 +380,10 @@ class TableSource(AbstractSource):
         # Check that the table is set up
         # NOTE: Make sure singlestarLocation is set before you get here
         self._TableSetup()
+        # Set a safety factor to prevent bad data being read at exectly star_lifetime
+        safetyFactor = 0.999
         # Set time the supernova should go off in the simulation
-        self._supernovaTime = self._tbirth + singlestar.star_lifetime(self._mass)
+        self._supernovaTime = self._tbirth + singlestar.star_lifetime(self._mass) * safetyFactor
 
     def Inject(self,injector):
         """
@@ -404,8 +406,7 @@ class TableSource(AbstractSource):
         # Check whether the star is "alive" or not
         if age > 0.0 and not self._expired:
             # Fix timestep to make SN at exact time of supernova
-            if self._supernova:
-                integrator.Integrator().ForceTimeTarget(self._supernovaTime)
+            integrator.Integrator().ForceTimeTarget(self._supernovaTime)
             # Check first whether the star should explode before putting in supernova feedback
             if t >= self._supernovaTime:
                 self._expired = True

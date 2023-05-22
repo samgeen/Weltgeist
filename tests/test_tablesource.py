@@ -57,7 +57,7 @@ def run_example():
     # By default it has all the feedback modes turnes on
     # You can turn them off in the function below
     # e.g. star = TableSource(119.0,radiation=False,wind=True)
-    star = weltgeist.sources.TableSource(119.0,radiation=True,wind=False,supernova=True,thermalsupernova=True)
+    star = weltgeist.sources.TableSource(119.0,radiation=True,wind=True,supernova=True,thermalsupernova=True)
     weltgeist.sources.Sources().AddSource(star)
 
     # Turn cooling on
