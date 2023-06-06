@@ -350,7 +350,7 @@ class TableSource(AbstractSource):
     """
     Source of energy & photons based on a lookup table
     """
-    def __init__(self,mass,tbirth=0.0,radiation=True,wind=True,supernova=False,thermalsupernova=False):
+    def __init__(self,mass,tbirth=0.0,radiation=True,wind=True,supernova=False,thermalsupernova=False,lowestMassSupernova=8.0):
         """
         Constructor
     
@@ -369,6 +369,8 @@ class TableSource(AbstractSource):
             Turn supernova on?
         thermalsupernova : bool
             Input supernova as a pure blast of thermal energy?
+        lowestMassSupernova : float
+            Lowest mass of star that goes supernova in Msolar
         """
         self._tbirth = tbirth
         self._mass = mass
@@ -376,6 +378,7 @@ class TableSource(AbstractSource):
         self._wind = wind
         self._supernova = supernova
         self._thermalsupernova = thermalsupernova
+        self._lowestMassSupernova = lowestMassSupernova
         self._expired = False
         # Check that the table is set up
         # NOTE: Make sure singlestarLocation is set before you get here
@@ -410,8 +413,8 @@ class TableSource(AbstractSource):
             # Check first whether the star should explode before putting in supernova feedback
             if t >= self._supernovaTime:
                 self._expired = True
-                # Do supernova
-                if self._supernova:
+                # Do supernova if the star is above the lowest mass that supernovae can have
+                if self._supernova and self._mass > self._lowestMassSupernova:
                     snEnergy, snMassLoss, snYield = singlestar.star_supernovae(self._mass)
                     # Inject 80% of the star's initial mass and 1e51 ergs kinetic energy
                     print("TableSource: Injecting supernova with energy, mass, at time", snEnergy, snMassLoss, self._supernovaTime)
