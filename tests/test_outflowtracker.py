@@ -31,11 +31,14 @@ def run_example(radiation=False,winds=False,testLoading=False):
             gamma = 5.0/3.0) # monatomic gas (close enough...)
     hydro = integrator.hydro
 
+    print(integrator.time)
+    print(integrator.dt)
+
     backgroundMass = n0 * wunits.mH / wunits.X * 4.0 / 3.0 * np.pi * rmax**3
 
     # Make a simple radiation source
     if radiation:
-        Qionsource = 1e49
+        Qionsource = 1e50
         source = weltgeist.sources.SimpleRadiationSource(Qionsource)
     elif winds:
         windLuminosity = 1e36

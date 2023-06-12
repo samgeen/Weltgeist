@@ -378,6 +378,7 @@ class _Integrator(object):
             nx = vhone.data.imax
             vhone.data.zro[0:nx,0,0] = rho0/units.density
             vhone.data.zpr[0:nx,0,0] = P0/units.pressure
+            vhone.data.zux[0:nx,0,0] = 0.0
 
             # Initialise hydro object for accessing variables
             self._hydro = hydro.MakeNewHydro()
@@ -401,8 +402,8 @@ class _Integrator(object):
             # Reset the sources
             sources.Sources().Reset()
         self._initialised = False
-        self._hydro = None
-        self._outflowTracker = None
+        self._hydro.Qion = 0.0
+        self._outflowTracker.Reset()
         # Internal time values
         self._time_code = 0.0
         self._dt_code = 0.0

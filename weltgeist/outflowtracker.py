@@ -9,12 +9,44 @@ class OutflowTracker():
     '''
     Tracks mass, momentum, enery and photons leaving the grid
     '''
-    def __init__(self, hydro):
+    def __init__(self, hydro,cellindex=-1):
         self._hydro = hydro
+        self._cellindex = cellindex
+        self.Reset()
+
+    def Reset(self):
         self._mass = 0.0
         self._momentum = 0.0
         self._energy = 0.0
         self._photons = 0.0
+
+    @property
+    def mass(self):
+        '''
+        Return the mass lost so far
+        '''
+        return self._mass
+    
+    @property
+    def momentum(self):
+        '''
+        Return the momentum lost so far
+        '''
+        return self._momentum
+    
+    @property
+    def energy(self):
+        '''
+        Return the energy lost so far
+        '''
+        return self._energy
+    
+    @property
+    def photons(self):
+        '''
+        Return the number of photons lost so far
+        '''
+        return self._photons
 
     def TrackForStep(self, dt):
         '''
@@ -23,11 +55,15 @@ class OutflowTracker():
         '''
         h = self._hydro
         # Get the flow values in the last cell
-        last = -1
+        last = self._cellindex
         rho = h.rho[last]
-        vel = max(0.0,h.vel[last])
+        vel = h.vel[last]
+        # If it's the last cell, don't include any likely spurious inflows
+        if last == -1:
+            vel = max(0.0,vel)
         vol = h.vol[last]
-        area = 4.0 * np.pi * h.x[last]**2
+        # Get area of outer edge of cell
+        area = 4.0 * np.pi * (h.x[last] + 0.5*h.dx)**2
         # Volume per timestep leaving the grid
         flowVolume = vel * area * dt
         # Calculate flows through the surface of the last cell
