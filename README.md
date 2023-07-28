@@ -28,7 +28,7 @@ Make sure you activate your python3 environment (see above)
 1. Clone the repository to your computer and go to the Weltgeist folder where the setup.py file is:
 git clone git@github.com:samgeen/Weltgeist.git
 
-2. Get the big stellar evolution files by calling "git lfs pull" in the Weltgeist folder
+2. Get the big stellar evolution files by running "bash download.sh", or by dowloading and unzipping the repository found at https://zenodo.org/record/8192816 (there should be a folder in the main directory called StellarSources/data)
 
 3. Run "python3 setup.py build" to build the code.
 
